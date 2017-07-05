@@ -47,6 +47,7 @@ let FirstName = "FirstName"
 let DeliverySlotId = "DeliverySlotId"
 let isLastOrderAvailable = "LastOrderAvailable"
 let saveLastOrderId = "saveLastOrderId"
+let UserRole = "UserRole"
 
 public class TaksyKraftUserDefaults: NSObject {
     
@@ -118,6 +119,17 @@ public class TaksyKraftUserDefaults: NSObject {
     {
         return UserDefaults.standard.object(forKey: StoreName) as! String
     }
+    public class func getUserRole() -> String{
+        return UserDefaults.standard.object(forKey: UserRole) as! String
+    }
+    public class func setUserRole (object:String)
+    {
+        UserDefaults.standard.set(object, forKey: UserRole)
+        UserDefaults.standard.synchronize()
+        
+    }
+    
+
     public class func setCurrency(object : String)
     {
         UserDefaults.standard.set(object, forKey:"Currency")
@@ -223,7 +235,9 @@ public class TaksyKraftUserDefaults: NSObject {
     
     public class func getUserMobile() -> String
     {
-        return UserDefaults.standard.object(forKey: UserMobile) as! String
+        let str = UserDefaults.standard.object(forKey: UserMobile) as? String ?? ""
+
+        return str
     }
     
     public class func setUserMobile(object : String)

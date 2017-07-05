@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="q4P-eD-pUf" customClass="ImageDetailPopUp" customModule="TaksyKraft" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sxj-vJ-hOf">
+                    <rect key="frame" x="20" y="64" width="335" height="583"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L0V-51-Rgy">
+                            <rect key="frame" x="0.0" y="0.0" width="335" height="50"/>
+                            <color key="backgroundColor" red="0.1362660825" green="0.36768472190000001" blue="0.48295193910000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="50" id="o1p-pA-gzL"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="17"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ZyP-8p-QU8">
+                            <rect key="frame" x="8" y="58" width="319" height="455"/>
+                        </imageView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kcp-BW-l6O">
+                            <rect key="frame" x="245" y="533" width="70" height="30"/>
+                            <color key="backgroundColor" red="0.1362660825" green="0.36768472190000001" blue="0.48295193910000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="30" id="Aon-vf-jv1"/>
+                                <constraint firstAttribute="width" constant="70" id="hvD-IR-qOe"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="14"/>
+                            <state key="normal" title="CLOSE"/>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="L0V-51-Rgy" firstAttribute="top" secondItem="Sxj-vJ-hOf" secondAttribute="top" id="4w1-tp-0Nf"/>
+                        <constraint firstItem="ZyP-8p-QU8" firstAttribute="leading" secondItem="Sxj-vJ-hOf" secondAttribute="leading" constant="8" id="6ea-Jz-9Gc"/>
+                        <constraint firstAttribute="trailing" secondItem="kcp-BW-l6O" secondAttribute="trailing" constant="20" id="9sr-6b-hsO"/>
+                        <constraint firstAttribute="bottom" secondItem="kcp-BW-l6O" secondAttribute="bottom" constant="20" id="SbD-4t-Hhf"/>
+                        <constraint firstAttribute="trailing" secondItem="L0V-51-Rgy" secondAttribute="trailing" id="aFX-VQ-YoZ"/>
+                        <constraint firstAttribute="trailing" secondItem="ZyP-8p-QU8" secondAttribute="trailing" constant="8" id="ddd-tu-eVu"/>
+                        <constraint firstItem="L0V-51-Rgy" firstAttribute="leading" secondItem="Sxj-vJ-hOf" secondAttribute="leading" id="gDS-uy-Ig5"/>
+                        <constraint firstItem="ZyP-8p-QU8" firstAttribute="top" secondItem="L0V-51-Rgy" secondAttribute="bottom" constant="8" id="qPl-xZ-oYB"/>
+                        <constraint firstItem="kcp-BW-l6O" firstAttribute="top" secondItem="ZyP-8p-QU8" secondAttribute="bottom" constant="20" id="y6a-t8-xke"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.79651738556338025" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="Sxj-vJ-hOf" firstAttribute="leading" secondItem="q4P-eD-pUf" secondAttribute="leading" constant="20" id="Mw5-GA-qu5"/>
+                <constraint firstItem="Sxj-vJ-hOf" firstAttribute="top" secondItem="q4P-eD-pUf" secondAttribute="top" constant="64" id="cl5-M8-rBm"/>
+                <constraint firstAttribute="trailing" secondItem="Sxj-vJ-hOf" secondAttribute="trailing" constant="20" id="epR-VB-exo"/>
+                <constraint firstAttribute="bottom" secondItem="Sxj-vJ-hOf" secondAttribute="bottom" constant="20" id="oTw-kP-kZ3"/>
+            </constraints>
+            <connections>
+                <outlet property="btnClose" destination="kcp-BW-l6O" id="Q3V-6t-GtA"/>
+                <outlet property="imgReceipt" destination="ZyP-8p-QU8" id="OIe-nZ-iKq"/>
+                <outlet property="lblRecipetID" destination="L0V-51-Rgy" id="zNr-Ky-IdQ"/>
+            </connections>
+            <point key="canvasLocation" x="-34.5" y="95.5"/>
+        </view>
+    </objects>
+</document>

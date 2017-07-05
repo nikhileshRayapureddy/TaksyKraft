@@ -26,9 +26,12 @@ class ViewController: BaseViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         txtFldMobileNo.text = "9985655665"
+        self.navigationController?.isNavigationBarHidden = true
+
     }
     func sendOTP()
     {
+        self.view.endEditing(true)
         app_delegate.showLoader(message: "")
         let serviceLayer = ServiceLayer()
         serviceLayer.loginWithEmailId(mobileNo: txtFldMobileNo.text!, successMessage: { (SR) in
@@ -37,10 +40,12 @@ class ViewController: BaseViewController {
             DispatchQueue.main.async {
                 let alert = UIAlertController(title: "Alert!", message: "A new OTP Have Been Sent To Your Mobile Number, Please Verify!", preferredStyle: UIAlertControllerStyle.alert)
                 alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
+                    DispatchQueue.main.async {
                     self.vwLogin.isHidden = true
                     self.vwOTP.isHidden = false
                     self.lblOTPSenTO.text = "OTP sent to \(self.txtFldMobileNo.text!)"
                     TaksyKraftUserDefaults.setUserMobile(object: self.txtFldMobileNo.text!)
+                    }
                 }))
                 self.present(alert, animated: true, completion: nil)
 
@@ -54,6 +59,7 @@ class ViewController: BaseViewController {
     }
     func CheckOTP()
     {
+        self.view.endEditing(true)
         app_delegate.showLoader(message: "")
         let serviceLayer = ServiceLayer()
         serviceLayer.checkLoginWith(mobileNo: txtFldMobileNo.text!, Otp: txtFldOTP.text!, successMessage: { (SR) in
@@ -62,8 +68,32 @@ class ViewController: BaseViewController {
             DispatchQueue.main.async {
                 let alert = UIAlertController(title: "Alert!", message: "OTP Verified Sucessfully.", preferredStyle: UIAlertControllerStyle.alert)
                 alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
+                    DispatchQueue.main.async {
+                    let bo = SR as! UserBO
+                    UIApplication.shared.statusBarStyle = .lightContent
+                    let statWindow = UIApplication.shared.value(forKey:"statusBarWindow") as! UIView
+                    let statusBar = statWindow.subviews[0] as UIView
+                    statusBar.backgroundColor = Color_NavBarTint
+                    TaksyKraftUserDefaults.setLoginStatus(object: true)
                     let vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ExpensesViewController") as! ExpensesViewController
-                    self.navigationController?.pushViewController(vc, animated: true)
+                    if bo.role == "1"
+                    {
+                        vc.isMyExpense = true
+                        vc.isFromExpenses = false
+                    }
+                    else if bo.role == "2"
+                    {
+                        vc.isMyExpense = true
+                        vc.isFromExpenses = false
+                    }
+                    else
+                    {
+                        vc.isMyExpense = false
+                        vc.isFromExpenses = true
+                    }
+                        TaksyKraftUserDefaults.setUserRole(object: bo.role)
+                        self.navigationController?.pushViewController(vc, animated: true)
+                    }
                 }))
                 self.present(alert, animated: true, completion: nil)
             }

@@ -29,7 +29,6 @@ class ServiceLayer: NSObject {
             }
             else
             {
-                CapillaryUserDefaults.setLoginDate(NSDate())
                 if let error = obj.parsedDataDict["error"] as? String,let message = obj.parsedDataDict["message"] as? String
                 {
                     if error == "true"
@@ -65,7 +64,6 @@ class ServiceLayer: NSObject {
             }
             else
             {
-                CapillaryUserDefaults.setLoginDate(NSDate())
                 if let error = obj.parsedDataDict["error"] as? String,let message = obj.parsedDataDict["message"] as? String
                 {
                     if error == "true"
@@ -75,8 +73,46 @@ class ServiceLayer: NSObject {
                     }
                     else
                     {
-                        let x = message != "" ? message : self.SERVER_ERROR
-                        successMessage(x)
+                        if let data = obj.parsedDataDict["data"] as? [[String:AnyObject]]
+                        {
+                            let user = data[0]
+                            
+                            let BO = UserBO()
+                            if let id = user["id"] as? NSNumber
+                            {
+                                BO.id = Int(id)
+                            }
+                            if let name = user["name"] as? String
+                            {
+                                BO.name = name
+                            }
+                            if let mobile = user["mobile"] as? String
+                            {
+                                BO.mobile = mobile
+                            }
+                            if let otp = user["otp"] as? String
+                            {
+                                BO.otp = otp
+                            }
+                            if let role = user["role"] as? String
+                            {
+                                BO.role = role
+                            }
+                            if let created_at = user["created_at"] as? String
+                            {
+                                BO.created_at = created_at
+                            }
+                            if let updated_at = user["updated_at"] as? String
+                            {
+                                BO.updated_at = updated_at
+                            }
+                            successMessage(BO)
+                        }
+                        else
+                        {
+                            let x = message != "" ? message : self.SERVER_ERROR
+                            failureMessage(x)
+                        }
                     }
                 }
                 else
@@ -89,13 +125,204 @@ class ServiceLayer: NSObject {
     }
     public func getBillDetailsWith(mobileNo:String,successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
     {
-        var dictBody = [String:AnyObject]()
-        dictBody["mobileno"] = "mobileNo" as AnyObject
         let obj : HttpRequest = HttpRequest()
         obj.tag = ParsingConstant.Login.rawValue
-        obj.MethodNamee = "POST"
-        obj._serviceURL = "\(BASE_URL)billdetails"
-        obj.params = dictBody
+        obj.MethodNamee = "GET"
+        obj._serviceURL = "\(BASE_URL)billdetails/\(mobileNo)"
+        obj.params = [:]
+        obj.doGetSOAPResponse {(success : Bool) -> Void in
+            if !success
+            {
+                failureMessage(self.SERVER_ERROR)
+            }
+            else
+            {
+                if let error = obj.parsedDataDict["error"] as? String
+                {
+                    if error == "true"
+                    {
+                        failureMessage(self.SERVER_ERROR)
+                    }
+                    else
+                    {
+                        if let data = obj.parsedDataDict["data"] as? [[String:AnyObject]]
+                        {
+                            var arrData = [ReceiptBO]()
+                            for receipt in data
+                            {
+                                let receipetBO = ReceiptBO()
+                                if let id = receipt["id"] as? NSNumber
+                                {
+                                    receipetBO.id = Int(id)
+                                }
+                                if let receiptId = receipt["receiptId"] as? String
+                                {
+                                    receipetBO.receiptId = receiptId
+                                }
+                                if let image = receipt["image"] as? String
+                                {
+                                    receipetBO.image = image
+                                }
+                                if let name = receipt["name"] as? String
+                                {
+                                    receipetBO.name = name
+                                }
+                                if let uploadedby = receipt["uploadedby"] as? String
+                                {
+                                    receipetBO.uploadedby = uploadedby
+                                }
+                                if let amount = receipt["amount"] as? String
+                                {
+                                    receipetBO.amount = amount
+                                }
+                                if let Description = receipt["description"] as? String
+                                {
+                                    receipetBO.Description = Description
+                                }
+                                if let validate = receipt["validate"] as? String
+                                {
+                                    receipetBO.validate = validate
+                                }
+                                if let approved = receipt["approved"] as? String
+                                {
+                                    receipetBO.approved = approved
+                                }
+                                if let status = receipt["status"] as? String
+                                {
+                                    receipetBO.status = status
+                                }
+                                if let created_at = receipt["created_at"] as? String
+                                {
+                                    receipetBO.created_at = created_at
+                                }
+                                if let updated_at = receipt["updated_at"] as? String
+                                {
+                                    receipetBO.updated_at = updated_at
+                                }
+                                arrData.append(receipetBO)
+                            }
+                            successMessage(arrData)
+                        }
+                        else
+                        {
+                            failureMessage("No Data Found")
+                        }
+                    }
+                }
+                else
+                {
+                    failureMessage(self.SERVER_ERROR)
+                }
+                
+            }
+        }
+    }
+    public func getBillHistoryWith(mobileNo:String,successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
+    {
+        let obj : HttpRequest = HttpRequest()
+        obj.tag = ParsingConstant.Login.rawValue
+        obj.MethodNamee = "GET"
+        obj._serviceURL = "\(BASE_URL)billhistory/\(mobileNo)"
+        obj.params = [:]
+        obj.doGetSOAPResponse {(success : Bool) -> Void in
+            if !success
+            {
+                failureMessage(self.SERVER_ERROR)
+            }
+            else
+            {
+                if let error = obj.parsedDataDict["error"] as? String
+                {
+                    if error == "true"
+                    {
+                        failureMessage(self.SERVER_ERROR)
+                    }
+                    else
+                    {
+                        if let data = obj.parsedDataDict["data"] as? [[String:AnyObject]]
+                        {
+                            var arrData = [ReceiptBO]()
+                            for receipt in data
+                            {
+                                let receipetBO = ReceiptBO()
+                                if let id = receipt["id"] as? NSNumber
+                                {
+                                    receipetBO.id = Int(id)
+                                }
+                                if let receiptId = receipt["receiptId"] as? String
+                                {
+                                    receipetBO.receiptId = receiptId
+                                }
+                                if let image = receipt["image"] as? String
+                                {
+                                    receipetBO.image = image
+                                }
+                                if let name = receipt["name"] as? String
+                                {
+                                    receipetBO.name = name
+                                }
+                                if let uploadedby = receipt["uploadedby"] as? String
+                                {
+                                    receipetBO.uploadedby = uploadedby
+                                }
+                                if let amount = receipt["amount"] as? String
+                                {
+                                    receipetBO.amount = amount
+                                }
+                                if let Description = receipt["description"] as? String
+                                {
+                                    receipetBO.Description = Description
+                                }
+                                if let validate = receipt["validate"] as? String
+                                {
+                                    receipetBO.validate = validate
+                                }
+                                if let approved = receipt["approved"] as? String
+                                {
+                                    receipetBO.approved = approved
+                                }
+                                if let status = receipt["status"] as? String
+                                {
+                                    receipetBO.status = status
+                                }
+                                if let created_at = receipt["created_at"] as? String
+                                {
+                                    receipetBO.created_at = created_at
+                                }
+                                if let updated_at = receipt["updated_at"] as? String
+                                {
+                                    receipetBO.updated_at = updated_at
+                                }
+                                arrData.append(receipetBO)
+                            }
+                            successMessage(arrData)
+                        }
+                        else
+                        {
+                            failureMessage("No Data Found")
+                        }
+                    }
+                }
+                else
+                {
+                    failureMessage(self.SERVER_ERROR)
+                }
+                
+            }
+        }
+    }
+    public func updateBillWith(billNo:String,ap:String,st:String,successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
+    {
+        //http://188.166.218.149/api/v1/billupdate/no=1/ap=0/st=1
+//        var dict = [String:AnyObject]()
+//        dict["no"] = billNo
+//        dict["ap"] = ap
+//        dict["st"] = st
+        let obj : HttpRequest = HttpRequest()
+        obj.tag = ParsingConstant.Login.rawValue
+        obj.MethodNamee = "GET"
+        obj._serviceURL = "\(BASE_URL)billupdate/no=\(billNo)/ap=\(ap)/st=\(st)"
+        obj.params = [:]
         obj.doGetSOAPResponse {(success : Bool) -> Void in
             if !success
             {
@@ -112,8 +339,7 @@ class ServiceLayer: NSObject {
                     }
                     else
                     {
-                        let x = message != "" ? message : self.SERVER_ERROR
-                        successMessage(x)
+                        successMessage(message)
                     }
                 }
                 else
@@ -124,7 +350,6 @@ class ServiceLayer: NSObject {
             }
         }
     }
-
     //MARK:- Utility Methods
     public func convertDictionaryToString(dict: [String:String]) -> String? {
         var strReturn = ""

@@ -42,6 +42,12 @@
 		A7472CDD1F0CA29C007B677C /* MyExpensesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7472CDB1F0CA29C007B677C /* MyExpensesTableViewCell.swift */; };
 		A7472CDE1F0CA29C007B677C /* MyExpensesTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7472CDC1F0CA29C007B677C /* MyExpensesTableViewCell.xib */; };
 		A7472CE41F0CA9FB007B677C /* ExpensesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7472CE31F0CA9FB007B677C /* ExpensesViewController.swift */; };
+		A7BB0D111F0CC72800146A9F /* CreateExpenseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BB0D101F0CC72800146A9F /* CreateExpenseViewController.swift */; };
+		A7BB0D161F0CD5D600146A9F /* ReceiptBO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BB0D151F0CD5D600146A9F /* ReceiptBO.swift */; };
+		A7BB0D191F0CE6BB00146A9F /* CustomPopOver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BB0D181F0CE6BB00146A9F /* CustomPopOver.swift */; };
+		A7BB0D1C1F0D060200146A9F /* ImageDetailPopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BB0D1A1F0D060200146A9F /* ImageDetailPopUp.swift */; };
+		A7BB0D1D1F0D060200146A9F /* ImageDetailPopUp.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7BB0D1B1F0D060200146A9F /* ImageDetailPopUp.xib */; };
+		A7BB0D1F1F0D1DD600146A9F /* UserBO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BB0D1E1F0D1DD600146A9F /* UserBO.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -83,6 +89,12 @@
 		A7472CDB1F0CA29C007B677C /* MyExpensesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyExpensesTableViewCell.swift; sourceTree = "<group>"; };
 		A7472CDC1F0CA29C007B677C /* MyExpensesTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyExpensesTableViewCell.xib; sourceTree = "<group>"; };
 		A7472CE31F0CA9FB007B677C /* ExpensesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpensesViewController.swift; sourceTree = "<group>"; };
+		A7BB0D101F0CC72800146A9F /* CreateExpenseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateExpenseViewController.swift; sourceTree = "<group>"; };
+		A7BB0D151F0CD5D600146A9F /* ReceiptBO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReceiptBO.swift; sourceTree = "<group>"; };
+		A7BB0D181F0CE6BB00146A9F /* CustomPopOver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomPopOver.swift; sourceTree = "<group>"; };
+		A7BB0D1A1F0D060200146A9F /* ImageDetailPopUp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageDetailPopUp.swift; sourceTree = "<group>"; };
+		A7BB0D1B1F0D060200146A9F /* ImageDetailPopUp.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageDetailPopUp.xib; sourceTree = "<group>"; };
+		A7BB0D1E1F0D1DD600146A9F /* UserBO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserBO.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,22 +152,16 @@
 		A705745F1F04FEDE005D1936 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				A70574601F04FEDE005D1936 /* Models */,
+				A7BB0D141F0CD5D600146A9F /* Models */,
 			);
 			name = Services;
 			path = BusinessLayer;
 			sourceTree = "<group>";
 		};
-		A70574601F04FEDE005D1936 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
 		A70574611F04FEDE005D1936 /* PresentationLayer */ = {
 			isa = PBXGroup;
 			children = (
+				A7BB0D171F0CE6B500146A9F /* CustomViews */,
 				A7472CDA1F0CA27F007B677C /* CustomCells */,
 				A70574621F04FEDE005D1936 /* ViewControllers */,
 			);
@@ -168,6 +174,7 @@
 				A70574631F04FEDE005D1936 /* ViewController.swift */,
 				A7472CD81F0C979F007B677C /* BaseViewController.swift */,
 				A7472CE31F0CA9FB007B677C /* ExpensesViewController.swift */,
+				A7BB0D101F0CC72800146A9F /* CreateExpenseViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -227,6 +234,26 @@
 				A7472CDC1F0CA29C007B677C /* MyExpensesTableViewCell.xib */,
 			);
 			path = CustomCells;
+			sourceTree = "<group>";
+		};
+		A7BB0D141F0CD5D600146A9F /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A7BB0D151F0CD5D600146A9F /* ReceiptBO.swift */,
+				A7BB0D1E1F0D1DD600146A9F /* UserBO.swift */,
+			);
+			name = Models;
+			path = TaksyKraft/Services/Models;
+			sourceTree = SOURCE_ROOT;
+		};
+		A7BB0D171F0CE6B500146A9F /* CustomViews */ = {
+			isa = PBXGroup;
+			children = (
+				A7BB0D1A1F0D060200146A9F /* ImageDetailPopUp.swift */,
+				A7BB0D1B1F0D060200146A9F /* ImageDetailPopUp.xib */,
+				A7BB0D181F0CE6BB00146A9F /* CustomPopOver.swift */,
+			);
+			path = CustomViews;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -292,6 +319,7 @@
 				A7472CDE1F0CA29C007B677C /* MyExpensesTableViewCell.xib in Resources */,
 				A70574561F04FE79005D1936 /* LaunchScreen.storyboard in Resources */,
 				A70574531F04FE79005D1936 /* Assets.xcassets in Resources */,
+				A7BB0D1D1F0D060200146A9F /* ImageDetailPopUp.xib in Resources */,
 				A705744E1F04FE79005D1936 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -304,6 +332,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A70574661F04FEDE005D1936 /* ViewController.swift in Sources */,
+				A7BB0D161F0CD5D600146A9F /* ReceiptBO.swift in Sources */,
 				A7472CD71F0C9164007B677C /* FloatLabelTextView.swift in Sources */,
 				A70574AB1F04FF3F005D1936 /* RequrstModifier.swift in Sources */,
 				A70574A41F04FF3F005D1936 /* ImageProcessor.swift in Sources */,
@@ -317,13 +346,17 @@
 				A705749C1F04FF3F005D1936 /* AnimatedImageView.swift in Sources */,
 				A70574AC1F04FF3F005D1936 /* Resource.swift in Sources */,
 				A70574651F04FEDE005D1936 /* AppDelegate.swift in Sources */,
+				A7BB0D1F1F0D1DD600146A9F /* UserBO.swift in Sources */,
+				A7BB0D1C1F0D060200146A9F /* ImageDetailPopUp.swift in Sources */,
 				A70574A71F04FF3F005D1936 /* Indicator.swift in Sources */,
 				A70574A21F04FF3F005D1936 /* ImageDownloader.swift in Sources */,
 				A70574AE1F04FF3F005D1936 /* ThreadHelper.swift in Sources */,
+				A7BB0D191F0CE6BB00146A9F /* CustomPopOver.swift in Sources */,
 				A705749D1F04FF3F005D1936 /* Box.swift in Sources */,
 				A705749F1F04FF3F005D1936 /* Filter.swift in Sources */,
 				A70574921F04FF3F005D1936 /* HttpRequest.swift in Sources */,
 				A70574B11F0501D0005D1936 /* ServiceLayer.swift in Sources */,
+				A7BB0D111F0CC72800146A9F /* CreateExpenseViewController.swift in Sources */,
 				A70574A81F04FF3F005D1936 /* Kingfisher.swift in Sources */,
 				A705749B1F04FF3F005D1936 /* TaksyKraftUserDefaults.swift in Sources */,
 				A70574A91F04FF3F005D1936 /* KingfisherManager.swift in Sources */,

@@ -13,10 +13,30 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    var navCtrl = UINavigationController()
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        var vc = UIViewController()
+        if TaksyKraftUserDefaults.getLoginStatus()
+        {
+            vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ExpensesViewController") as! ExpensesViewController
+            UIApplication.shared.statusBarStyle = .lightContent
+            let statWindow = UIApplication.shared.value(forKey:"statusBarWindow") as! UIView
+            let statusBar = statWindow.subviews[0] as UIView
+            statusBar.backgroundColor = Color_NavBarTint
+
+        }
+        else
+        {
+            vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ViewController") as! ViewController
+            navCtrl.isNavigationBarHidden = true
+       }
+        
+        navCtrl = UINavigationController(rootViewController: vc)
+        self.window?.rootViewController = navCtrl
+
         return true
     }
 
