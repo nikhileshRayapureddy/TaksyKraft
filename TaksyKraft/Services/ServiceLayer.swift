@@ -199,7 +199,14 @@ class ServiceLayer: NSObject {
                                 {
                                     receipetBO.updated_at = updated_at
                                 }
-                                arrData.append(receipetBO)
+                                if receipetBO.approved == "2" || receipetBO.status == "2" || receipetBO.validate == "2"
+                                {
+                                  //do not show this receipt
+                                }
+                                else
+                                {
+                                    arrData.append(receipetBO)
+                                }
                             }
                             successMessage(arrData)
                         }
@@ -293,7 +300,14 @@ class ServiceLayer: NSObject {
                                 {
                                     receipetBO.updated_at = updated_at
                                 }
-                                arrData.append(receipetBO)
+                                if receipetBO.approved == "2" || receipetBO.status == "2" || receipetBO.validate == "2"
+                                {
+                                    //do not show this receipt
+                                }
+                                else
+                                {
+                                    arrData.append(receipetBO)
+                                }
                             }
                             successMessage(arrData)
                         }
@@ -350,6 +364,95 @@ class ServiceLayer: NSObject {
             }
         }
     }
+    func uploadWith(data : Data,fileName : String,contentType:String,uploadString:String,successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
+    {
+        
+        let strUrl : String = BASE_URL + uploadString as String
+        let webStringURL = strUrl.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
+        var request  = URLRequest(url: URL(string:webStringURL)!)
+        request.httpMethod = "POST"
+        let boundary = "Orb"
+        let body = NSMutableData()
+        body.append("Content-Disposition: form-data; name=\"image\"; filename=\"\(fileName)\"\r\n".data(using: String.Encoding.utf8)!)
+        body.append("Content-Type: contentType\r\n\r\n".data(using: String.Encoding.utf8)!)
+        body.append(data)
+        body.append("\r\n".data(using: String.Encoding.utf8)!)
+        body.append("--\(boundary)--\r\n".data(using: String.Encoding.utf8)!)
+        let content:String = "multipart/form-data; boundary=\(boundary)"
+        request.setValue(content, forHTTPHeaderField: "Content-Type")
+        request.setValue("\(body.length)", forHTTPHeaderField:"Content-Length")
+        request.httpBody = body as Data?
+        request.url = URL(string: webStringURL)!
+        let config = URLSessionConfiguration.ephemeral
+        config.timeoutIntervalForRequest = 40.0
+        config.timeoutIntervalForResource = 40.0
+        let session = URLSession(configuration: config)
+        
+        let task = session.dataTask(with: request) { (data, response, err) in
+            if data != nil
+            {
+                let dataString = String(data: data!, encoding: String.Encoding(rawValue: String.Encoding.utf8.rawValue))
+                print("data string = ", dataString! as String)
+                if dataString != ""
+                {
+                    
+                    if self.convertStringToDictionary(dataString!) != nil
+                    {
+                        
+                        let parsedDataDict = self.convertStringToDictionary(dataString!)! as [String:AnyObject]
+                        if parsedDataDict.keys.count == 0
+                        {
+                            failureMessage(self.SERVER_ERROR)
+                        }
+                        else
+                        {
+                            if let error = parsedDataDict["error"] as? String
+                            {
+                                if Bool(error) == false
+                                {
+                                    if let message = parsedDataDict["message"] as? String
+                                    {
+                                        successMessage(message)
+                                    }
+                                    else
+                                    {
+                                        failureMessage(self.SERVER_ERROR)
+                                    }
+                                }
+                                else
+                                {
+                                    failureMessage(self.SERVER_ERROR)
+                                }
+                            }
+                        }
+                        
+                    }
+                    else
+                    {
+                        failureMessage(self.SERVER_ERROR)
+                    }
+                    
+                    
+                }
+                else
+                {
+                    failureMessage(self.SERVER_ERROR)
+                }
+                
+            }
+            else
+            {
+                failureMessage(self.SERVER_ERROR)
+                
+            }
+            
+            
+        }
+        
+        task.resume()
+        
+    }
+
     //MARK:- Utility Methods
     public func convertDictionaryToString(dict: [String:String]) -> String? {
         var strReturn = ""

@@ -7,8 +7,8 @@
 //
 
 import UIKit
-
-class CreateExpenseViewController: BaseViewController {
+import Photos
+class CreateExpenseViewController: BaseViewController,UIImagePickerControllerDelegate,UINavigationControllerDelegate {
 
     @IBOutlet weak var lblName: UILabel!
     @IBOutlet weak var lblMobileNo: UILabel!
@@ -20,7 +20,8 @@ class CreateExpenseViewController: BaseViewController {
     @IBOutlet weak var btnSubmit: UIButton!
     @IBOutlet weak var vwUploadBg: UIView!
     @IBOutlet weak var constVwUploagImageBgHeight: NSLayoutConstraint!
-    
+    var imageData = Data()
+    var fileName = ""
     override func viewDidLoad() {
         super.viewDidLoad()
         txtVwDesc.layer.cornerRadius = 5
@@ -42,9 +43,81 @@ class CreateExpenseViewController: BaseViewController {
     }
  
     @IBAction func btnSubmitClicked(_ sender: UIButton) {
+        if txtFldAmount.text == ""
+        {
+           self.showAlertWith(title: "Alert!", message: "Please enter Amount.")
+        }
+        else if txtVwDesc.text == ""
+        {
+            self.showAlertWith(title: "Alert!", message: "Please enter Description.")
+        }
+        else if imageData.count <= 0
+        {
+            self.showAlertWith(title: "Alert!", message: "Please Upload Receipt Image!")
+        }
+        else
+        {
+        let uploadString = "mobileno=\(lblMobileNo.text!)/amount=\(txtFldAmount.text!)/description=\(txtVwDesc.text!)"
+            app_delegate.showLoader(message: "Uploading...")
+        let layer = ServiceLayer()
+        layer.uploadWith(data: self.imageData, fileName: self.fileName, contentType: "image/jpg", uploadString: uploadString, successMessage: { (response) in
+            app_delegate.removeloder()
+            
+        }, failureMessage: { (failure) in
+            app_delegate.removeloder()
+            
+        })
+        }
     }
     @IBAction func btnUploadImageClicked(_ sender: UIButton) {
+        let alert = UIAlertController(title: "Select an Image to Uplaod", message: "", preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "Camera", style: .default) { action in
+            // perhaps use action.title here
+            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera) {
+                
+                let imagePicker = UIImagePickerController()
+                imagePicker.delegate = self
+                imagePicker.sourceType = .camera
+                imagePicker.mediaTypes = UIImagePickerController.availableMediaTypes(for: .camera)!
+                imagePicker.allowsEditing = false
+                self.present(imagePicker, animated: true, completion: nil)
+            } else {
+                print("camera not available.")
+            }
+
+        })
+        alert.addAction(UIAlertAction(title: "Gallery", style: .default) { action in
+            // perhaps use action.title here
+            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.photoLibrary) {
+                
+                let imagePicker = UIImagePickerController()
+                imagePicker.delegate = self
+                imagePicker.sourceType = .photoLibrary
+                imagePicker.mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary)!
+                imagePicker.allowsEditing = false
+                self.present(imagePicker, animated: true, completion: nil)
+            } else {
+                print("photoLibrary not available.")
+            }
+
+        })
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel) { action in
+            // perhaps use action.title here
+        })
+        self.present(alert, animated: true, completion: nil)
+        
     }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+//        let image = info[UIImagePickerControllerOriginalImage] as! UIImage
+        imageData = UIImageJPEGRepresentation(info[UIImagePickerControllerOriginalImage] as! UIImage, 0.7)!
+        let url = info[UIImagePickerControllerReferenceURL] as! URL
+        let assets = PHAsset.fetchAssets(withALAssetURLs: [url], options: nil)
+        fileName = PHAssetResource.assetResources(for: assets.firstObject!).first!.originalFilename
+        lblImageName.text = fileName
+        self.dismiss(animated: true, completion: nil)
+    }
+
     @IBAction func btnNoReceiptClicked(_ sender: UIButton) {
         sender.isSelected = !sender.isSelected
         if sender.isSelected

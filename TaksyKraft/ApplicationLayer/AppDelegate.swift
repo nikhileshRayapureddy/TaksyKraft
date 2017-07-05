@@ -36,6 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         navCtrl = UINavigationController(rootViewController: vc)
         self.window?.rootViewController = navCtrl
+        IQKeyboardManager.sharedManager().enable = true
 
         return true
     }

@@ -336,7 +336,7 @@ extension ExpensesViewController : UITableViewDelegate,UITableViewDataSource
         
         fortVw?.frame = CGRect(x:0,y: 0,width: ScreenWidth, height:ScreenHeight)
         fortVw.btnClose.addTarget(self, action: #selector(btnCloseClicked(sender:)), for: .touchUpInside)
-        self.view.addSubview(fortVw!)
+        self.view.window?.addSubview(fortVw!)
         
         
     }
