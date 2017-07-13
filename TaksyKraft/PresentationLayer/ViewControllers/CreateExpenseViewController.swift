@@ -33,6 +33,7 @@ class CreateExpenseViewController: BaseViewController,UIImagePickerControllerDel
         vwUploadBg.layer.borderColor = UIColor.lightGray.cgColor
         vwUploadBg.layer.borderWidth = 1
         self.designNavBarWithTitleAndBack(title: "Create New Form",showBack: true)
+        lblMobileNo.text = TaksyKraftUserDefaults.getUserMobile()
 
         // Do any additional setup after loading the view.
     }
@@ -57,16 +58,24 @@ class CreateExpenseViewController: BaseViewController,UIImagePickerControllerDel
         }
         else
         {
-        let uploadString = "mobileno=\(lblMobileNo.text!)/amount=\(txtFldAmount.text!)/description=\(txtVwDesc.text!)"
             app_delegate.showLoader(message: "Uploading...")
-        let layer = ServiceLayer()
-        layer.uploadWith(data: self.imageData, fileName: self.fileName, contentType: "image/jpg", uploadString: uploadString, successMessage: { (response) in
-            app_delegate.removeloder()
-            
-        }, failureMessage: { (failure) in
-            app_delegate.removeloder()
-            
-        })
+            let layer = ServiceLayer()
+            layer.uploadWith(data: self.imageData, desc: self.fileName, mobileNo: lblMobileNo.text!, amount: txtFldAmount.text!, fileName: self.fileName, contentType: "image/jpg", successMessage: { (response) in
+                app_delegate.removeloder()
+                let alert = UIAlertController(title: "Success!", message: response as? String, preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
+                    DispatchQueue.main.async {
+                        let _=self.navigationController?.popViewController(animated: true)
+                    }
+                }))
+                self.present(alert, animated: true, completion: nil)
+                
+
+                
+            }, failureMessage: { (failure) in
+                app_delegate.removeloder()
+                
+            })
         }
     }
     @IBAction func btnUploadImageClicked(_ sender: UIButton) {
@@ -124,6 +133,10 @@ class CreateExpenseViewController: BaseViewController,UIImagePickerControllerDel
         {
             constVwUploagImageBgHeight.constant = 0
             vwUploadBg.isHidden = true
+            imageData = UIImageJPEGRepresentation(#imageLiteral(resourceName: "no_receipt"), 0.7)!
+            fileName = "no_receipt.jpg"
+            lblImageName.text = fileName
+
         }
         else
         {

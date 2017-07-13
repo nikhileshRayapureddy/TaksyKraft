@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="YP1-bJ-Ahy" customClass="RejectPopup" customModule="TaksyKraft" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ku1-iE-jl9">
+                    <rect key="frame" x="20" y="192" width="335" height="283"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reason" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kvg-Yt-cfM">
+                            <rect key="frame" x="0.0" y="0.0" width="335" height="50"/>
+                            <color key="backgroundColor" red="0.93725490199999995" green="0.12941176469999999" blue="0.32156862749999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="50" id="7q8-CT-Spq"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="17"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="JGA-fS-u4B">
+                            <rect key="frame" x="10" y="60" width="315" height="173"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" returnKeyType="done"/>
+                        </textView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ctn-qQ-p4w">
+                            <rect key="frame" x="245" y="243" width="80" height="30"/>
+                            <color key="backgroundColor" red="0.93725490199999995" green="0.12941176469999999" blue="0.32156862749999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="80" id="1EJ-08-P7B"/>
+                                <constraint firstAttribute="height" constant="30" id="DPt-Hv-FgQ"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="12"/>
+                            <state key="normal" title="REJECT"/>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Gi-Ir-FhD">
+                            <rect key="frame" x="155" y="243" width="80" height="30"/>
+                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="80" id="7FH-Af-YgO"/>
+                                <constraint firstAttribute="height" constant="30" id="tsn-Rg-SnZ"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="12"/>
+                            <state key="normal" title="CANCEL"/>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="JGA-fS-u4B" secondAttribute="trailing" constant="10" id="0xQ-jj-ubr"/>
+                        <constraint firstItem="ctn-qQ-p4w" firstAttribute="leading" secondItem="9Gi-Ir-FhD" secondAttribute="trailing" constant="10" id="4rz-zA-lYL"/>
+                        <constraint firstItem="9Gi-Ir-FhD" firstAttribute="top" secondItem="JGA-fS-u4B" secondAttribute="bottom" constant="10" id="5sE-Nm-Ald"/>
+                        <constraint firstItem="JGA-fS-u4B" firstAttribute="leading" secondItem="ku1-iE-jl9" secondAttribute="leading" constant="10" id="GVM-XN-1b1"/>
+                        <constraint firstAttribute="trailing" secondItem="Kvg-Yt-cfM" secondAttribute="trailing" id="H4n-XC-dWK"/>
+                        <constraint firstItem="Kvg-Yt-cfM" firstAttribute="top" secondItem="ku1-iE-jl9" secondAttribute="top" id="KBl-vD-NmG"/>
+                        <constraint firstAttribute="trailing" secondItem="ctn-qQ-p4w" secondAttribute="trailing" constant="10" id="MVu-St-438"/>
+                        <constraint firstItem="Kvg-Yt-cfM" firstAttribute="leading" secondItem="ku1-iE-jl9" secondAttribute="leading" id="Wdu-ko-KgE"/>
+                        <constraint firstItem="JGA-fS-u4B" firstAttribute="top" secondItem="Kvg-Yt-cfM" secondAttribute="bottom" constant="10" id="aHv-cy-2aM"/>
+                        <constraint firstAttribute="bottom" secondItem="9Gi-Ir-FhD" secondAttribute="bottom" constant="10" id="daP-84-FcB"/>
+                        <constraint firstAttribute="height" constant="283" id="l08-IB-tq6"/>
+                        <constraint firstAttribute="bottom" secondItem="ctn-qQ-p4w" secondAttribute="bottom" constant="10" id="uYW-BO-EMH"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.79651738559999996" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="ku1-iE-jl9" secondAttribute="trailing" constant="20" id="BOF-Rq-U9d"/>
+                <constraint firstItem="ku1-iE-jl9" firstAttribute="leading" secondItem="YP1-bJ-Ahy" secondAttribute="leading" constant="20" id="eeW-4E-3Fu"/>
+                <constraint firstItem="ku1-iE-jl9" firstAttribute="centerY" secondItem="YP1-bJ-Ahy" secondAttribute="centerY" id="oio-vP-uz9"/>
+            </constraints>
+            <connections>
+                <outlet property="btnCancel" destination="9Gi-Ir-FhD" id="0la-X5-Jfh"/>
+                <outlet property="btnReject" destination="ctn-qQ-p4w" id="LRJ-8q-8Ni"/>
+                <outlet property="txtVwResaon" destination="JGA-fS-u4B" id="RRx-9l-dhv"/>
+            </connections>
+            <point key="canvasLocation" x="-34.5" y="95.5"/>
+        </view>
+    </objects>
+</document>

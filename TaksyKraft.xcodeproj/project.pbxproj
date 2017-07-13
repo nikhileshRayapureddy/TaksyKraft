@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A70261B01F1699CA0088D757 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A70261AF1F1699CA0088D757 /* AVFoundation.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		A70261B21F16A37C0088D757 /* RejectPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70261B11F16A37C0088D757 /* RejectPopup.swift */; };
+		A70261B41F16A3850088D757 /* RejectPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = A70261B31F16A3850088D757 /* RejectPopup.xib */; };
 		A705744E1F04FE79005D1936 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A705744C1F04FE79005D1936 /* Main.storyboard */; };
 		A70574511F04FE79005D1936 /* TaksyKraft.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A705744F1F04FE79005D1936 /* TaksyKraft.xcdatamodeld */; };
 		A70574531F04FE79005D1936 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A70574521F04FE79005D1936 /* Assets.xcassets */; };
@@ -68,6 +71,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A70261AF1F1699CA0088D757 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		A70261B11F16A37C0088D757 /* RejectPopup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RejectPopup.swift; sourceTree = "<group>"; };
+		A70261B31F16A3850088D757 /* RejectPopup.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RejectPopup.xib; sourceTree = "<group>"; };
 		A70574451F04FE79005D1936 /* TaksyKraft.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TaksyKraft.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A705744D1F04FE79005D1936 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A70574501F04FE79005D1936 /* TaksyKraft.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TaksyKraft.xcdatamodel; sourceTree = "<group>"; };
@@ -137,17 +143,27 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A70261B01F1699CA0088D757 /* AVFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A70261AE1F1699CA0088D757 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A70261AF1F1699CA0088D757 /* AVFoundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		A705743C1F04FE79005D1936 = {
 			isa = PBXGroup;
 			children = (
 				A70574471F04FE79005D1936 /* TaksyKraft */,
 				A70574461F04FE79005D1936 /* Products */,
+				A70261AE1F1699CA0088D757 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -288,6 +304,8 @@
 				A7BB0D1A1F0D060200146A9F /* ImageDetailPopUp.swift */,
 				A7BB0D1B1F0D060200146A9F /* ImageDetailPopUp.xib */,
 				A7BB0D181F0CE6BB00146A9F /* CustomPopOver.swift */,
+				A70261B11F16A37C0088D757 /* RejectPopup.swift */,
+				A70261B31F16A3850088D757 /* RejectPopup.xib */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -390,7 +408,7 @@
 					A70574441F04FE79005D1936 = {
 						CreatedOnToolsVersion = 8.3.3;
 						DevelopmentTeam = 767WDHBUJ6;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -417,6 +435,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A70261B41F16A3850088D757 /* RejectPopup.xib in Resources */,
 				A7472CDE1F0CA29C007B677C /* MyExpensesTableViewCell.xib in Resources */,
 				A70574561F04FE79005D1936 /* LaunchScreen.storyboard in Resources */,
 				A7CFB5181F0D66B7005B6CBB /* IQKeyboardManager.bundle in Resources */,
@@ -455,6 +474,7 @@
 				A70574A01F04FF3F005D1936 /* Image.swift in Sources */,
 				A705749C1F04FF3F005D1936 /* AnimatedImageView.swift in Sources */,
 				A70574AC1F04FF3F005D1936 /* Resource.swift in Sources */,
+				A70261B21F16A37C0088D757 /* RejectPopup.swift in Sources */,
 				A70574651F04FEDE005D1936 /* AppDelegate.swift in Sources */,
 				A7BB0D1F1F0D1DD600146A9F /* UserBO.swift in Sources */,
 				A7BB0D1C1F0D060200146A9F /* ImageDetailPopUp.swift in Sources */,
@@ -606,13 +626,18 @@
 		A705745B1F04FE79005D1936 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				DEVELOPMENT_TEAM = 767WDHBUJ6;
 				INFOPLIST_FILE = TaksyKraft/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = TaksyKraft.TaksyKraft;
+				PRODUCT_BUNDLE_IDENTIFIER = com.taksykraft.Expenses;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "46cef3f7-7164-4084-b47a-600fd61df711";
+				PROVISIONING_PROFILE_SPECIFIER = Expenses_Dist;
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -620,13 +645,18 @@
 		A705745C1F04FE79005D1936 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				DEVELOPMENT_TEAM = 767WDHBUJ6;
 				INFOPLIST_FILE = TaksyKraft/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = TaksyKraft.TaksyKraft;
+				PRODUCT_BUNDLE_IDENTIFIER = com.taksykraft.Expenses;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "46cef3f7-7164-4084-b47a-600fd61df711";
+				PROVISIONING_PROFILE_SPECIFIER = Expenses_Dist;
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;

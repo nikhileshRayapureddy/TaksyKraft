@@ -21,4 +21,6 @@ class ReceiptBO: NSObject {
     public var status = ""
     public var created_at = ""
     public var updated_at = ""
+    public var status_message = ""
+
 }

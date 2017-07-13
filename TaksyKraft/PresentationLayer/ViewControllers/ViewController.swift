@@ -25,9 +25,12 @@ class ViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        txtFldMobileNo.text = "9985655665"
         self.navigationController?.isNavigationBarHidden = true
-
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        txtFldOTP.text = ""
+        txtFldMobileNo.text = ""
     }
     func sendOTP()
     {
@@ -89,7 +92,7 @@ class ViewController: BaseViewController {
                     else
                     {
                         vc.isMyExpense = false
-                        vc.isFromExpenses = true
+                        vc.isFromExpenses = false
                     }
                         TaksyKraftUserDefaults.setUserRole(object: bo.role)
                         self.navigationController?.pushViewController(vc, animated: true)
@@ -111,6 +114,7 @@ class ViewController: BaseViewController {
     }
 
     @IBAction func btnResendOTPClicked(_ sender: UIButton) {
+        txtFldOTP.text = ""
         self.sendOTP()
     }
     @IBAction func btnSendOTPClicked(_ sender: UIButton) {
@@ -125,7 +129,10 @@ class ViewController: BaseViewController {
     }
 
     @IBAction func btnWrongNoClicked(_ sender: UIButton) {
-            vwOTP.isHidden = true
+        vwOTP.isHidden = true
+        vwLogin.isHidden = false
+        txtFldOTP.text = ""
+        txtFldMobileNo.text = ""
     }
     @IBAction func btnVerifyClicked(_ sender: UIButton) {
         if txtFldOTP.text == ""

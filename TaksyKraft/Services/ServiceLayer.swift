@@ -179,35 +179,30 @@ class ServiceLayer: NSObject {
                                 {
                                     receipetBO.Description = Description
                                 }
-                                if let validate = receipt["validate"] as? String
-                                {
-                                    receipetBO.validate = validate
-                                }
-                                if let approved = receipt["approved"] as? String
-                                {
-                                    receipetBO.approved = approved
-                                }
                                 if let status = receipt["status"] as? String
                                 {
                                     receipetBO.status = status
                                 }
-                                if let created_at = receipt["created_at"] as? String
+                                if let created_at = receipt["created_at"] as? [String:AnyObject]
                                 {
-                                    receipetBO.created_at = created_at
+                                    if let date = created_at["date"] as? String
+                                    {
+                                        receipetBO.created_at = date
+                                    }
                                 }
-                                if let updated_at = receipt["updated_at"] as? String
+                                if let updated_at = receipt["updated_at"] as? [String:AnyObject]
                                 {
-                                    receipetBO.updated_at = updated_at
+                                    if let date = updated_at["date"] as? String
+                                    {
+                                        receipetBO.updated_at = date
+                                    }
                                 }
-                                if receipetBO.approved == "2" || receipetBO.status == "2" || receipetBO.validate == "2"
-                                {
-                                  //do not show this receipt
-                                }
-                                else
-                                {
                                     arrData.append(receipetBO)
-                                }
                             }
+                            for i in 0..<arrData.count/2 {
+                                (arrData[i],arrData[arrData.count - i - 1])  = (arrData[arrData.count - i - 1],arrData[i])
+                            }
+
                             successMessage(arrData)
                         }
                         else
@@ -229,7 +224,7 @@ class ServiceLayer: NSObject {
         let obj : HttpRequest = HttpRequest()
         obj.tag = ParsingConstant.Login.rawValue
         obj.MethodNamee = "GET"
-        obj._serviceURL = "\(BASE_URL)billhistory/\(mobileNo)"
+        obj._serviceURL = "\(BASE_URL)billhistorynew/\(mobileNo)"
         obj.params = [:]
         obj.doGetSOAPResponse {(success : Bool) -> Void in
             if !success
@@ -288,9 +283,9 @@ class ServiceLayer: NSObject {
                                 {
                                     receipetBO.approved = approved
                                 }
-                                if let status = receipt["status"] as? String
+                                if let status_message = receipt["status_message"] as? String
                                 {
-                                    receipetBO.status = status
+                                    receipetBO.status_message = status_message
                                 }
                                 if let created_at = receipt["created_at"] as? String
                                 {
@@ -300,15 +295,12 @@ class ServiceLayer: NSObject {
                                 {
                                     receipetBO.updated_at = updated_at
                                 }
-                                if receipetBO.approved == "2" || receipetBO.status == "2" || receipetBO.validate == "2"
-                                {
-                                    //do not show this receipt
-                                }
-                                else
-                                {
                                     arrData.append(receipetBO)
-                                }
                             }
+                            for i in 0..<arrData.count/2 {
+                                (arrData[i],arrData[arrData.count - i - 1])  = (arrData[arrData.count - i - 1],arrData[i])
+                            }
+
                             successMessage(arrData)
                         }
                         else
@@ -325,17 +317,13 @@ class ServiceLayer: NSObject {
             }
         }
     }
-    public func updateBillWith(billNo:String,ap:String,st:String,successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
+    public func updateBillWith(billNo:String,status:String,comment:String,successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
     {
-        //http://188.166.218.149/api/v1/billupdate/no=1/ap=0/st=1
-//        var dict = [String:AnyObject]()
-//        dict["no"] = billNo
-//        dict["ap"] = ap
-//        dict["st"] = st
+        //188.166.218.149/api/v1/billupdatenew/no=124/status=4/{comment?}/{mobileno}
         let obj : HttpRequest = HttpRequest()
         obj.tag = ParsingConstant.Login.rawValue
         obj.MethodNamee = "GET"
-        obj._serviceURL = "\(BASE_URL)billupdate/no=\(billNo)/ap=\(ap)/st=\(st)"
+        obj._serviceURL = "\(BASE_URL)billupdatenew/no=\(billNo)/status=\(status)/\(comment)/\(TaksyKraftUserDefaults.getUserMobile())"
         obj.params = [:]
         obj.doGetSOAPResponse {(success : Bool) -> Void in
             if !success
@@ -364,15 +352,27 @@ class ServiceLayer: NSObject {
             }
         }
     }
-    func uploadWith(data : Data,fileName : String,contentType:String,uploadString:String,successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
+    func uploadWith(data : Data,desc : String,mobileNo:String,amount : String,fileName : String,contentType:String,successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
     {
         
-        let strUrl : String = BASE_URL + uploadString as String
+        let strUrl = BASE_URL + "upload"
         let webStringURL = strUrl.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
         var request  = URLRequest(url: URL(string:webStringURL)!)
         request.httpMethod = "POST"
         let boundary = "Orb"
         let body = NSMutableData()
+        body.append(("--\(boundary)\r\n").data(using: String.Encoding.utf8)!)
+        body.append("Content-Disposition: form-data; name=\"mobileno\"\r\n\r\n".data(using: String.Encoding.utf8)!)
+        body.append("\(mobileNo)\r\n".data(using: String.Encoding.utf8, allowLossyConversion: true)!)
+        body.append(("--\(boundary)\r\n").data(using: String.Encoding.utf8)!)
+        body.append(("--\(boundary)\r\n").data(using: String.Encoding.utf8)!)
+        body.append("Content-Disposition: form-data; name=\"amount\"\r\n\r\n".data(using: String.Encoding.utf8)!)
+        body.append("\(amount)\r\n".data(using: String.Encoding.utf8, allowLossyConversion: true)!)
+        body.append(("--\(boundary)\r\n").data(using: String.Encoding.utf8)!)
+        body.append(("--\(boundary)\r\n").data(using: String.Encoding.utf8)!)
+        body.append("Content-Disposition: form-data; name=\"description\"\r\n\r\n".data(using: String.Encoding.utf8)!)
+        body.append("\(desc)\r\n".data(using: String.Encoding.utf8, allowLossyConversion: true)!)
+        body.append(("--\(boundary)\r\n").data(using: String.Encoding.utf8)!)
         body.append("Content-Disposition: form-data; name=\"image\"; filename=\"\(fileName)\"\r\n".data(using: String.Encoding.utf8)!)
         body.append("Content-Type: contentType\r\n\r\n".data(using: String.Encoding.utf8)!)
         body.append(data)

@@ -10,7 +10,7 @@ import UIKit
 let IMAGE_BASE_URL = "https://s3-ap-southeast-1.amazonaws.com/taksykraft/bills/"
 class ExpensesViewController: BaseViewController, UIPopoverPresentationControllerDelegate {
 
-    var isMyExpense = true
+    var isMyExpense = false
     var isFromExpenses = false
     @IBOutlet weak var tblExpenses: UITableView!
     @IBOutlet weak var vwHeader: UIView!
@@ -18,6 +18,8 @@ class ExpensesViewController: BaseViewController, UIPopoverPresentationControlle
     var arrTitles = [String]()
     var imgBg = UIImageView()
     var fortVw : ImageDetailPopUp!
+    var rejectPopup : RejectPopup!
+
     @IBOutlet weak var btnMenu: UIButton!
     
     @IBOutlet weak var constVwHeaderHeight: NSLayoutConstraint!
@@ -29,7 +31,6 @@ class ExpensesViewController: BaseViewController, UIPopoverPresentationControlle
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         tblExpenses.register(UINib(nibName: "MyExpensesTableViewCell", bundle: nil), forCellReuseIdentifier: "MyExpensesTableViewCell")
-        TaksyKraftUserDefaults.setUserMobile(object: "9985655665")
         if isMyExpense
         {
             arrTitles = ["Upload New Expenses","My Expenses","Logout"]
@@ -50,13 +51,14 @@ class ExpensesViewController: BaseViewController, UIPopoverPresentationControlle
         {
             constVwHeaderHeight.constant = 0
             vwHeader.isHidden = true
-            self.designNavBarWithTitleAndBack(title: "My Expenses",showBack: isMyExpense)
+            self.designNavBarWithTitleAndBack(title: "My Expenses",showBack: true)
             let serviceLayer = ServiceLayer()
             serviceLayer.getBillHistoryWith(mobileNo: TaksyKraftUserDefaults.getUserMobile(), successMessage: { (response) in
                 app_delegate.removeloder()
                 self.arrList = response as! [ReceiptBO]
                 DispatchQueue.main.async {
                     self.tblExpenses.reloadData()
+                    self.tblExpenses.setContentOffset(CGPoint(x: 0, y: 0), animated: false)
                 }
             }) { (failure) in
                 app_delegate.removeloder()
@@ -69,15 +71,34 @@ class ExpensesViewController: BaseViewController, UIPopoverPresentationControlle
             vwHeader.isHidden = false
             self.navigationController?.isNavigationBarHidden = true
             let serviceLayer = ServiceLayer()
-            serviceLayer.getBillDetailsWith(mobileNo: TaksyKraftUserDefaults.getUserMobile(), successMessage: { (response) in
-                app_delegate.removeloder()
-                self.arrList = response as! [ReceiptBO]
-                DispatchQueue.main.async {
-                    self.tblExpenses.reloadData()
+            if isMyExpense == false
+            {
+                serviceLayer.getBillHistoryWith(mobileNo: TaksyKraftUserDefaults.getUserMobile(), successMessage: { (response) in
+                    app_delegate.removeloder()
+                    self.arrList = response as! [ReceiptBO]
+                    DispatchQueue.main.async {
+                        self.tblExpenses.reloadData()
+                        self.tblExpenses.setContentOffset(CGPoint(x: 0, y: 0), animated: false)
+                    }
+                }) { (failure) in
+                    app_delegate.removeloder()
+                    self.showAlertWith(title: "Alert!", message: failure as! String)
                 }
-            }) { (failure) in
-                app_delegate.removeloder()
-                self.showAlertWith(title: "Alert!", message: failure as! String)
+
+            }
+            else
+            {
+                serviceLayer.getBillDetailsWith(mobileNo: TaksyKraftUserDefaults.getUserMobile(), successMessage: { (response) in
+                    app_delegate.removeloder()
+                    self.arrList = response as! [ReceiptBO]
+                    DispatchQueue.main.async {
+                        self.tblExpenses.reloadData()
+                    }
+                }) { (failure) in
+                    app_delegate.removeloder()
+                    self.showAlertWith(title: "Alert!", message: failure as! String)
+                }
+
             }
         }
 
@@ -185,58 +206,75 @@ extension ExpensesViewController : UITableViewDelegate,UITableViewDataSource
         },
                                    completionHandler: { image, error, cacheType, imageURL in
         })
-        if bo.validate == "0"
-        {
-            cell.lblStatus.text = "Waiting for validation"
-            cell.lblStatus.textColor = UIColor(red: 255.0/255.0, green: 184.0/255.0, blue: 14.0/255.0, alpha: 1)
-        }
-        else if bo.validate == "1"
-        {
-            if bo.approved == "0"
-            {
-                cell.lblStatus.text = "Waiting for approval"
-                cell.lblStatus.textColor = UIColor(red: 255.0/255.0, green: 184.0/255.0, blue: 14.0/255.0, alpha: 1)
-            }
-            else if bo.approved == "1"
-            {
-                if bo.status == "0"
-                {
-                    cell.lblStatus.text = "Waiting for payment to be made"
-                    cell.lblStatus.textColor = UIColor(red: 255.0/255.0, green: 184.0/255.0, blue: 14.0/255.0, alpha: 1)
-                }
-                else if bo.status == "1"
-                {
-                    cell.lblStatus.text = "Paid"
-                    cell.lblStatus.textColor = UIColor(red: 125.0/255.0, green: 194.0/255.0, blue: 127.0/255.0, alpha: 1)
-                }
-                else if bo.status == "2"
-                {
-                    cell.lblStatus.text = "Rejected"
-                    cell.lblStatus.textColor = UIColor(red: 244.0/255.0, green: 67.0/255.0, blue: 54.0/255.0, alpha: 1)
-                }
-            }
-            else if bo.approved == "2"
-            {
-                cell.lblStatus.text = "Rejected"
-                cell.lblStatus.textColor = UIColor(red: 244.0/255.0, green: 67.0/255.0, blue: 54.0/255.0, alpha: 1)
-            }
-        }
-        else if bo.validate == "2"
-        {
-            cell.lblStatus.text = "Rejected"
-            cell.lblStatus.textColor = UIColor(red: 244.0/255.0, green: 67.0/255.0, blue: 54.0/255.0, alpha: 1)
-        }
+        
+        cell.lblStatus.text = bo.status_message
+        cell.lblStatus.textColor = UIColor(red: 250.0/255.0, green: 186.0/255.0, blue: 51.0/255.0, alpha: 1)
+    
+        
         if isFromExpenses == false
         {
-            cell.constLblNameHeight.constant = 20
-            cell.lblStatus.isHidden = true
-            cell.lblStatusText.isHidden = true
-            cell.btnReject.isHidden = false
-            cell.btnApprove.isHidden = false
-            cell.btnReject.tag = 1500 + indexPath.row
-            cell.btnApprove.tag = 2500 + indexPath.row
-            cell.btnReject.addTarget(self, action: #selector(self.btnRejectClicked(sender:)), for: .touchUpInside)
-            cell.btnApprove.addTarget(self, action: #selector(self.btnApproveClicked(sender:)), for: .touchUpInside)
+            if isMyExpense
+            {
+                cell.constLblNameHeight.constant = 20
+                cell.lblStatus.isHidden = true
+                cell.lblStatusText.isHidden = true
+                cell.btnReject.isHidden = false
+                cell.btnApprove.isHidden = false
+                cell.btnReject.tag = 1500 + indexPath.row
+                cell.btnApprove.tag = 2500 + indexPath.row
+                cell.btnReject.isHidden = false
+
+                if TaksyKraftUserDefaults.getUserRole() == "1"
+                {
+                    if bo.status == "1"
+                    {
+                        cell.btnReject.setTitle("REJECT", for: .normal)
+                        cell.btnReject.setTitle("REJECT", for: .selected)
+                        cell.btnReject.setTitle("REJECT", for: .highlighted)
+                        cell.btnReject.addTarget(self, action: #selector(self.btnRejectClicked(sender:)), for: .touchUpInside)
+                        
+                        cell.btnApprove.setTitle("APPROVE", for: .normal)
+                        cell.btnApprove.setTitle("APPROVE", for: .selected)
+                        cell.btnApprove.setTitle("APPROVE", for: .highlighted)
+                        cell.btnApprove.addTarget(self, action: #selector(self.btnApproveClicked(sender:)), for: .touchUpInside)
+                    }
+                }
+                else if TaksyKraftUserDefaults.getUserRole() == "2"
+                {
+                    if bo.status == "0"
+                    {
+                        cell.btnReject.setTitle("REJECT", for: .normal)
+                        cell.btnReject.setTitle("REJECT", for: .selected)
+                        cell.btnReject.setTitle("REJECT", for: .highlighted)
+                        cell.btnReject.addTarget(self, action: #selector(self.btnRejectClicked(sender:)), for: .touchUpInside)
+                        
+                        cell.btnApprove.setTitle("VALIDATE", for: .normal)
+                        cell.btnApprove.setTitle("VALIDATE", for: .selected)
+                        cell.btnApprove.setTitle("VALIDATE", for: .highlighted)
+                        cell.btnApprove.addTarget(self, action: #selector(self.btnValidateClicked(sender:)), for: .touchUpInside)
+                    }
+                    else if bo.status == "4"
+                    {
+                        cell.btnReject.isHidden = true
+                        
+                        cell.btnApprove.setTitle("PAY NOW", for: .normal)
+                        cell.btnApprove.setTitle("PAY NOW", for: .selected)
+                        cell.btnApprove.setTitle("PAY NOW", for: .highlighted)
+                        cell.btnApprove.addTarget(self, action: #selector(self.btnPayNowClicked(sender:)), for: .touchUpInside)
+                    }
+
+
+                }
+            }
+            else
+            {
+                cell.constLblNameHeight.constant = 0
+                cell.lblStatus.isHidden = false
+                cell.lblStatusText.isHidden = false
+                cell.btnReject.isHidden = true
+                cell.btnApprove.isHidden = true
+
+            }
         }
         else
         {
@@ -248,66 +286,7 @@ extension ExpensesViewController : UITableViewDelegate,UITableViewDataSource
         }
         return cell
     }
-    func btnRejectClicked(sender:UIButton)
-    {
-        let alert = UIAlertController(title: "Alert!", message: "Are you sure, You want to Reject?", preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
-            
-            let bo = self.arrList[sender.tag - 1500]
-            let serviceLayer = ServiceLayer()
-            if TaksyKraftUserDefaults.getUserRole() == "1"
-            {
-                serviceLayer.updateBillWith(billNo: String(bo.id), ap: "0", st: "2", successMessage: { (SR) in
-                    self.callForData()
-                }) { (FR) in
-                    self.showAlertWith(title: "Alert!", message: FR as! String)
-                }
-            }
-            else
-            {
-                serviceLayer.updateBillWith(billNo: String(bo.id), ap: "2", st: "0", successMessage: { (SR) in
-                    self.callForData()
-                }) { (FR) in
-                    self.showAlertWith(title: "Alert!", message: FR as! String)
-                }
-            }
-        }))
-        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
-        self.present(alert, animated: true, completion: nil)
-        
-    }
-    func btnApproveClicked(sender:UIButton)
-    {
-        let alert = UIAlertController(title: "Alert!", message: "Are you sure, You want to Approve?", preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
-            DispatchQueue.main.async {
-                let bo = self.arrList[sender.tag - 2500]
-                let serviceLayer = ServiceLayer()
-                if TaksyKraftUserDefaults.getUserRole() == "1"
-                {
-                    serviceLayer.updateBillWith(billNo: String(bo.id), ap: "0", st: "1", successMessage: { (SR) in
-                        self.callForData()
-                        
-                    }) { (FR) in
-                        self.showAlertWith(title: "Alert!", message: FR as! String)
-                    }
-                }
-                else
-                {
-                    serviceLayer.updateBillWith(billNo: String(bo.id), ap: "1", st: "0", successMessage: { (SR) in
-                        self.callForData()
-                        
-                    }) { (FR) in
-                        self.showAlertWith(title: "Alert!", message: FR as! String)
-                    }
-                }
-            }
-        }))
-        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
-        self.present(alert, animated: true, completion: nil)
-        
-        
-    }
+   
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 170
     }
@@ -340,9 +319,123 @@ extension ExpensesViewController : UITableViewDelegate,UITableViewDataSource
         
         
     }
+    func btnRejectClicked(sender:UIButton)
+    {
+        
+        rejectPopup   =   (Bundle.main.loadNibNamed("RejectPopup", owner: nil, options: nil)![0] as? RejectPopup)!
+        rejectPopup?.frame = CGRect(x:0,y: 0,width: ScreenWidth, height:ScreenHeight)
+        rejectPopup.txtVwResaon.layer.borderWidth = 1
+        rejectPopup.txtVwResaon.layer.borderColor = UIColor.lightGray.cgColor
+
+        rejectPopup.btnCancel.addTarget(self, action: #selector(btnCancelClicked(sender:)), for: .touchUpInside)
+        rejectPopup.btnReject.tag = sender.tag
+        rejectPopup.btnReject.addTarget(self, action: #selector(btnRejectConfirmClicked(sender:)), for: .touchUpInside)
+        self.view.window?.addSubview(rejectPopup!)
+
+        
+        
+    }
+    func btnValidateClicked(sender:UIButton)
+    {
+        let alert = UIAlertController(title: "Alert!", message: "Are you sure, You want to Validate?", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
+            
+            let bo = self.arrList[sender.tag - 2500]
+            let serviceLayer = ServiceLayer()
+            serviceLayer.updateBillWith(billNo: String(bo.id), status: "1", comment: "0", successMessage: { (SR) in
+                self.callForData()
+            }) { (FR) in
+                self.showAlertWith(title: "Alert!", message: FR as! String)
+            }
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+        
+    }
+    func btnApproveClicked(sender:UIButton)
+    {
+        let alert = UIAlertController(title: "Alert!", message: "Are you sure, You want to Approve?", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
+            DispatchQueue.main.async {
+                let bo = self.arrList[sender.tag - 2500]
+                let serviceLayer = ServiceLayer()
+                serviceLayer.updateBillWith(billNo: String(bo.id), status: "4", comment: "0", successMessage: { (SR) in
+                    self.callForData()
+                    
+                }) { (FR) in
+                    self.showAlertWith(title: "Alert!", message: FR as! String)
+                }
+            }
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+        
+        
+    }
+    func btnPayNowClicked(sender:UIButton)
+    {
+        let alert = UIAlertController(title: "Alert!", message: "Are you sure, You want to Pay Now?", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
+            DispatchQueue.main.async {
+                let bo = self.arrList[sender.tag - 2500]
+                let serviceLayer = ServiceLayer()
+                serviceLayer.updateBillWith(billNo: String(bo.id), status: "5", comment: "0", successMessage: { (SR) in
+                    self.callForData()
+                    
+                }) { (FR) in
+                    self.showAlertWith(title: "Alert!", message: FR as! String)
+                }
+            }
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+        
+        
+    }
     func btnCloseClicked(sender : UIButton)
     {
         fortVw.removeFromSuperview()
     }
+    func btnRejectConfirmClicked(sender : UIButton)
+    {
+        if rejectPopup.txtVwResaon.text != ""
+        {
+        let bo = self.arrList[sender.tag - 1500]
+        let serviceLayer = ServiceLayer()
+        if TaksyKraftUserDefaults.getUserRole() == "1"
+        {
+            serviceLayer.updateBillWith(billNo: String(bo.id), status: "3", comment: rejectPopup.txtVwResaon.text, successMessage: { (SR) in
+                self.callForData()
+                DispatchQueue.main.async {
+                    self.rejectPopup.removeFromSuperview()
+                }
 
+            }) { (FR) in
+                self.showAlertWith(title: "Alert!", message: FR as! String)
+            }
+        }
+        else
+        {
+            serviceLayer.updateBillWith(billNo: String(bo.id), status: "2", comment: rejectPopup.txtVwResaon.text, successMessage: { (SR) in
+                self.callForData()
+                DispatchQueue.main.async {
+                    self.rejectPopup.removeFromSuperview()
+                }
+
+            }) { (FR) in
+                self.showAlertWith(title: "Alert!", message: FR as! String)
+            }
+        }
+        }
+        else
+        {
+            self.showAlertWith(title: "Alert!", message: "Please enter reason to Reject.")
+        }
+
+    }
+
+    func btnCancelClicked(sender : UIButton)
+    {
+        rejectPopup.removeFromSuperview()
+    }
 }
