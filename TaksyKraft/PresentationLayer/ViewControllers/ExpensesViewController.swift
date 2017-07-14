@@ -42,6 +42,8 @@ class ExpensesViewController: BaseViewController, UIPopoverPresentationControlle
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        isFromExpenses = TaksyKraftUserDefaults.getIsFromExpenses()
+        isMyExpense = TaksyKraftUserDefaults.getIsMyExpense()
         self.callForData()
     }
     func callForData()

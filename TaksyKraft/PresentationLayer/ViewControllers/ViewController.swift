@@ -95,6 +95,8 @@ class ViewController: BaseViewController {
                         vc.isFromExpenses = false
                     }
                         TaksyKraftUserDefaults.setUserRole(object: bo.role)
+                        TaksyKraftUserDefaults.setIsMyExpense(object: vc.isMyExpense)
+                        TaksyKraftUserDefaults.setIsFromExpenses(object: vc.isFromExpenses)
                         self.navigationController?.pushViewController(vc, animated: true)
                     }
                 }))
@@ -135,6 +137,7 @@ class ViewController: BaseViewController {
         txtFldMobileNo.text = ""
     }
     @IBAction func btnVerifyClicked(_ sender: UIButton) {
+        
         if txtFldOTP.text == ""
         {
             self.showAlertWith(title: "Alert!", message: "Please enter valid OTP.")
