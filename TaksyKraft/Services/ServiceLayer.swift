@@ -20,7 +20,7 @@ class ServiceLayer: NSObject {
         let obj : HttpRequest = HttpRequest()
         obj.tag = ParsingConstant.Login.rawValue
         obj.MethodNamee = "GET"
-        obj._serviceURL = "\(BASE_URL)login/mn=\(mobileNo)"
+        obj._serviceURL = "\(BASE_URL)login/mn=\(mobileNo)/fcm=12345"
         obj.params = [:]
         obj.doGetSOAPResponse {(success : Bool) -> Void in
             if !success

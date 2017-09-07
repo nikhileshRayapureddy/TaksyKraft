@@ -217,7 +217,6 @@ extension ExpensesViewController : UITableViewDelegate,UITableViewDataSource
         {
             if isMyExpense
             {
-                cell.constLblNameHeight.constant = 20
                 cell.lblStatus.isHidden = true
                 cell.lblStatusText.isHidden = true
                 cell.btnReject.isHidden = false
@@ -270,7 +269,6 @@ extension ExpensesViewController : UITableViewDelegate,UITableViewDataSource
             }
             else
             {
-                cell.constLblNameHeight.constant = 0
                 cell.lblStatus.isHidden = false
                 cell.lblStatusText.isHidden = false
                 cell.btnReject.isHidden = true
@@ -280,7 +278,6 @@ extension ExpensesViewController : UITableViewDelegate,UITableViewDataSource
         }
         else
         {
-            cell.constLblNameHeight.constant = 0
             cell.lblStatus.isHidden = false
             cell.lblStatusText.isHidden = false
             cell.btnReject.isHidden = true
@@ -290,7 +287,11 @@ extension ExpensesViewController : UITableViewDelegate,UITableViewDataSource
     }
    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 170
+        return UITableViewAutomaticDimension
+    }
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 181
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
