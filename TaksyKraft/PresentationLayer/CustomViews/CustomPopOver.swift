@@ -66,8 +66,9 @@ class CustomPopOver: UIViewController,UITableViewDataSource, UITableViewDelegate
         let cell = tableView.cellForRow(at: indexPath as IndexPath)
         self.selectedIndex = indexPath.row
         if((self.delegate) != nil) {
-            delegate?.selectedText(selectedText: (cell?.detailTextLabel?.text)!,popoverselected: indexPath.row,tag:self.tag)
-            self.dismiss(animated: true, completion: nil)
+            self.dismiss(animated: false, completion: {
+                self.delegate?.selectedText(selectedText: (cell?.detailTextLabel?.text)!,popoverselected: indexPath.row,tag:self.tag)
+            })
             
         }
     }

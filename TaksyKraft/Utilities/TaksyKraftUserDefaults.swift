@@ -9,6 +9,7 @@
 import UIKit
 
 let UserMobile = "Mobile"
+let UserName = "Name"
 let UserRole = "UserRole"
 let LoginStatus = "LoginStatus"
 let isMyExpense = "isMyExpense"
@@ -59,6 +60,18 @@ public class TaksyKraftUserDefaults: NSObject {
         UserDefaults.standard.synchronize()
         
     }
+    public class func getUserName() -> String
+    {
+        let str = UserDefaults.standard.object(forKey: UserName) as? String ?? ""
+        return str
+    }
+    
+    public class func setUserName(object : String)
+    {
+        UserDefaults.standard.set(object, forKey:UserName)
+        UserDefaults.standard.synchronize()
+    }
+
     public class func getUserRole() -> String{
         return UserDefaults.standard.object(forKey: UserRole) as! String
     }

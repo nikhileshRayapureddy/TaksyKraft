@@ -21,7 +21,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         var vc = UIViewController()
         if TaksyKraftUserDefaults.getLoginStatus()
         {
-            vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ExpensesViewController") as! ExpensesViewController
+            let role = TaksyKraftUserDefaults.getUserRole()
+            if role == "1"
+            {
+                vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ExpensesViewController") as! ExpensesViewController
+                
+            }
+            else if role == "2"
+            {
+                vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ExpensesViewController") as! ExpensesViewController
+            }
+            else
+            {
+                vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CreateExpenseViewController") as! CreateExpenseViewController
+            }
+
             UIApplication.shared.statusBarStyle = .lightContent
             let statWindow = UIApplication.shared.value(forKey:"statusBarWindow") as! UIView
             let statusBar = statWindow.subviews[0] as UIView

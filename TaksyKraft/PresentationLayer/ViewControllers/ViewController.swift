@@ -72,31 +72,27 @@ class ViewController: BaseViewController {
                 let alert = UIAlertController(title: "Alert!", message: "OTP Verified Sucessfully.", preferredStyle: UIAlertControllerStyle.alert)
                 alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
                     DispatchQueue.main.async {
-                    let bo = SR as! UserBO
-                    UIApplication.shared.statusBarStyle = .lightContent
-                    let statWindow = UIApplication.shared.value(forKey:"statusBarWindow") as! UIView
-                    let statusBar = statWindow.subviews[0] as UIView
-                    statusBar.backgroundColor = Color_NavBarTint
-                    TaksyKraftUserDefaults.setLoginStatus(object: true)
-                    let vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ExpensesViewController") as! ExpensesViewController
-                    if bo.role == "1"
-                    {
-                        vc.isMyExpense = true
-                        vc.isFromExpenses = false
-                    }
-                    else if bo.role == "2"
-                    {
-                        vc.isMyExpense = true
-                        vc.isFromExpenses = false
-                    }
-                    else
-                    {
-                        vc.isMyExpense = false
-                        vc.isFromExpenses = false
-                    }
+                        let bo = SR as! UserBO
+                        UIApplication.shared.statusBarStyle = .lightContent
+                        let statWindow = UIApplication.shared.value(forKey:"statusBarWindow") as! UIView
+                        let statusBar = statWindow.subviews[0] as UIView
+                        statusBar.backgroundColor = Color_NavBarTint
+                        TaksyKraftUserDefaults.setLoginStatus(object: true)
+                        var vc = UIViewController()
+                        if bo.role == "1"
+                        {
+                            vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ExpensesViewController") as! ExpensesViewController
+                            
+                        }
+                        else if bo.role == "2"
+                        {
+                            vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ExpensesViewController") as! ExpensesViewController
+                        }
+                        else
+                        {
+                            vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CreateExpenseViewController") as! CreateExpenseViewController
+                        }
                         TaksyKraftUserDefaults.setUserRole(object: bo.role)
-                        TaksyKraftUserDefaults.setIsMyExpense(object: vc.isMyExpense)
-                        TaksyKraftUserDefaults.setIsFromExpenses(object: vc.isFromExpenses)
                         self.navigationController?.pushViewController(vc, animated: true)
                     }
                 }))

@@ -39,12 +39,15 @@
 		A70574AE1F04FF3F005D1936 /* ThreadHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A705748B1F04FF3F005D1936 /* ThreadHelper.swift */; };
 		A70574AF1F04FF3F005D1936 /* UIButton+Kingfisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = A705748C1F04FF3F005D1936 /* UIButton+Kingfisher.swift */; };
 		A70574B11F0501D0005D1936 /* ServiceLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70574B01F0501D0005D1936 /* ServiceLayer.swift */; };
+		A7461D6A1F66A82900F2B05C /* ExpensesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7461D681F66A82900F2B05C /* ExpensesTableViewCell.swift */; };
+		A7461D6B1F66A82900F2B05C /* ExpensesTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7461D691F66A82900F2B05C /* ExpensesTableViewCell.xib */; };
 		A7472CD61F0C9164007B677C /* FloatLabelTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7472CD41F0C9164007B677C /* FloatLabelTextField.swift */; };
 		A7472CD71F0C9164007B677C /* FloatLabelTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7472CD51F0C9164007B677C /* FloatLabelTextView.swift */; };
 		A7472CD91F0C979F007B677C /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7472CD81F0C979F007B677C /* BaseViewController.swift */; };
 		A7472CDD1F0CA29C007B677C /* MyExpensesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7472CDB1F0CA29C007B677C /* MyExpensesTableViewCell.swift */; };
 		A7472CDE1F0CA29C007B677C /* MyExpensesTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7472CDC1F0CA29C007B677C /* MyExpensesTableViewCell.xib */; };
 		A7472CE41F0CA9FB007B677C /* ExpensesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7472CE31F0CA9FB007B677C /* ExpensesViewController.swift */; };
+		A767987B1F66679D000BD5EF /* MyExpensesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A767987A1F66679D000BD5EF /* MyExpensesViewController.swift */; };
 		A7BB0D111F0CC72800146A9F /* CreateExpenseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BB0D101F0CC72800146A9F /* CreateExpenseViewController.swift */; };
 		A7BB0D161F0CD5D600146A9F /* ReceiptBO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BB0D151F0CD5D600146A9F /* ReceiptBO.swift */; };
 		A7BB0D191F0CE6BB00146A9F /* CustomPopOver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BB0D181F0CE6BB00146A9F /* CustomPopOver.swift */; };
@@ -106,12 +109,15 @@
 		A705748B1F04FF3F005D1936 /* ThreadHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreadHelper.swift; sourceTree = "<group>"; };
 		A705748C1F04FF3F005D1936 /* UIButton+Kingfisher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton+Kingfisher.swift"; sourceTree = "<group>"; };
 		A70574B01F0501D0005D1936 /* ServiceLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ServiceLayer.swift; path = Services/ServiceLayer.swift; sourceTree = "<group>"; };
+		A7461D681F66A82900F2B05C /* ExpensesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpensesTableViewCell.swift; sourceTree = "<group>"; };
+		A7461D691F66A82900F2B05C /* ExpensesTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExpensesTableViewCell.xib; sourceTree = "<group>"; };
 		A7472CD41F0C9164007B677C /* FloatLabelTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatLabelTextField.swift; sourceTree = "<group>"; };
 		A7472CD51F0C9164007B677C /* FloatLabelTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatLabelTextView.swift; sourceTree = "<group>"; };
 		A7472CD81F0C979F007B677C /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		A7472CDB1F0CA29C007B677C /* MyExpensesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyExpensesTableViewCell.swift; sourceTree = "<group>"; };
 		A7472CDC1F0CA29C007B677C /* MyExpensesTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyExpensesTableViewCell.xib; sourceTree = "<group>"; };
 		A7472CE31F0CA9FB007B677C /* ExpensesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpensesViewController.swift; sourceTree = "<group>"; };
+		A767987A1F66679D000BD5EF /* MyExpensesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyExpensesViewController.swift; sourceTree = "<group>"; };
 		A7BB0D101F0CC72800146A9F /* CreateExpenseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateExpenseViewController.swift; sourceTree = "<group>"; };
 		A7BB0D151F0CD5D600146A9F /* ReceiptBO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReceiptBO.swift; sourceTree = "<group>"; };
 		A7BB0D181F0CE6BB00146A9F /* CustomPopOver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomPopOver.swift; sourceTree = "<group>"; };
@@ -225,6 +231,7 @@
 				A70574631F04FEDE005D1936 /* ViewController.swift */,
 				A7472CD81F0C979F007B677C /* BaseViewController.swift */,
 				A7472CE31F0CA9FB007B677C /* ExpensesViewController.swift */,
+				A767987A1F66679D000BD5EF /* MyExpensesViewController.swift */,
 				A7BB0D101F0CC72800146A9F /* CreateExpenseViewController.swift */,
 			);
 			path = ViewControllers;
@@ -284,6 +291,8 @@
 			children = (
 				A7472CDB1F0CA29C007B677C /* MyExpensesTableViewCell.swift */,
 				A7472CDC1F0CA29C007B677C /* MyExpensesTableViewCell.xib */,
+				A7461D681F66A82900F2B05C /* ExpensesTableViewCell.swift */,
+				A7461D691F66A82900F2B05C /* ExpensesTableViewCell.xib */,
 			);
 			path = CustomCells;
 			sourceTree = "<group>";
@@ -435,6 +444,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7461D6B1F66A82900F2B05C /* ExpensesTableViewCell.xib in Resources */,
 				A70261B41F16A3850088D757 /* RejectPopup.xib in Resources */,
 				A7472CDE1F0CA29C007B677C /* MyExpensesTableViewCell.xib in Resources */,
 				A70574561F04FE79005D1936 /* LaunchScreen.storyboard in Resources */,
@@ -457,6 +467,7 @@
 				A7CFB5141F0D66B7005B6CBB /* IQPreviousNextView.swift in Sources */,
 				A7BB0D161F0CD5D600146A9F /* ReceiptBO.swift in Sources */,
 				A7472CD71F0C9164007B677C /* FloatLabelTextView.swift in Sources */,
+				A7461D6A1F66A82900F2B05C /* ExpensesTableViewCell.swift in Sources */,
 				A7CFB50F1F0D66B7005B6CBB /* IQKeyboardManagerConstantsInternal.swift in Sources */,
 				A70574AB1F04FF3F005D1936 /* RequrstModifier.swift in Sources */,
 				A70574A41F04FF3F005D1936 /* ImageProcessor.swift in Sources */,
@@ -469,6 +480,7 @@
 				A70574AA1F04FF3F005D1936 /* KingfisherOptionsInfo.swift in Sources */,
 				A7472CD61F0C9164007B677C /* FloatLabelTextField.swift in Sources */,
 				A7CFB50E1F0D66B7005B6CBB /* IQKeyboardManagerConstants.swift in Sources */,
+				A767987B1F66679D000BD5EF /* MyExpensesViewController.swift in Sources */,
 				A70574A61F04FF3F005D1936 /* ImageView+Kingfisher.swift in Sources */,
 				A7CFB5171F0D66B7005B6CBB /* IQUIView+IQKeyboardToolbar.swift in Sources */,
 				A70574A01F04FF3F005D1936 /* Image.swift in Sources */,

@@ -84,6 +84,7 @@ class ServiceLayer: NSObject {
                             }
                             if let name = user["name"] as? String
                             {
+                                TaksyKraftUserDefaults.setUserName(object: name)
                                 BO.name = name
                             }
                             if let mobile = user["mobile"] as? String
@@ -183,6 +184,7 @@ class ServiceLayer: NSObject {
                                 {
                                     receipetBO.status = status
                                 }
+
                                 if let created_at = receipt["created_at"] as? [String:AnyObject]
                                 {
                                     if let date = created_at["date"] as? String
@@ -295,6 +297,15 @@ class ServiceLayer: NSObject {
                                 {
                                     receipetBO.updated_at = updated_at
                                 }
+                                if let comment = receipt["comment"] as? String
+                                {
+                                    receipetBO.comment = comment
+                                }
+                                if let user = receipt["user"] as? String
+                                {
+                                    receipetBO.user = user
+                                }
+
                                     arrData.append(receipetBO)
                             }
                             for i in 0..<arrData.count/2 {

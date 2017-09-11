@@ -8,7 +8,7 @@
 
 import UIKit
 import Photos
-class CreateExpenseViewController: BaseViewController,UIImagePickerControllerDelegate,UINavigationControllerDelegate {
+class CreateExpenseViewController: BaseViewController,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIPopoverPresentationControllerDelegate {
 
     @IBOutlet weak var lblName: UILabel!
     @IBOutlet weak var lblMobileNo: UILabel!
@@ -20,8 +20,12 @@ class CreateExpenseViewController: BaseViewController,UIImagePickerControllerDel
     @IBOutlet weak var btnSubmit: UIButton!
     @IBOutlet weak var vwUploadBg: UIView!
     @IBOutlet weak var constVwUploagImageBgHeight: NSLayoutConstraint!
+    var imgBg = UIImageView()
+
     var imageData = Data()
     var fileName = ""
+    var arrTitles = [String]()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         txtVwDesc.layer.cornerRadius = 5
@@ -32,11 +36,62 @@ class CreateExpenseViewController: BaseViewController,UIImagePickerControllerDel
         vwUploadBg.layer.masksToBounds = true
         vwUploadBg.layer.borderColor = UIColor.lightGray.cgColor
         vwUploadBg.layer.borderWidth = 1
-        self.designNavBarWithTitleAndBack(title: "Create New Form",showBack: true)
+        if TaksyKraftUserDefaults.getUserRole() == "1" || TaksyKraftUserDefaults.getUserRole() == "2"
+        {
+            self.designNavBarWithTitleAndBack(title: "Create New Form",showBack: true, isMenu: false)
+        }
+        else
+        {
+            self.designNavBarWithTitleAndBack(title: "Create New Form",showBack: false, isMenu: true)
+            arrTitles = ["My Expenses","Logout"]
+
+        }
         lblMobileNo.text = TaksyKraftUserDefaults.getUserMobile()
+        lblName.text = TaksyKraftUserDefaults.getUserName()
 
         // Do any additional setup after loading the view.
     }
+    override func btnMenuClicked( sender:UIButton)
+    {
+        self.showPopOver(arrTitles: arrTitles, sender: sender ,tag:500)
+    }
+    func showPopOver(arrTitles : [String] ,sender : UIView ,tag : Int)  {
+        imgBg = UIImageView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height))
+        imgBg.backgroundColor = UIColor.black.withAlphaComponent(0.8)
+        self.view.addSubview(imgBg)
+        
+        let popoverVC = CustomPopOver()
+        popoverVC.tag = tag
+        popoverVC.modalPresentationStyle = .popover
+        popoverVC.titles = arrTitles
+        popoverVC.preferredContentSize = CGSize (width: 150, height: CGFloat(popoverVC.titles.count) * 45.0)
+        popoverVC.delegate = self
+        
+        if let popoverController = popoverVC.popoverPresentationController
+        {
+            popoverController.sourceView = sender
+            let bound = sender.bounds
+            popoverController.sourceRect = bound
+            popoverController.permittedArrowDirections = .any
+            popoverController.delegate = self
+        }
+        
+        self.present(popoverVC, animated: true, completion: nil)
+        
+    }
+    
+    func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController)
+    {
+        imgBg.removeFromSuperview()
+    }
+    
+    public func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle
+    {
+        return .none
+    }
+    
+
+
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -62,16 +117,15 @@ class CreateExpenseViewController: BaseViewController,UIImagePickerControllerDel
             let layer = ServiceLayer()
             layer.uploadWith(data: self.imageData, desc: self.fileName, mobileNo: lblMobileNo.text!, amount: txtFldAmount.text!, fileName: self.fileName, contentType: "image/jpg", successMessage: { (response) in
                 app_delegate.removeloder()
-                let alert = UIAlertController(title: "Success!", message: response as? String, preferredStyle: UIAlertControllerStyle.alert)
-                alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
-                    DispatchQueue.main.async {
-                        let _=self.navigationController?.popViewController(animated: true)
-                    }
-                }))
-                self.present(alert, animated: true, completion: nil)
-                
-
-                
+                DispatchQueue.main.async {
+                    let alert = UIAlertController(title: "Success!", message: response as? String, preferredStyle: UIAlertControllerStyle.alert)
+                    alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
+                        DispatchQueue.main.async {
+                            let _=self.navigationController?.popViewController(animated: true)
+                        }
+                    }))
+                    self.present(alert, animated: true, completion: nil)
+                }
             }, failureMessage: { (failure) in
                 app_delegate.removeloder()
                 
@@ -81,7 +135,6 @@ class CreateExpenseViewController: BaseViewController,UIImagePickerControllerDel
     @IBAction func btnUploadImageClicked(_ sender: UIButton) {
         let alert = UIAlertController(title: "Select an Image to Uplaod", message: "", preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "Camera", style: .default) { action in
-            // perhaps use action.title here
             if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera) {
                 
                 let imagePicker = UIImagePickerController()
@@ -96,7 +149,6 @@ class CreateExpenseViewController: BaseViewController,UIImagePickerControllerDel
 
         })
         alert.addAction(UIAlertAction(title: "Gallery", style: .default) { action in
-            // perhaps use action.title here
             if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.photoLibrary) {
                 
                 let imagePicker = UIImagePickerController()
@@ -118,7 +170,6 @@ class CreateExpenseViewController: BaseViewController,UIImagePickerControllerDel
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-//        let image = info[UIImagePickerControllerOriginalImage] as! UIImage
         imageData = UIImageJPEGRepresentation(info[UIImagePickerControllerOriginalImage] as! UIImage, 0.7)!
         let url = info[UIImagePickerControllerReferenceURL] as! URL
         let assets = PHAsset.fetchAssets(withALAssetURLs: [url], options: nil)
@@ -142,6 +193,30 @@ class CreateExpenseViewController: BaseViewController,UIImagePickerControllerDel
         {
             constVwUploagImageBgHeight.constant = 40
             vwUploadBg.isHidden = false
+        }
+    }
+}
+extension CreateExpenseViewController : popoverGeneralDelegate {
+    func selectedText(selectedText: String, popoverselected: Int, tag: Int) {
+        imgBg.removeFromSuperview()
+        if selectedText == "Logout"
+        {
+            TaksyKraftUserDefaults.setLoginStatus(object: false)
+            let vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ViewController") as! ViewController
+            app_delegate.navCtrl = UINavigationController(rootViewController: vc)
+            app_delegate.navCtrl.isNavigationBarHidden = true
+            app_delegate.window?.rootViewController = app_delegate.navCtrl
+            
+        }
+        else if selectedText == "My Expenses"
+        {
+            let vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyExpensesViewController") as! MyExpensesViewController
+            self.navigationController?.pushViewController(vc, animated: true)
+            
+        }
+        else
+        {
+            print("N/A")
         }
     }
 }

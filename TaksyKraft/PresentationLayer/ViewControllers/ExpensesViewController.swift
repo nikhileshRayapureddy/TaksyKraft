@@ -29,16 +29,8 @@ class ExpensesViewController: BaseViewController, UIPopoverPresentationControlle
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        tblExpenses.register(UINib(nibName: "MyExpensesTableViewCell", bundle: nil), forCellReuseIdentifier: "MyExpensesTableViewCell")
-        if isMyExpense
-        {
-            arrTitles = ["Upload New Expenses","My Expenses","Logout"]
-        }
-        else
-        {
-            arrTitles = ["Upload New Expenses","Logout"]
-        }
+        tblExpenses.register(UINib(nibName: "ExpensesTableViewCell", bundle: nil), forCellReuseIdentifier: "ExpensesTableViewCell")
+        arrTitles = ["Upload New Expenses","Refresh","My Expenses","Logout"]
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -49,61 +41,20 @@ class ExpensesViewController: BaseViewController, UIPopoverPresentationControlle
     func callForData()
     {
         app_delegate.showLoader(message: "Fetching data..")
-        if isFromExpenses
-        {
-            constVwHeaderHeight.constant = 0
-            vwHeader.isHidden = true
-            self.designNavBarWithTitleAndBack(title: "My Expenses",showBack: true)
-            let serviceLayer = ServiceLayer()
-            serviceLayer.getBillHistoryWith(mobileNo: TaksyKraftUserDefaults.getUserMobile(), successMessage: { (response) in
-                app_delegate.removeloder()
-                self.arrList = response as! [ReceiptBO]
-                DispatchQueue.main.async {
-                    self.tblExpenses.reloadData()
-                    self.tblExpenses.setContentOffset(CGPoint(x: 0, y: 0), animated: false)
-                }
-            }) { (failure) in
-                app_delegate.removeloder()
-                self.showAlertWith(title: "Alert!", message: failure as! String)
+        constVwHeaderHeight.constant = 50
+        vwHeader.isHidden = false
+        self.navigationController?.isNavigationBarHidden = true
+        let serviceLayer = ServiceLayer()
+        serviceLayer.getBillDetailsWith(mobileNo: TaksyKraftUserDefaults.getUserMobile(), successMessage: { (response) in
+            app_delegate.removeloder()
+            self.arrList = response as! [ReceiptBO]
+            DispatchQueue.main.async {
+                self.tblExpenses.reloadData()
             }
+        }) { (failure) in
+            app_delegate.removeloder()
+            self.showAlertWith(title: "Alert!", message: failure as! String)
         }
-        else
-        {
-            constVwHeaderHeight.constant = 50
-            vwHeader.isHidden = false
-            self.navigationController?.isNavigationBarHidden = true
-            let serviceLayer = ServiceLayer()
-            if isMyExpense == false
-            {
-                serviceLayer.getBillHistoryWith(mobileNo: TaksyKraftUserDefaults.getUserMobile(), successMessage: { (response) in
-                    app_delegate.removeloder()
-                    self.arrList = response as! [ReceiptBO]
-                    DispatchQueue.main.async {
-                        self.tblExpenses.reloadData()
-                        self.tblExpenses.setContentOffset(CGPoint(x: 0, y: 0), animated: false)
-                    }
-                }) { (failure) in
-                    app_delegate.removeloder()
-                    self.showAlertWith(title: "Alert!", message: failure as! String)
-                }
-
-            }
-            else
-            {
-                serviceLayer.getBillDetailsWith(mobileNo: TaksyKraftUserDefaults.getUserMobile(), successMessage: { (response) in
-                    app_delegate.removeloder()
-                    self.arrList = response as! [ReceiptBO]
-                    DispatchQueue.main.async {
-                        self.tblExpenses.reloadData()
-                    }
-                }) { (failure) in
-                    app_delegate.removeloder()
-                    self.showAlertWith(title: "Alert!", message: failure as! String)
-                }
-
-            }
-        }
-
     }
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
@@ -151,9 +102,9 @@ class ExpensesViewController: BaseViewController, UIPopoverPresentationControlle
 }
 extension ExpensesViewController : popoverGeneralDelegate {
     func selectedText(selectedText: String, popoverselected: Int, tag: Int) {
+        imgBg.removeFromSuperview()
         if selectedText == "Logout"
         {
-            imgBg.removeFromSuperview()
             TaksyKraftUserDefaults.setLoginStatus(object: false)
             let vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ViewController") as! ViewController
             app_delegate.navCtrl = UINavigationController(rootViewController: vc)
@@ -163,16 +114,17 @@ extension ExpensesViewController : popoverGeneralDelegate {
         }
         else if selectedText == "Upload New Expenses"
         {
-            imgBg.removeFromSuperview()
             let vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CreateExpenseViewController") as! CreateExpenseViewController
             self.navigationController?.pushViewController(vc, animated: true)
 
         }
+        else if selectedText == "Refresh"
+        {
+            self.callForData()
+        }
         else
         {
-            imgBg.removeFromSuperview()
-            let vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ExpensesViewController") as! ExpensesViewController
-            vc.isFromExpenses = true
+            let vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyExpensesViewController") as! MyExpensesViewController
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }
@@ -184,7 +136,7 @@ extension ExpensesViewController : UITableViewDelegate,UITableViewDataSource
         return arrList.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell  = tableView.dequeueReusableCell(withIdentifier: "MyExpensesTableViewCell", for: indexPath)  as! MyExpensesTableViewCell
+        let cell  = tableView.dequeueReusableCell(withIdentifier: "ExpensesTableViewCell", for: indexPath)  as! ExpensesTableViewCell
         let bo = arrList[indexPath.row]
         
         cell.lblName.text = bo.name
@@ -211,77 +163,56 @@ extension ExpensesViewController : UITableViewDelegate,UITableViewDataSource
         
         cell.lblStatus.text = bo.status_message
         cell.lblStatus.textColor = UIColor(red: 250.0/255.0, green: 186.0/255.0, blue: 51.0/255.0, alpha: 1)
-    
         
-        if isFromExpenses == false
+        
+        cell.lblStatus.isHidden = true
+        cell.lblStatusText.isHidden = true
+        cell.btnReject.isHidden = false
+        cell.btnApprove.isHidden = false
+        cell.btnReject.tag = 1500 + indexPath.row
+        cell.btnApprove.tag = 2500 + indexPath.row
+        cell.btnReject.isHidden = false
+        
+        if TaksyKraftUserDefaults.getUserRole() == "1"
         {
-            if isMyExpense
+            if bo.status == "1"
             {
-                cell.lblStatus.isHidden = true
-                cell.lblStatusText.isHidden = true
-                cell.btnReject.isHidden = false
-                cell.btnApprove.isHidden = false
-                cell.btnReject.tag = 1500 + indexPath.row
-                cell.btnApprove.tag = 2500 + indexPath.row
-                cell.btnReject.isHidden = false
-
-                if TaksyKraftUserDefaults.getUserRole() == "1"
-                {
-                    if bo.status == "1"
-                    {
-                        cell.btnReject.setTitle("REJECT", for: .normal)
-                        cell.btnReject.setTitle("REJECT", for: .selected)
-                        cell.btnReject.setTitle("REJECT", for: .highlighted)
-                        cell.btnReject.addTarget(self, action: #selector(self.btnRejectClicked(sender:)), for: .touchUpInside)
-                        
-                        cell.btnApprove.setTitle("APPROVE", for: .normal)
-                        cell.btnApprove.setTitle("APPROVE", for: .selected)
-                        cell.btnApprove.setTitle("APPROVE", for: .highlighted)
-                        cell.btnApprove.addTarget(self, action: #selector(self.btnApproveClicked(sender:)), for: .touchUpInside)
-                    }
-                }
-                else if TaksyKraftUserDefaults.getUserRole() == "2"
-                {
-                    if bo.status == "0"
-                    {
-                        cell.btnReject.setTitle("REJECT", for: .normal)
-                        cell.btnReject.setTitle("REJECT", for: .selected)
-                        cell.btnReject.setTitle("REJECT", for: .highlighted)
-                        cell.btnReject.addTarget(self, action: #selector(self.btnRejectClicked(sender:)), for: .touchUpInside)
-                        
-                        cell.btnApprove.setTitle("VALIDATE", for: .normal)
-                        cell.btnApprove.setTitle("VALIDATE", for: .selected)
-                        cell.btnApprove.setTitle("VALIDATE", for: .highlighted)
-                        cell.btnApprove.addTarget(self, action: #selector(self.btnValidateClicked(sender:)), for: .touchUpInside)
-                    }
-                    else if bo.status == "4"
-                    {
-                        cell.btnReject.isHidden = true
-                        
-                        cell.btnApprove.setTitle("PAY NOW", for: .normal)
-                        cell.btnApprove.setTitle("PAY NOW", for: .selected)
-                        cell.btnApprove.setTitle("PAY NOW", for: .highlighted)
-                        cell.btnApprove.addTarget(self, action: #selector(self.btnPayNowClicked(sender:)), for: .touchUpInside)
-                    }
-
-
-                }
-            }
-            else
-            {
-                cell.lblStatus.isHidden = false
-                cell.lblStatusText.isHidden = false
-                cell.btnReject.isHidden = true
-                cell.btnApprove.isHidden = true
-
+                cell.btnReject.setTitle("REJECT", for: .normal)
+                cell.btnReject.setTitle("REJECT", for: .selected)
+                cell.btnReject.setTitle("REJECT", for: .highlighted)
+                cell.btnReject.addTarget(self, action: #selector(self.btnRejectClicked(sender:)), for: .touchUpInside)
+                
+                cell.btnApprove.setTitle("APPROVE", for: .normal)
+                cell.btnApprove.setTitle("APPROVE", for: .selected)
+                cell.btnApprove.setTitle("APPROVE", for: .highlighted)
+                cell.btnApprove.addTarget(self, action: #selector(self.btnApproveClicked(sender:)), for: .touchUpInside)
             }
         }
-        else
+        else if TaksyKraftUserDefaults.getUserRole() == "2"
         {
-            cell.lblStatus.isHidden = false
-            cell.lblStatusText.isHidden = false
-            cell.btnReject.isHidden = true
-            cell.btnApprove.isHidden = true
+            if bo.status == "0"
+            {
+                cell.btnReject.setTitle("REJECT", for: .normal)
+                cell.btnReject.setTitle("REJECT", for: .selected)
+                cell.btnReject.setTitle("REJECT", for: .highlighted)
+                cell.btnReject.addTarget(self, action: #selector(self.btnRejectClicked(sender:)), for: .touchUpInside)
+                
+                cell.btnApprove.setTitle("VALIDATE", for: .normal)
+                cell.btnApprove.setTitle("VALIDATE", for: .selected)
+                cell.btnApprove.setTitle("VALIDATE", for: .highlighted)
+                cell.btnApprove.addTarget(self, action: #selector(self.btnValidateClicked(sender:)), for: .touchUpInside)
+            }
+            else if bo.status == "4"
+            {
+                cell.btnReject.isHidden = true
+                
+                cell.btnApprove.setTitle("PAY NOW", for: .normal)
+                cell.btnApprove.setTitle("PAY NOW", for: .selected)
+                cell.btnApprove.setTitle("PAY NOW", for: .highlighted)
+                cell.btnApprove.addTarget(self, action: #selector(self.btnPayNowClicked(sender:)), for: .touchUpInside)
+            }
+            
+            
         }
         return cell
     }
