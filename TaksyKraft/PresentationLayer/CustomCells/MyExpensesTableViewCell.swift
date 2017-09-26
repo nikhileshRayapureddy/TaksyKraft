@@ -19,6 +19,7 @@ class MyExpensesTableViewCell: UITableViewCell {
     @IBOutlet weak var lblStatus: UILabel!
     @IBOutlet weak var lblStatusText: UILabel!
     @IBOutlet weak var lblComment: UILabel!
+    @IBOutlet weak var btnMore: UIButton!
     
     override func awakeFromNib() {
         super.awakeFromNib()

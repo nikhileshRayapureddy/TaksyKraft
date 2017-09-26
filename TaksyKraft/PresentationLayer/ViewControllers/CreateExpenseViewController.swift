@@ -25,6 +25,10 @@ class CreateExpenseViewController: BaseViewController,UIImagePickerControllerDel
     var imageData = Data()
     var fileName = ""
     var arrTitles = [String]()
+    var isFromEdit = false
+    var isImageModified = false
+
+    var receiptBO = ReceiptBO()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,15 +40,31 @@ class CreateExpenseViewController: BaseViewController,UIImagePickerControllerDel
         vwUploadBg.layer.masksToBounds = true
         vwUploadBg.layer.borderColor = UIColor.lightGray.cgColor
         vwUploadBg.layer.borderWidth = 1
-        if TaksyKraftUserDefaults.getUserRole() == "1" || TaksyKraftUserDefaults.getUserRole() == "2"
+        if isFromEdit
         {
             self.designNavBarWithTitleAndBack(title: "Create New Form",showBack: true, isMenu: false)
+            txtFldAmount.text = receiptBO.amount
+            txtVwDesc.text = receiptBO.Description
+            fileName = receiptBO.image
+            lblImageName.text = fileName
+            do {
+                imageData = try Data(contentsOf: URL(string:IMAGE_BASE_URL + receiptBO.image)!)
+            } catch {
+                print("Invalid URL")
+            }
+            
         }
         else
         {
-            self.designNavBarWithTitleAndBack(title: "Create New Form",showBack: false, isMenu: true)
-            arrTitles = ["My Expenses","Logout"]
-
+            if TaksyKraftUserDefaults.getUserRole() == "1" || TaksyKraftUserDefaults.getUserRole() == "2"
+            {
+                self.designNavBarWithTitleAndBack(title: "Create New Form",showBack: true, isMenu: false)
+            }
+            else
+            {
+                self.designNavBarWithTitleAndBack(title: "Create New Form",showBack: false, isMenu: true)
+                arrTitles = ["My Expenses","Logout"]
+            }
         }
         lblMobileNo.text = TaksyKraftUserDefaults.getUserMobile()
         lblName.text = TaksyKraftUserDefaults.getUserName()
@@ -99,6 +119,7 @@ class CreateExpenseViewController: BaseViewController,UIImagePickerControllerDel
     }
  
     @IBAction func btnSubmitClicked(_ sender: UIButton) {
+        self.view.endEditing(true)
         if txtFldAmount.text == ""
         {
            self.showAlertWith(title: "Alert!", message: "Please enter Amount.")
@@ -115,21 +136,65 @@ class CreateExpenseViewController: BaseViewController,UIImagePickerControllerDel
         {
             app_delegate.showLoader(message: "Uploading...")
             let layer = ServiceLayer()
-            layer.uploadWith(data: self.imageData, desc: self.fileName, mobileNo: lblMobileNo.text!, amount: txtFldAmount.text!, fileName: self.fileName, contentType: "image/jpg", successMessage: { (response) in
-                app_delegate.removeloder()
-                DispatchQueue.main.async {
-                    let alert = UIAlertController(title: "Success!", message: response as? String, preferredStyle: UIAlertControllerStyle.alert)
-                    alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
+
+            if isFromEdit
+            {
+                if isImageModified
+                {
+                    layer.uploadEditedDetailsWith(imageData: self.imageData, desc: txtVwDesc.text, mobileNo: lblMobileNo.text!, amount: txtFldAmount.text!, fileName: self.fileName, contentType: "image/jpg", expenseID: String(receiptBO.receiptId), successMessage: { (response) in
+                        app_delegate.removeloder()
                         DispatchQueue.main.async {
-                            let _=self.navigationController?.popViewController(animated: true)
+                            let alert = UIAlertController(title: "Success!", message: response as? String, preferredStyle: UIAlertControllerStyle.alert)
+                            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
+                                DispatchQueue.main.async {
+                                    let _=self.navigationController?.popViewController(animated: true)
+                                }
+                            }))
+                            self.present(alert, animated: true, completion: nil)
                         }
-                    }))
-                    self.present(alert, animated: true, completion: nil)
+                    }, failureMessage: { (failure) in
+                        app_delegate.removeloder()
+                        
+                    })
                 }
-            }, failureMessage: { (failure) in
-                app_delegate.removeloder()
-                
-            })
+                else
+                {
+                    layer.uploadEditedDetailsWith(imageData: Data(), desc: txtVwDesc.text, mobileNo: lblMobileNo.text!, amount: txtFldAmount.text!, fileName: self.fileName, contentType: "image/jpg", expenseID: String(receiptBO.receiptId), successMessage: { (response) in
+                        app_delegate.removeloder()
+                        DispatchQueue.main.async {
+                            let alert = UIAlertController(title: "Success!", message: response as? String, preferredStyle: UIAlertControllerStyle.alert)
+                            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
+                                DispatchQueue.main.async {
+                                    let _=self.navigationController?.popViewController(animated: true)
+                                }
+                            }))
+                            self.present(alert, animated: true, completion: nil)
+                        }
+                    }, failureMessage: { (failure) in
+                        app_delegate.removeloder()
+                        
+                    })
+
+                }
+            }
+            else
+            {
+                layer.uploadWith(imageData: self.imageData, desc: txtVwDesc.text, mobileNo: lblMobileNo.text!, amount: txtFldAmount.text!, fileName: self.fileName, contentType: "image/jpg", successMessage: { (response) in
+                    app_delegate.removeloder()
+                    DispatchQueue.main.async {
+                        let alert = UIAlertController(title: "Success!", message: response as? String, preferredStyle: UIAlertControllerStyle.alert)
+                        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
+                            DispatchQueue.main.async {
+                                let _=self.navigationController?.popViewController(animated: true)
+                            }
+                        }))
+                        self.present(alert, animated: true, completion: nil)
+                    }
+                }, failureMessage: { (failure) in
+                    app_delegate.removeloder()
+                    
+                })
+            }
         }
     }
     @IBAction func btnUploadImageClicked(_ sender: UIButton) {
@@ -170,6 +235,7 @@ class CreateExpenseViewController: BaseViewController,UIImagePickerControllerDel
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        isImageModified = true
         imageData = UIImageJPEGRepresentation(info[UIImagePickerControllerOriginalImage] as! UIImage, 0.7)!
         let url = info[UIImagePickerControllerReferenceURL] as! URL
         let assets = PHAsset.fetchAssets(withALAssetURLs: [url], options: nil)

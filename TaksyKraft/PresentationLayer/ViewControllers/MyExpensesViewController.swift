@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MyExpensesViewController: BaseViewController {
+class MyExpensesViewController: BaseViewController,UIPopoverPresentationControllerDelegate {
 
     @IBOutlet weak var vwHeader: UIView!
     @IBOutlet weak var tblMyExpenses: UITableView!
@@ -87,6 +87,16 @@ extension MyExpensesViewController : UITableViewDelegate,UITableViewDataSource
         cell.lblStatus.text = bo.status_message
         cell.lblStatus.textColor = UIColor(red: 250.0/255.0, green: 186.0/255.0, blue: 51.0/255.0, alpha: 1)
         cell.lblComment.text = bo.comment
+        if bo.status == "0"
+        {
+            cell.btnMore.isHidden = false
+            cell.btnMore.tag = 670 + indexPath.row
+            cell.btnMore.addTarget(self, action: #selector(btnMoreClicked(sender:)), for: .touchUpInside)
+        }
+        else
+        {
+            cell.btnMore.isHidden = true
+        }
         return cell
     }
     
@@ -129,5 +139,57 @@ extension MyExpensesViewController : UITableViewDelegate,UITableViewDataSource
     func btnCloseClicked(sender : UIButton)
     {
         fortVw.removeFromSuperview()
+    }
+
+    func btnMoreClicked(sender:UIButton)
+    {
+        
+        self.showPopOver(arrTitles: ["Edit","Delete"], sender: sender ,tag:sender.tag)
+    }
+    func showPopOver(arrTitles : [String] ,sender : UIView ,tag : Int)  {
+        let popoverVC = CustomPopOver()
+        popoverVC.tag = tag
+        popoverVC.modalPresentationStyle = .popover
+        popoverVC.titles = arrTitles
+        popoverVC.preferredContentSize = CGSize (width: 150, height: CGFloat(popoverVC.titles.count) * 45.0)
+        popoverVC.delegate = self
+        
+        if let popoverController = popoverVC.popoverPresentationController
+        {
+            popoverController.sourceView = sender
+            let bound = sender.bounds
+            popoverController.sourceRect = bound
+            popoverController.permittedArrowDirections = .any
+            popoverController.delegate = self
+        }
+        
+        self.present(popoverVC, animated: true, completion: nil)
+        
+    }
+    
+    
+    public func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle
+    {
+        return .none
+    }
+
+}
+extension MyExpensesViewController : popoverGeneralDelegate {
+    func selectedText(selectedText: String, popoverselected: Int, tag: Int) {
+        if selectedText == "Edit"
+        {
+            let vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CreateExpenseViewController") as! CreateExpenseViewController
+            vc.isFromEdit = true
+            vc.receiptBO = arrList[tag-670]
+            self.navigationController?.pushViewController(vc, animated: true)
+
+        }
+        else if selectedText == "Delete"
+        {
+        }
+        else
+        {
+            print("N/A")
+        }
     }
 }
