@@ -14,13 +14,14 @@ public enum ParsingConstant : Int
 class ServiceLayer: NSObject {
     let SERVER_ERROR = "Server not responding.\nPlease try after some time."
     let BASE_URL = "http://188.166.218.149/api/v1/"
+    let BASE_URL_New = "http://188.166.218.149/api/v2/"
     public func loginWithEmailId(mobileNo:String,successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
     {
 
         let obj : HttpRequest = HttpRequest()
         obj.tag = ParsingConstant.Login.rawValue
         obj.MethodNamee = "GET"
-        obj._serviceURL = "\(BASE_URL)login/mn=\(mobileNo)/fcm=12345"
+        obj._serviceURL = "\(BASE_URL_New)login/mn=\(mobileNo)/fcm=12345"
         obj.params = [:]
         obj.doGetSOAPResponse {(success : Bool) -> Void in
             if !success

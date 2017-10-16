@@ -237,9 +237,23 @@ class CreateExpenseViewController: BaseViewController,UIImagePickerControllerDel
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         isImageModified = true
         imageData = UIImageJPEGRepresentation(info[UIImagePickerControllerOriginalImage] as! UIImage, 0.7)!
-        let url = info[UIImagePickerControllerReferenceURL] as! URL
-        let assets = PHAsset.fetchAssets(withALAssetURLs: [url], options: nil)
-        fileName = PHAssetResource.assetResources(for: assets.firstObject!).first!.originalFilename
+        if let url = info[UIImagePickerControllerReferenceURL] as? URL
+        {
+            let assets = PHAsset.fetchAssets(withALAssetURLs: [url], options: nil)
+            
+            if let name = PHAssetResource.assetResources(for: assets.firstObject!).first!.originalFilename as? String
+            {
+                fileName = name
+            }
+            else
+            {
+                fileName = String(Int(NSDate().timeIntervalSince1970) * 1000) + ".jpg"
+            }
+        }
+        else
+        {
+            fileName = String(Int(NSDate().timeIntervalSince1970) * 1000) + ".jpg"
+        }
         lblImageName.text = fileName
         self.dismiss(animated: true, completion: nil)
     }
