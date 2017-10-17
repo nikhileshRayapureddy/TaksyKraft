@@ -55,7 +55,7 @@ class BaseViewController: UIViewController {
         }
         let bItem = UIBarButtonItem(customView:leftBarButtonItems)
         let negativeSpacer = UIBarButtonItem.init(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
-        negativeSpacer.width = -15;
+//        negativeSpacer.width = -15;
         self.navigationItem.leftBarButtonItems = [ negativeSpacer, bItem]
         
         if isMenu
@@ -67,7 +67,7 @@ class BaseViewController: UIViewController {
             btnMenu.setImage(#imageLiteral(resourceName: "menu"), for: UIControlState.normal)
             btnMenu.addTarget(self, action: #selector(btnMenuClicked(sender:)), for: .touchUpInside)
             rightBarButtonItems.addSubview(btnMenu)
-            self.navigationItem.rightBarButtonItems = [negativeSpacer, UIBarButtonItem(customView:rightBarButtonItems)]
+            self.navigationItem.rightBarButtonItems = [UIBarButtonItem(customView:rightBarButtonItems)]
         }
     }
     func btnMenuClicked( sender:UIButton)

@@ -147,7 +147,13 @@ class CreateExpenseViewController: BaseViewController,UIImagePickerControllerDel
                             let alert = UIAlertController(title: "Success!", message: response as? String, preferredStyle: UIAlertControllerStyle.alert)
                             alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
                                 DispatchQueue.main.async {
+                                    if self.isFromEdit == false && TaksyKraftUserDefaults.getUserRole() == "0"
+                                    {
+                                    }
+                                    else
+                                    {
                                     let _=self.navigationController?.popViewController(animated: true)
+                                    }
                                 }
                             }))
                             self.present(alert, animated: true, completion: nil)
@@ -237,18 +243,29 @@ class CreateExpenseViewController: BaseViewController,UIImagePickerControllerDel
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         isImageModified = true
         imageData = UIImageJPEGRepresentation(info[UIImagePickerControllerOriginalImage] as! UIImage, 0.7)!
+        
         if let url = info[UIImagePickerControllerReferenceURL] as? URL
         {
-            let assets = PHAsset.fetchAssets(withALAssetURLs: [url], options: nil)
+            if let assets = PHAsset.fetchAssets(withALAssetURLs: [url], options: nil) as? PHFetchResult
+            {
+                if assets.count > 0
+                {
+                    if let name = PHAssetResource.assetResources(for: assets.firstObject!).first!.originalFilename as? String
+                    {
+                        fileName = name
+                    }
+                    else
+                    {
+                        fileName = String(Int(NSDate().timeIntervalSince1970) * 1000) + ".jpg"
+                    }
+                }
+                else
+                {
+                    fileName = String(Int(NSDate().timeIntervalSince1970) * 1000) + ".jpg"
+                }
+                
+            }
             
-            if let name = PHAssetResource.assetResources(for: assets.firstObject!).first!.originalFilename as? String
-            {
-                fileName = name
-            }
-            else
-            {
-                fileName = String(Int(NSDate().timeIntervalSince1970) * 1000) + ".jpg"
-            }
         }
         else
         {
@@ -274,6 +291,9 @@ class CreateExpenseViewController: BaseViewController,UIImagePickerControllerDel
             constVwUploagImageBgHeight.constant = 40
             vwUploadBg.isHidden = false
         }
+    }
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
     }
 }
 extension CreateExpenseViewController : popoverGeneralDelegate {
