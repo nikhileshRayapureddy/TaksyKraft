@@ -67,7 +67,14 @@ class BaseViewController: UIViewController {
             btnMenu.setImage(#imageLiteral(resourceName: "menu"), for: UIControlState.normal)
             btnMenu.addTarget(self, action: #selector(btnMenuClicked(sender:)), for: .touchUpInside)
             rightBarButtonItems.addSubview(btnMenu)
-            self.navigationItem.rightBarButtonItems = [UIBarButtonItem(customView:rightBarButtonItems)]
+            if #available(iOS 11.0, *)
+            {
+                self.navigationItem.rightBarButtonItems = [UIBarButtonItem(customView:rightBarButtonItems)]
+            }
+            else
+            {
+                self.navigationItem.rightBarButtonItems = [negativeSpacer,UIBarButtonItem(customView:rightBarButtonItems)]
+            }
         }
     }
     func btnMenuClicked( sender:UIButton)
