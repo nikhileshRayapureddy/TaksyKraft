@@ -55,7 +55,7 @@ class BaseViewController: UIViewController {
         }
         let bItem = UIBarButtonItem(customView:leftBarButtonItems)
         let negativeSpacer = UIBarButtonItem.init(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
-//        negativeSpacer.width = -15;
+        negativeSpacer.width = -15;
         self.navigationItem.leftBarButtonItems = [ negativeSpacer, bItem]
         
         if isMenu
