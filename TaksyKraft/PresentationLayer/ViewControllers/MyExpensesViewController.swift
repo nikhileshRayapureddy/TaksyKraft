@@ -85,7 +85,30 @@ extension MyExpensesViewController : UITableViewDelegate,UITableViewDataSource
         })
         
         cell.lblStatus.text = bo.status_message
-        cell.lblStatus.textColor = UIColor(red: 250.0/255.0, green: 186.0/255.0, blue: 51.0/255.0, alpha: 1)
+        if bo.status_message == "Not verified"
+        {
+            cell.lblStatus.textColor = UIColor(red: 250.0/255.0, green: 186.0/255.0, blue: 51.0/255.0, alpha: 1)
+        }
+        else if bo.status_message == "Verified"
+        {
+            cell.lblStatus.textColor = UIColor(red: 0, green: 93.0/255.0, blue: 171.0/255.0, alpha: 1)
+        }
+        else if bo.status_message == "Approved"
+        {
+            cell.lblStatus.textColor = UIColor(red: 35.0/255.0, green: 95.0/255.0, blue: 123.0/255.0, alpha: 1)
+        }
+        else if bo.status_message == "Rejected"
+        {
+            cell.lblStatus.textColor = UIColor(red: 211.0/255.0, green: 40.0/255.0, blue: 9.0/255.0, alpha: 1)
+        }
+        else if bo.status_message == "Paid"
+        {
+            cell.lblStatus.textColor = UIColor(red: 135.0/255.0, green: 205.0/255.0, blue: 115.0/255.0, alpha: 1)
+        }
+        else
+        {
+            cell.lblStatus.textColor = UIColor.black
+        }
         cell.lblComment.text = bo.comment
         if bo.status == "0"
         {

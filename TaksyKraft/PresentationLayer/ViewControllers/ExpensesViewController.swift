@@ -23,6 +23,7 @@ class ExpensesViewController: BaseViewController, UIPopoverPresentationControlle
     @IBOutlet weak var btnMenu: UIButton!
     
     @IBOutlet weak var constVwHeaderHeight: NSLayoutConstraint!
+    @IBOutlet weak var lblNoDataFound: UILabel!
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -49,7 +50,16 @@ class ExpensesViewController: BaseViewController, UIPopoverPresentationControlle
             app_delegate.removeloder()
             self.arrList = response as! [ReceiptBO]
             DispatchQueue.main.async {
-                self.tblExpenses.reloadData()
+                if self.arrList.count > 0
+                {
+                    self.tblExpenses.reloadData()
+                    self.lblNoDataFound.isHidden = true
+                }
+                else
+                {
+                    self.tblExpenses.isHidden = true
+                    self.lblNoDataFound.isHidden = false
+                }
             }
         }) { (failure) in
             app_delegate.removeloder()
@@ -162,8 +172,31 @@ extension ExpensesViewController : UITableViewDelegate,UITableViewDataSource
         })
         
         cell.lblStatus.text = bo.status_message
-        cell.lblStatus.textColor = UIColor(red: 250.0/255.0, green: 186.0/255.0, blue: 51.0/255.0, alpha: 1)
-        
+        if bo.status_message == "Not verified"
+        {
+            cell.lblStatus.textColor = UIColor(red: 250.0/255.0, green: 186.0/255.0, blue: 51.0/255.0, alpha: 1)
+        }
+        else if bo.status_message == "Verified"
+        {
+            cell.lblStatus.textColor = UIColor(red: 0, green: 93.0/255.0, blue: 171.0/255.0, alpha: 1)
+        }
+        else if bo.status_message == "Approved"
+        {
+            cell.lblStatus.textColor = UIColor(red: 35.0/255.0, green: 95.0/255.0, blue: 123.0/255.0, alpha: 1)
+        }
+        else if bo.status_message == "Rejected"
+        {
+            cell.lblStatus.textColor = UIColor(red: 211.0/255.0, green: 40.0/255.0, blue: 9.0/255.0, alpha: 1)
+        }
+        else if bo.status_message == "Paid"
+        {
+            cell.lblStatus.textColor = UIColor(red: 135.0/255.0, green: 205.0/255.0, blue: 115.0/255.0, alpha: 1)
+        }
+        else
+        {
+            cell.lblStatus.textColor = UIColor.black
+        }
+
         
         cell.lblStatus.isHidden = true
         cell.lblStatusText.isHidden = true

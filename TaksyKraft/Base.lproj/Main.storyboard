@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="gn2-OX-xZC">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="gn2-OX-xZC">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
         <array key="HelveticaNeue.ttc">
             <string>HelveticaNeue</string>
+            <string>HelveticaNeue-Bold</string>
         </array>
     </customFonts>
     <scenes>
@@ -36,7 +37,7 @@
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Expenses" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HXa-F6-1qr">
                                         <rect key="frame" x="10" y="0.0" width="200" height="50"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="200" id="GPw-hI-NwE"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="200" id="GPw-hI-NwE"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="16"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -60,13 +61,24 @@
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="HXa-F6-1qr" secondAttribute="bottom" id="6Xh-OF-Hos"/>
                                     <constraint firstAttribute="bottom" secondItem="XDc-RM-mLg" secondAttribute="bottom" id="AGE-Wd-RGl"/>
-                                    <constraint firstItem="HXa-F6-1qr" firstAttribute="leading" secondItem="4Bs-hm-KgM" secondAttribute="leading" constant="10" id="H5Y-6O-ZLS"/>
+                                    <constraint firstItem="HXa-F6-1qr" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="4Bs-hm-KgM" secondAttribute="leading" id="H5Y-6O-ZLS"/>
+                                    <constraint firstAttribute="trailing" secondItem="HXa-F6-1qr" secondAttribute="trailing" constant="165" id="KEG-7C-pgz"/>
                                     <constraint firstAttribute="height" constant="50" id="MHU-Aq-WcT"/>
                                     <constraint firstItem="XDc-RM-mLg" firstAttribute="top" secondItem="4Bs-hm-KgM" secondAttribute="top" id="NUd-Uc-Cdz"/>
                                     <constraint firstAttribute="trailing" secondItem="XDc-RM-mLg" secondAttribute="trailing" constant="8" id="U3z-fa-2eC"/>
                                     <constraint firstItem="HXa-F6-1qr" firstAttribute="top" secondItem="4Bs-hm-KgM" secondAttribute="top" id="WlU-n3-JOR"/>
                                 </constraints>
                             </view>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Data Found." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y3w-1x-aSL">
+                                <rect key="frame" x="0.0" y="318.5" width="375" height="30"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="Vdc-WX-S0I"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="JQp-cv-hbx">
                                 <rect key="frame" x="10" y="70" width="355" height="587"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -95,18 +107,22 @@
                             <constraint firstItem="JQp-cv-hbx" firstAttribute="leading" secondItem="sUT-yI-ln1" secondAttribute="leading" constant="10" id="BvX-cj-pS5"/>
                             <constraint firstAttribute="trailing" secondItem="ARa-Ii-1BD" secondAttribute="trailing" id="KhB-aX-9rc"/>
                             <constraint firstItem="ARa-Ii-1BD" firstAttribute="top" secondItem="7Nr-RC-Iyr" secondAttribute="bottom" id="R9p-VH-GAM"/>
+                            <constraint firstAttribute="trailing" secondItem="y3w-1x-aSL" secondAttribute="trailing" id="Rme-bp-Z34"/>
                             <constraint firstItem="zRE-Ej-KuJ" firstAttribute="top" secondItem="ARa-Ii-1BD" secondAttribute="bottom" id="bPE-3o-jnN"/>
                             <constraint firstItem="zRE-Ej-KuJ" firstAttribute="top" secondItem="JQp-cv-hbx" secondAttribute="bottom" constant="10" id="dHX-lp-wxT"/>
                             <constraint firstItem="ARa-Ii-1BD" firstAttribute="leading" secondItem="sUT-yI-ln1" secondAttribute="leading" id="dVP-MX-San"/>
+                            <constraint firstItem="y3w-1x-aSL" firstAttribute="leading" secondItem="sUT-yI-ln1" secondAttribute="leading" id="fc9-cH-jxQ"/>
                             <constraint firstAttribute="trailing" secondItem="4Bs-hm-KgM" secondAttribute="trailing" id="och-ao-YU2"/>
                             <constraint firstItem="4Bs-hm-KgM" firstAttribute="leading" secondItem="sUT-yI-ln1" secondAttribute="leading" id="rDj-YD-tIU"/>
                             <constraint firstItem="4Bs-hm-KgM" firstAttribute="top" secondItem="7Nr-RC-Iyr" secondAttribute="bottom" id="sZI-eT-qdY"/>
+                            <constraint firstItem="y3w-1x-aSL" firstAttribute="centerY" secondItem="sUT-yI-ln1" secondAttribute="centerY" id="yQs-wE-hTD"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="7Rt-YR-R2c"/>
                     <connections>
                         <outlet property="btnMenu" destination="XDc-RM-mLg" id="ur1-0e-Jom"/>
                         <outlet property="constVwHeaderHeight" destination="MHU-Aq-WcT" id="DMa-6k-VQV"/>
+                        <outlet property="lblNoDataFound" destination="y3w-1x-aSL" id="A6P-ix-Hcx"/>
                         <outlet property="tblExpenses" destination="JQp-cv-hbx" id="hQx-yp-znj"/>
                         <outlet property="vwHeader" destination="4Bs-hm-KgM" id="Van-hu-suc"/>
                     </connections>
@@ -610,7 +626,6 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="gn2-OX-xZC" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="A1A-au-UVF">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>

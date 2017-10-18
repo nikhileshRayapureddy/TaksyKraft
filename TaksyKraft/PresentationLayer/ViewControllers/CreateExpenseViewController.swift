@@ -147,12 +147,17 @@ class CreateExpenseViewController: BaseViewController,UIImagePickerControllerDel
                             let alert = UIAlertController(title: "Success!", message: response as? String, preferredStyle: UIAlertControllerStyle.alert)
                             alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
                                 DispatchQueue.main.async {
-                                    if self.isFromEdit == false && TaksyKraftUserDefaults.getUserRole() == "0"
+                                    if TaksyKraftUserDefaults.getUserRole() == "0"
                                     {
+                                        self.txtVwDesc.text = ""
+                                        self.txtFldAmount.text = ""
+                                        self.imageData = Data()
+                                        self.fileName = ""
+                                        self.lblImageName.text = ""
                                     }
                                     else
                                     {
-                                    let _=self.navigationController?.popViewController(animated: true)
+                                        let _=self.navigationController?.popViewController(animated: true)
                                     }
                                 }
                             }))
@@ -171,7 +176,18 @@ class CreateExpenseViewController: BaseViewController,UIImagePickerControllerDel
                             let alert = UIAlertController(title: "Success!", message: response as? String, preferredStyle: UIAlertControllerStyle.alert)
                             alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
                                 DispatchQueue.main.async {
-                                    let _=self.navigationController?.popViewController(animated: true)
+                                    if TaksyKraftUserDefaults.getUserRole() == "0"
+                                    {
+                                        self.txtVwDesc.text = ""
+                                        self.txtFldAmount.text = ""
+                                        self.imageData = Data()
+                                        self.fileName = ""
+                                        self.lblImageName.text = ""
+                                    }
+                                    else
+                                    {
+                                        let _=self.navigationController?.popViewController(animated: true)
+                                    }
                                 }
                             }))
                             self.present(alert, animated: true, completion: nil)
@@ -191,7 +207,18 @@ class CreateExpenseViewController: BaseViewController,UIImagePickerControllerDel
                         let alert = UIAlertController(title: "Success!", message: response as? String, preferredStyle: UIAlertControllerStyle.alert)
                         alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
                             DispatchQueue.main.async {
-                                let _=self.navigationController?.popViewController(animated: true)
+                                if TaksyKraftUserDefaults.getUserRole() == "0"
+                                {
+                                    self.txtVwDesc.text = ""
+                                    self.txtFldAmount.text = ""
+                                    self.imageData = Data()
+                                    self.fileName = ""
+                                    self.lblImageName.text = ""
+                                }
+                                else
+                                {
+                                    let _=self.navigationController?.popViewController(animated: true)
+                                }
                             }
                         }))
                         self.present(alert, animated: true, completion: nil)
@@ -265,7 +292,12 @@ class CreateExpenseViewController: BaseViewController,UIImagePickerControllerDel
                 }
                 
             }
+            else
+            {
+                fileName = String(Int(NSDate().timeIntervalSince1970) * 1000) + ".jpg"
+            }
             
+
         }
         else
         {
