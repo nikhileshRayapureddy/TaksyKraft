@@ -42,9 +42,11 @@ class ExpensesViewController: BaseViewController, UIPopoverPresentationControlle
     func callForData()
     {
         app_delegate.showLoader(message: "Fetching data..")
-        constVwHeaderHeight.constant = 50
-        vwHeader.isHidden = false
-        self.navigationController?.isNavigationBarHidden = true
+        DispatchQueue.main.async {
+            self.constVwHeaderHeight.constant = 50
+            self.vwHeader.isHidden = false
+            self.navigationController?.isNavigationBarHidden = true
+        }
         let serviceLayer = ServiceLayer()
         serviceLayer.getBillDetailsWith(mobileNo: TaksyKraftUserDefaults.getUserMobile(), successMessage: { (response) in
             app_delegate.removeloder()
