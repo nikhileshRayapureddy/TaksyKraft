@@ -39,6 +39,10 @@
 		A70574AE1F04FF3F005D1936 /* ThreadHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A705748B1F04FF3F005D1936 /* ThreadHelper.swift */; };
 		A70574AF1F04FF3F005D1936 /* UIButton+Kingfisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = A705748C1F04FF3F005D1936 /* UIButton+Kingfisher.swift */; };
 		A70574B11F0501D0005D1936 /* ServiceLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70574B01F0501D0005D1936 /* ServiceLayer.swift */; };
+		A71D4F171FC559B80075CB61 /* EmployListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71D4F161FC559B80075CB61 /* EmployListViewController.swift */; };
+		A71D4F191FC55E820075CB61 /* EmployeeCustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71D4F181FC55E820075CB61 /* EmployeeCustomCell.swift */; };
+		A71D4F1B1FC55F9C0075CB61 /* EmployeBO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71D4F1A1FC55F9C0075CB61 /* EmployeBO.swift */; };
+		A71D4F1D1FC56FE20075CB61 /* SendMoneyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71D4F1C1FC56FE20075CB61 /* SendMoneyViewController.swift */; };
 		A7461D6A1F66A82900F2B05C /* ExpensesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7461D681F66A82900F2B05C /* ExpensesTableViewCell.swift */; };
 		A7461D6B1F66A82900F2B05C /* ExpensesTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7461D691F66A82900F2B05C /* ExpensesTableViewCell.xib */; };
 		A7472CD61F0C9164007B677C /* FloatLabelTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7472CD41F0C9164007B677C /* FloatLabelTextField.swift */; };
@@ -109,6 +113,10 @@
 		A705748B1F04FF3F005D1936 /* ThreadHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreadHelper.swift; sourceTree = "<group>"; };
 		A705748C1F04FF3F005D1936 /* UIButton+Kingfisher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton+Kingfisher.swift"; sourceTree = "<group>"; };
 		A70574B01F0501D0005D1936 /* ServiceLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ServiceLayer.swift; path = Services/ServiceLayer.swift; sourceTree = "<group>"; };
+		A71D4F161FC559B80075CB61 /* EmployListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployListViewController.swift; sourceTree = "<group>"; };
+		A71D4F181FC55E820075CB61 /* EmployeeCustomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeCustomCell.swift; sourceTree = "<group>"; };
+		A71D4F1A1FC55F9C0075CB61 /* EmployeBO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeBO.swift; sourceTree = "<group>"; };
+		A71D4F1C1FC56FE20075CB61 /* SendMoneyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMoneyViewController.swift; sourceTree = "<group>"; };
 		A7461D681F66A82900F2B05C /* ExpensesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpensesTableViewCell.swift; sourceTree = "<group>"; };
 		A7461D691F66A82900F2B05C /* ExpensesTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExpensesTableViewCell.xib; sourceTree = "<group>"; };
 		A7472CD41F0C9164007B677C /* FloatLabelTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatLabelTextField.swift; sourceTree = "<group>"; };
@@ -233,6 +241,8 @@
 				A7472CE31F0CA9FB007B677C /* ExpensesViewController.swift */,
 				A767987A1F66679D000BD5EF /* MyExpensesViewController.swift */,
 				A7BB0D101F0CC72800146A9F /* CreateExpenseViewController.swift */,
+				A71D4F161FC559B80075CB61 /* EmployListViewController.swift */,
+				A71D4F1C1FC56FE20075CB61 /* SendMoneyViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -293,6 +303,7 @@
 				A7472CDC1F0CA29C007B677C /* MyExpensesTableViewCell.xib */,
 				A7461D681F66A82900F2B05C /* ExpensesTableViewCell.swift */,
 				A7461D691F66A82900F2B05C /* ExpensesTableViewCell.xib */,
+				A71D4F181FC55E820075CB61 /* EmployeeCustomCell.swift */,
 			);
 			path = CustomCells;
 			sourceTree = "<group>";
@@ -302,6 +313,7 @@
 			children = (
 				A7BB0D151F0CD5D600146A9F /* ReceiptBO.swift */,
 				A7BB0D1E1F0D1DD600146A9F /* UserBO.swift */,
+				A71D4F1A1FC55F9C0075CB61 /* EmployeBO.swift */,
 			);
 			name = Models;
 			path = TaksyKraft/Services/Models;
@@ -463,6 +475,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A70574661F04FEDE005D1936 /* ViewController.swift in Sources */,
+				A71D4F191FC55E820075CB61 /* EmployeeCustomCell.swift in Sources */,
 				A7CFB5121F0D66B7005B6CBB /* IQTextView.swift in Sources */,
 				A7CFB5141F0D66B7005B6CBB /* IQPreviousNextView.swift in Sources */,
 				A7BB0D161F0CD5D600146A9F /* ReceiptBO.swift in Sources */,
@@ -488,10 +501,12 @@
 				A70574AC1F04FF3F005D1936 /* Resource.swift in Sources */,
 				A70261B21F16A37C0088D757 /* RejectPopup.swift in Sources */,
 				A70574651F04FEDE005D1936 /* AppDelegate.swift in Sources */,
+				A71D4F171FC559B80075CB61 /* EmployListViewController.swift in Sources */,
 				A7BB0D1F1F0D1DD600146A9F /* UserBO.swift in Sources */,
 				A7BB0D1C1F0D060200146A9F /* ImageDetailPopUp.swift in Sources */,
 				A70574A71F04FF3F005D1936 /* Indicator.swift in Sources */,
 				A70574A21F04FF3F005D1936 /* ImageDownloader.swift in Sources */,
+				A71D4F1B1FC55F9C0075CB61 /* EmployeBO.swift in Sources */,
 				A70574AE1F04FF3F005D1936 /* ThreadHelper.swift in Sources */,
 				A7BB0D191F0CE6BB00146A9F /* CustomPopOver.swift in Sources */,
 				A705749D1F04FF3F005D1936 /* Box.swift in Sources */,
@@ -512,6 +527,7 @@
 				A7CFB5131F0D66B7005B6CBB /* IQBarButtonItem.swift in Sources */,
 				A7CFB5161F0D66B7005B6CBB /* IQToolbar.swift in Sources */,
 				A70574AF1F04FF3F005D1936 /* UIButton+Kingfisher.swift in Sources */,
+				A71D4F1D1FC56FE20075CB61 /* SendMoneyViewController.swift in Sources */,
 				A7CFB5091F0D66B7005B6CBB /* IQUIScrollView+Additions.swift in Sources */,
 				A70574511F04FE79005D1936 /* TaksyKraft.xcdatamodeld in Sources */,
 				A7472CD91F0C979F007B677C /* BaseViewController.swift in Sources */,
@@ -649,7 +665,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.taksykraft.Expenses;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "f206bc1f-8254-448a-b7f0-448c289fc701";
+				PROVISIONING_PROFILE = "d8c4aafa-c2d1-46a7-810e-c83ff47c4271";
 				PROVISIONING_PROFILE_SPECIFIER = Expenses_Dev;
 				SWIFT_VERSION = 3.0;
 			};

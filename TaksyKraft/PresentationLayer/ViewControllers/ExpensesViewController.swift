@@ -21,6 +21,7 @@ class ExpensesViewController: BaseViewController, UIPopoverPresentationControlle
     var rejectPopup : RejectPopup!
 
     @IBOutlet weak var btnMenu: UIButton!
+    @IBOutlet weak var lblWalletAmt: UILabel!
     
     @IBOutlet weak var constVwHeaderHeight: NSLayoutConstraint!
     @IBOutlet weak var lblNoDataFound: UILabel!
@@ -31,10 +32,11 @@ class ExpensesViewController: BaseViewController, UIPopoverPresentationControlle
     override func viewDidLoad() {
         super.viewDidLoad()
         tblExpenses.register(UINib(nibName: "ExpensesTableViewCell", bundle: nil), forCellReuseIdentifier: "ExpensesTableViewCell")
-        arrTitles = ["Upload New Expenses","Refresh","My Expenses","Logout"]
+        arrTitles = ["Upload New Expenses","Refresh","My Expenses","Send Money","Logout"]
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        lblWalletAmt.text = TaksyKraftUserDefaults.getWalletAmount()
         isFromExpenses = TaksyKraftUserDefaults.getIsFromExpenses()
         isMyExpense = TaksyKraftUserDefaults.getIsMyExpense()
         self.callForData()
@@ -133,6 +135,11 @@ extension ExpensesViewController : popoverGeneralDelegate {
         else if selectedText == "Refresh"
         {
             self.callForData()
+        }
+        else if selectedText == "Send Money"
+        {
+            let vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "EmployListViewController") as! EmployListViewController
+            self.navigationController?.pushViewController(vc, animated: true)
         }
         else
         {

@@ -41,7 +41,8 @@ class ViewController: BaseViewController {
             print("SR : \(SR)")
             app_delegate.removeloder()
             DispatchQueue.main.async {
-                let alert = UIAlertController(title: "Alert!", message: "A new OTP Have Been Sent To Your Mobile Number, Please Verify!", preferredStyle: UIAlertControllerStyle.alert)
+                //"A new OTP Have Been Sent To Your Mobile Number, Please Verify!"
+                let alert = UIAlertController(title: "Alert!", message: SR as! String, preferredStyle: UIAlertControllerStyle.alert)
                 alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
                     DispatchQueue.main.async {
                     self.vwLogin.isHidden = true
@@ -66,46 +67,57 @@ class ViewController: BaseViewController {
         app_delegate.showLoader(message: "")
         let serviceLayer = ServiceLayer()
         serviceLayer.checkLoginWith(mobileNo: txtFldMobileNo.text!, Otp: txtFldOTP.text!, successMessage: { (SR) in
-            app_delegate.removeloder()
-            print("SR : \(SR)")
-            DispatchQueue.main.async {
-                let alert = UIAlertController(title: "Alert!", message: "OTP Verified Sucessfully.", preferredStyle: UIAlertControllerStyle.alert)
-                alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
-                    DispatchQueue.main.async {
-                        let bo = SR as! UserBO
-                        UIApplication.shared.statusBarStyle = .lightContent
-                        let statWindow = UIApplication.shared.value(forKey:"statusBarWindow") as! UIView
-                        let statusBar = statWindow.subviews[0] as UIView
-                        statusBar.backgroundColor = Color_NavBarTint
-                        TaksyKraftUserDefaults.setLoginStatus(object: true)
-                        var vc = UIViewController()
-                        if bo.role == "1"
-                        {
-                            vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ExpensesViewController") as! ExpensesViewController
-                            
-                        }
-                        else if bo.role == "2"
-                        {
-                            vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ExpensesViewController") as! ExpensesViewController
-                        }
-                        else
-                        {
-                            vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CreateExpenseViewController") as! CreateExpenseViewController
-                        }
-                        TaksyKraftUserDefaults.setUserRole(object: bo.role)
-                        self.navigationController?.pushViewController(vc, animated: true)
-                    }
-                }))
-                self.present(alert, animated: true, completion: nil)
+            let bo = SR as! UserBO
+            serviceLayer.getWalletAmount(successMessage: { (bal) in
+                DispatchQueue.main.async
+                    {
+                        TaksyKraftUserDefaults.setWalletAmount(object: "₹ \(bal as! String)")
+                        self.navigateWith(bo: bo)
+                }
+            }) { (error) in
+                DispatchQueue.main.async
+                    {
+                        TaksyKraftUserDefaults.setWalletAmount(object: "₹ 0")
+                        self.navigateWith(bo: bo)
+                }
             }
-
         }) { (FR) in
             app_delegate.removeloder()
             print("FR : \(FR)")
             self.showAlertWith(title: "Alert!", message: "OTP Verification Failed.")
         }
     }
-
+    func navigateWith(bo : UserBO)
+    {
+        app_delegate.removeloder()
+        let alert = UIAlertController(title: "Alert!", message: "OTP Verified Sucessfully.", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
+            DispatchQueue.main.async {
+                UIApplication.shared.statusBarStyle = .lightContent
+                let statWindow = UIApplication.shared.value(forKey:"statusBarWindow") as! UIView
+                let statusBar = statWindow.subviews[0] as UIView
+                statusBar.backgroundColor = Color_NavBarTint
+                TaksyKraftUserDefaults.setLoginStatus(object: true)
+                var vc = UIViewController()
+                if bo.role == "1"
+                {
+                    vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ExpensesViewController") as! ExpensesViewController
+                    
+                }
+                else if bo.role == "2"
+                {
+                    vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ExpensesViewController") as! ExpensesViewController
+                }
+                else
+                {
+                    vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CreateExpenseViewController") as! CreateExpenseViewController
+                }
+                TaksyKraftUserDefaults.setUserRole(object: bo.role)
+                self.navigationController?.pushViewController(vc, animated: true)
+            }
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

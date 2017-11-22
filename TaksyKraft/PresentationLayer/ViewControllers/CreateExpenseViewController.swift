@@ -20,6 +20,9 @@ class CreateExpenseViewController: BaseViewController,UIImagePickerControllerDel
     @IBOutlet weak var btnSubmit: UIButton!
     @IBOutlet weak var vwUploadBg: UIView!
     @IBOutlet weak var constVwUploagImageBgHeight: NSLayoutConstraint!
+    
+    @IBOutlet weak var btnWalletAmt: UIButton!
+    @IBOutlet weak var btnCard: UIButton!
     var imgBg = UIImageView()
 
     var imageData = Data()
@@ -32,6 +35,7 @@ class CreateExpenseViewController: BaseViewController,UIImagePickerControllerDel
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        // Do any additional setup after loading the view.
         txtVwDesc.layer.cornerRadius = 5
         txtVwDesc.layer.masksToBounds = true
         txtVwDesc.layer.borderColor = UIColor.lightGray.cgColor
@@ -69,7 +73,15 @@ class CreateExpenseViewController: BaseViewController,UIImagePickerControllerDel
         lblMobileNo.text = TaksyKraftUserDefaults.getUserMobile()
         lblName.text = TaksyKraftUserDefaults.getUserName()
 
-        // Do any additional setup after loading the view.
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.isNavigationBarHidden = false
+
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.isNavigationBarHidden = true
     }
     override func btnMenuClicked( sender:UIButton)
     {
@@ -111,8 +123,14 @@ class CreateExpenseViewController: BaseViewController,UIImagePickerControllerDel
     }
     
 
-
-
+    @IBAction func btnWalletAmtClicked(_ sender: UIButton) {
+        sender.isSelected = !sender.isSelected
+    }
+    
+    @IBAction func btnCardClicked(_ sender: UIButton) {
+        sender.isSelected = !sender.isSelected
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -136,33 +154,73 @@ class CreateExpenseViewController: BaseViewController,UIImagePickerControllerDel
         {
             app_delegate.showLoader(message: "Uploading...")
             let layer = ServiceLayer()
-
+            let card = btnCard.isSelected == true ? "1" : "0"
+            let wallet = btnWalletAmt.isSelected == true ? "1" : "0"
             if isFromEdit
             {
                 if isImageModified
                 {
-                    layer.uploadEditedDetailsWith(imageData: self.imageData, desc: txtVwDesc.text, mobileNo: lblMobileNo.text!, amount: txtFldAmount.text!, fileName: self.fileName, contentType: "image/jpg", expenseID: String(receiptBO.receiptId), successMessage: { (response) in
-                        app_delegate.removeloder()
-                        DispatchQueue.main.async {
-                            let alert = UIAlertController(title: "Success!", message: response as? String, preferredStyle: UIAlertControllerStyle.alert)
-                            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
-                                DispatchQueue.main.async {
-                                    if TaksyKraftUserDefaults.getUserRole() == "0"
-                                    {
-                                        self.txtVwDesc.text = ""
-                                        self.txtFldAmount.text = ""
-                                        self.imageData = Data()
-                                        self.fileName = ""
-                                        self.lblImageName.text = ""
-                                    }
-                                    else
-                                    {
-                                        let _=self.navigationController?.popViewController(animated: true)
-                                    }
-                                }
-                            }))
-                            self.present(alert, animated: true, completion: nil)
+                    layer.uploadEditedDetailsWith(imageData: self.imageData, card: card, wallet: wallet, desc: txtVwDesc.text, mobileNo: lblMobileNo.text!, amount: txtFldAmount.text!, fileName: self.fileName, contentType: "image/jpg", expenseID: String(receiptBO.receiptId), successMessage: { (response) in
+                        layer.getWalletAmount(successMessage: { (bal) in
+                            DispatchQueue.main.async
+                                {
+                                    TaksyKraftUserDefaults.setWalletAmount(object: "₹ \(bal as! String)")
+                                    app_delegate.removeloder()
+                                    let alert = UIAlertController(title: "Success!", message: response as? String, preferredStyle: UIAlertControllerStyle.alert)
+                                    alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
+                                        DispatchQueue.main.async {
+                                            self.reloadWallet()
+                                            if TaksyKraftUserDefaults.getUserRole() == "0"
+                                            {
+                                                self.txtVwDesc.text = ""
+                                                self.txtFldAmount.text = ""
+                                                self.imageData = Data()
+                                                self.fileName = ""
+                                                self.lblImageName.text = ""
+                                                self.btnCard.isSelected = false
+                                                self.btnWalletAmt.isSelected = false
+                                                self.btnNoReceipt.isSelected = true
+                                                self.btnNoReceiptClicked(self.btnNoReceipt)
+                                            }
+                                            else
+                                            {
+                                                let _=self.navigationController?.popViewController(animated: true)
+                                            }
+                                        }
+                                    }))
+                                    self.present(alert, animated: true, completion: nil)
+                            }
+                        }) { (error) in
+                            DispatchQueue.main.async
+                                {
+                                    TaksyKraftUserDefaults.setWalletAmount(object: "₹ 0")
+                                    app_delegate.removeloder()
+                                    let alert = UIAlertController(title: "Success!", message: response as? String, preferredStyle: UIAlertControllerStyle.alert)
+                                    alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
+                                        DispatchQueue.main.async {
+                                            self.reloadWallet()
+                                            if TaksyKraftUserDefaults.getUserRole() == "0"
+                                            {
+                                                self.txtVwDesc.text = ""
+                                                self.txtFldAmount.text = ""
+                                                self.imageData = Data()
+                                                self.fileName = ""
+                                                self.lblImageName.text = ""
+                                                self.btnCard.isSelected = false
+                                                self.btnWalletAmt.isSelected = false
+                                                self.btnNoReceipt.isSelected = true
+                                                self.btnNoReceiptClicked(self.btnNoReceipt)
+                                            }
+                                            else
+                                            {
+                                                let _=self.navigationController?.popViewController(animated: true)
+                                            }
+                                        }
+                                    }))
+                                    self.present(alert, animated: true, completion: nil)
+                            }
                         }
+                        
                     }, failureMessage: { (failure) in
                         app_delegate.removeloder()
                         
@@ -170,27 +228,66 @@ class CreateExpenseViewController: BaseViewController,UIImagePickerControllerDel
                 }
                 else
                 {
-                    layer.uploadEditedDetailsWith(imageData: Data(), desc: txtVwDesc.text, mobileNo: lblMobileNo.text!, amount: txtFldAmount.text!, fileName: self.fileName, contentType: "image/jpg", expenseID: String(receiptBO.receiptId), successMessage: { (response) in
-                        app_delegate.removeloder()
-                        DispatchQueue.main.async {
-                            let alert = UIAlertController(title: "Success!", message: response as? String, preferredStyle: UIAlertControllerStyle.alert)
-                            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
-                                DispatchQueue.main.async {
-                                    if TaksyKraftUserDefaults.getUserRole() == "0"
-                                    {
-                                        self.txtVwDesc.text = ""
-                                        self.txtFldAmount.text = ""
-                                        self.imageData = Data()
-                                        self.fileName = ""
-                                        self.lblImageName.text = ""
-                                    }
-                                    else
-                                    {
-                                        let _=self.navigationController?.popViewController(animated: true)
-                                    }
-                                }
-                            }))
-                            self.present(alert, animated: true, completion: nil)
+                    layer.uploadEditedDetailsWith(imageData: Data(), card: card, wallet: wallet, desc: txtVwDesc.text, mobileNo: lblMobileNo.text!, amount: txtFldAmount.text!, fileName: self.fileName, contentType: "image/jpg", expenseID: String(receiptBO.receiptId), successMessage: { (response) in
+                        layer.getWalletAmount(successMessage: { (bal) in
+                            DispatchQueue.main.async
+                                {
+                                    TaksyKraftUserDefaults.setWalletAmount(object: "₹ \(bal as! String)")
+                                    app_delegate.removeloder()
+                                        let alert = UIAlertController(title: "Success!", message: response as? String, preferredStyle: UIAlertControllerStyle.alert)
+                                        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
+                                            DispatchQueue.main.async {
+                                                self.reloadWallet()
+                                                if TaksyKraftUserDefaults.getUserRole() == "0"
+                                                {
+                                                    self.txtVwDesc.text = ""
+                                                    self.txtFldAmount.text = ""
+                                                    self.imageData = Data()
+                                                    self.fileName = ""
+                                                    self.lblImageName.text = ""
+                                                    self.btnCard.isSelected = false
+                                                    self.btnWalletAmt.isSelected = false
+                                                    self.btnNoReceipt.isSelected = true
+                                                    self.btnNoReceiptClicked(self.btnNoReceipt)
+                                                }
+                                                else
+                                                {
+                                                    let _=self.navigationController?.popViewController(animated: true)
+                                                }
+                                            }
+                                        }))
+                                        self.present(alert, animated: true, completion: nil)
+                                    
+                            }
+                        }) { (error) in
+                            DispatchQueue.main.async
+                                {
+                                    TaksyKraftUserDefaults.setWalletAmount(object: "₹ 0")
+                                    app_delegate.removeloder()
+                                        let alert = UIAlertController(title: "Success!", message: response as? String, preferredStyle: UIAlertControllerStyle.alert)
+                                        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
+                                            DispatchQueue.main.async {
+                                                self.reloadWallet()
+                                                if TaksyKraftUserDefaults.getUserRole() == "0"
+                                                {
+                                                    self.txtVwDesc.text = ""
+                                                    self.txtFldAmount.text = ""
+                                                    self.imageData = Data()
+                                                    self.fileName = ""
+                                                    self.lblImageName.text = ""
+                                                    self.btnCard.isSelected = false
+                                                    self.btnWalletAmt.isSelected = false
+                                                    self.btnNoReceipt.isSelected = true
+                                                    self.btnNoReceiptClicked(self.btnNoReceipt)
+                                                }
+                                                else
+                                                {
+                                                    let _=self.navigationController?.popViewController(animated: true)
+                                                }
+                                            }
+                                        }))
+                                        self.present(alert, animated: true, completion: nil)
+                            }
                         }
                     }, failureMessage: { (failure) in
                         app_delegate.removeloder()
@@ -201,28 +298,68 @@ class CreateExpenseViewController: BaseViewController,UIImagePickerControllerDel
             }
             else
             {
-                layer.uploadWith(imageData: self.imageData, desc: txtVwDesc.text, mobileNo: lblMobileNo.text!, amount: txtFldAmount.text!, fileName: self.fileName, contentType: "image/jpg", successMessage: { (response) in
-                    app_delegate.removeloder()
-                    DispatchQueue.main.async {
-                        let alert = UIAlertController(title: "Success!", message: response as? String, preferredStyle: UIAlertControllerStyle.alert)
-                        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
-                            DispatchQueue.main.async {
-                                if TaksyKraftUserDefaults.getUserRole() == "0"
-                                {
-                                    self.txtVwDesc.text = ""
-                                    self.txtFldAmount.text = ""
-                                    self.imageData = Data()
-                                    self.fileName = ""
-                                    self.lblImageName.text = ""
-                                }
-                                else
-                                {
-                                    let _=self.navigationController?.popViewController(animated: true)
-                                }
-                            }
-                        }))
-                        self.present(alert, animated: true, completion: nil)
+                layer.uploadWith(imageData: self.imageData, desc: txtVwDesc.text, mobileNo: lblMobileNo.text!, card: card, wallet: wallet, amount: txtFldAmount.text!, fileName: self.fileName, contentType: "image/jpg", successMessage: { (response) in
+                    layer.getWalletAmount(successMessage: { (bal) in
+                        DispatchQueue.main.async
+                            {
+                                TaksyKraftUserDefaults.setWalletAmount(object: "₹ \(bal as! String)")
+                                app_delegate.removeloder()
+                                let alert = UIAlertController(title: "Success!", message: response as? String, preferredStyle: UIAlertControllerStyle.alert)
+                                alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
+                                    DispatchQueue.main.async {
+                                        self.reloadWallet()
+                                        if TaksyKraftUserDefaults.getUserRole() == "0"
+                                        {
+                                            self.txtVwDesc.text = ""
+                                            self.txtFldAmount.text = ""
+                                            self.imageData = Data()
+                                            self.fileName = ""
+                                            self.lblImageName.text = ""
+                                            self.btnCard.isSelected = false
+                                            self.btnWalletAmt.isSelected = false
+                                            self.btnNoReceipt.isSelected = true
+                                            self.btnNoReceiptClicked(self.btnNoReceipt)
+                                        }
+                                        else
+                                        {
+                                            let _=self.navigationController?.popViewController(animated: true)
+                                        }
+                                    }
+                                }))
+                                self.present(alert, animated: true, completion: nil)
+                        }
+                    }) { (error) in
+                        DispatchQueue.main.async
+                            {
+                                TaksyKraftUserDefaults.setWalletAmount(object: "₹ 0")
+                                app_delegate.removeloder()
+                                let alert = UIAlertController(title: "Success!", message: response as? String, preferredStyle: UIAlertControllerStyle.alert)
+                                alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
+                                    DispatchQueue.main.async {
+                                        self.reloadWallet()
+                                        if TaksyKraftUserDefaults.getUserRole() == "0"
+                                        {
+                                            self.txtVwDesc.text = ""
+                                            self.txtFldAmount.text = ""
+                                            self.imageData = Data()
+                                            self.fileName = ""
+                                            self.lblImageName.text = ""
+                                            self.btnCard.isSelected = false
+                                            self.btnWalletAmt.isSelected = false
+                                            self.btnNoReceipt.isSelected = true
+                                            self.btnNoReceiptClicked(self.btnNoReceipt)
+                                            
+                                        }
+                                        else
+                                        {
+                                            let _=self.navigationController?.popViewController(animated: true)
+                                        }
+                                    }
+                                }))
+                                self.present(alert, animated: true, completion: nil)
+                        }
                     }
+
                 }, failureMessage: { (failure) in
                     app_delegate.removeloder()
                     
@@ -270,7 +407,9 @@ class CreateExpenseViewController: BaseViewController,UIImagePickerControllerDel
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         isImageModified = true
         imageData = UIImageJPEGRepresentation(info[UIImagePickerControllerOriginalImage] as! UIImage, 0.7)!
-        
+        let imageSize: Int = imageData.count
+        print("size of image in KB: %f ", Double(imageSize) / 1024.0)
+
         if let url = info[UIImagePickerControllerReferenceURL] as? URL
         {
             if let assets = PHAsset.fetchAssets(withALAssetURLs: [url], options: nil) as? PHFetchResult

@@ -43,10 +43,11 @@ class MyExpensesViewController: BaseViewController,UIPopoverPresentationControll
         }
         
     }
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        self.navigationController?.isNavigationBarHidden = false
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.isNavigationBarHidden = true
     }
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -62,10 +63,9 @@ extension MyExpensesViewController : UITableViewDelegate,UITableViewDataSource
         let cell  = tableView.dequeueReusableCell(withIdentifier: "MyExpensesTableViewCell", for: indexPath)  as! MyExpensesTableViewCell
         let bo = arrList[indexPath.row]
         
-        cell.lblName.text = bo.name
         cell.lblDesc.text = bo.Description
         cell.lblTktNo .text = bo.receiptId
-        cell.lblPrice.text = bo.amount
+        cell.lblPrice.text = "₹ " + bo.amount
         let df  = DateFormatter()
         df.dateFormat = "yyyy-MM-dd HH:mm:ss"
         df.timeZone = TimeZone(identifier: "UTC")
@@ -101,7 +101,7 @@ extension MyExpensesViewController : UITableViewDelegate,UITableViewDataSource
         {
             cell.lblStatus.textColor = UIColor(red: 211.0/255.0, green: 40.0/255.0, blue: 9.0/255.0, alpha: 1)
         }
-        else if bo.status_message == "Paid"
+        else if bo.status_message == "Paid" || bo.status_message == "Paid with wallet" || bo.status_message == "Wallet + Card Payment"
         {
             cell.lblStatus.textColor = UIColor(red: 135.0/255.0, green: 205.0/255.0, blue: 115.0/255.0, alpha: 1)
         }
@@ -110,6 +110,16 @@ extension MyExpensesViewController : UITableViewDelegate,UITableViewDataSource
             cell.lblStatus.textColor = UIColor.black
         }
         cell.lblComment.text = bo.comment
+        cell.lblNetAmt.text = "₹ " + bo.total
+        cell.lblTotalAmt.text = "₹ " + bo.amount
+        if bo.wallet_amount == "N/A"
+        {
+            cell.lblWalletAmt.text = bo.wallet_amount
+        }
+        else
+        {
+            cell.lblWalletAmt.text = "₹ " + bo.wallet_amount
+        }
         if bo.status == "0"
         {
             cell.btnMore.isHidden = false
@@ -124,12 +134,9 @@ extension MyExpensesViewController : UITableViewDelegate,UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
+        return 205
     }
     
-    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 181
-    }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let bo = arrList[indexPath.row]

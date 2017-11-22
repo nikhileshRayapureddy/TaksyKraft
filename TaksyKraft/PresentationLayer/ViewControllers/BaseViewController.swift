@@ -12,6 +12,7 @@ let ScreenWidth  =  UIScreen.main.bounds.size.width
 let ScreenHeight = UIScreen.main.bounds.size.height
 
 class BaseViewController: UIViewController {
+    var lblWallet = UILabel()
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -31,7 +32,7 @@ class BaseViewController: UIViewController {
         let titleLbl = UILabel()
         if showBack
         {
-            backButton.frame = CGRect(x: 0, y: -2  , width: 50 , height: 44)
+            backButton.frame = CGRect(x: 0, y: -2  , width: 40 , height: 44)
             backButton.imageEdgeInsets = UIEdgeInsetsMake(10, 2,2,10)
             backButton.setImage(UIImage(named: "back"), for: UIControlState.normal)
             backButton.addTarget(self, action: #selector(backClicked(sender:)), for: .touchUpInside)
@@ -61,11 +62,20 @@ class BaseViewController: UIViewController {
         if isMenu
         {
             let rightBarButtonItems = UIView()
-            rightBarButtonItems.frame = CGRect(x:0,y: 0,width: 50,height: 44)
+            rightBarButtonItems.frame = CGRect(x:0,y: 0,width: 130,height: 44)
             let btnMenu = UIButton(type: UIButtonType.custom)
-            btnMenu.frame = CGRect(x: 0, y: 0  , width: 50 , height: 44)
+            btnMenu.frame = CGRect(x: 80, y: 0  , width: 50 , height: 44)
             btnMenu.setImage(#imageLiteral(resourceName: "menu"), for: UIControlState.normal)
             btnMenu.addTarget(self, action: #selector(btnMenuClicked(sender:)), for: .touchUpInside)
+
+            lblWallet.frame = CGRect(x: 0, y: 0  , width: 80 , height: 44)
+            lblWallet.text = TaksyKraftUserDefaults.getWalletAmount()
+            lblWallet.backgroundColor = UIColor.clear
+            lblWallet.textColor = UIColor(red: 72.0/255.0, green: 151.0/255.0, blue: 8.0/255.0, alpha: 1.0)
+            lblWallet.textAlignment = .right
+            lblWallet.font = UIFont.systemFont(ofSize: 18)
+            
+            rightBarButtonItems.addSubview(lblWallet)
             rightBarButtonItems.addSubview(btnMenu)
             if #available(iOS 11.0, *)
             {
@@ -76,12 +86,35 @@ class BaseViewController: UIViewController {
                 self.navigationItem.rightBarButtonItems = [negativeSpacer,UIBarButtonItem(customView:rightBarButtonItems)]
             }
         }
+        else
+        {
+            let rightBarButtonItems = UIView()
+            rightBarButtonItems.frame = CGRect(x:0,y: 0,width: 80,height: 44)
+            lblWallet.frame = CGRect(x: 0, y: 0  , width: 80 , height: 44)
+            lblWallet.text = TaksyKraftUserDefaults.getWalletAmount()
+            lblWallet.backgroundColor = UIColor.clear
+            lblWallet.textColor = UIColor(red: 72.0/255.0, green: 151.0/255.0, blue: 8.0/255.0, alpha: 1.0)
+            lblWallet.font = UIFont.systemFont(ofSize: 18)
+            rightBarButtonItems.addSubview(lblWallet)
+            if #available(iOS 11.0, *)
+            {
+                self.navigationItem.rightBarButtonItems = [UIBarButtonItem(customView:rightBarButtonItems)]
+            }
+            else
+            {
+                self.navigationItem.rightBarButtonItems = [negativeSpacer,UIBarButtonItem(customView:rightBarButtonItems)]
+            }
+
+        }
     }
     func btnMenuClicked( sender:UIButton)
     {
 
     }
-
+    func reloadWallet()
+    {
+        lblWallet.text = TaksyKraftUserDefaults.getWalletAmount()
+    }
     
     func backClicked( sender:UIButton)
     {

@@ -14,7 +14,7 @@ let UserRole = "UserRole"
 let LoginStatus = "LoginStatus"
 let isMyExpense = "isMyExpense"
 let isFromExpenses = "isFromExpenses"
-
+let Wallet = "Wallet"
 public class TaksyKraftUserDefaults: NSObject {
     
     public class func getLoginStatus() -> Bool{
@@ -81,6 +81,21 @@ public class TaksyKraftUserDefaults: NSObject {
         UserDefaults.standard.synchronize()
         
     }
+    public class func getWalletAmount() -> String
+    {
+        let str = UserDefaults.standard.object(forKey: Wallet) as? String ?? ""
+        
+        return str
+    }
     
+    public class func setWalletAmount(object : String)
+    {
+        
+        UserDefaults.standard.set(object, forKey:Wallet)
+        
+        UserDefaults.standard.synchronize()
+        
+    }
+
     
 }

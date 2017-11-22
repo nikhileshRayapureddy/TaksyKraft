@@ -11,7 +11,6 @@ import UIKit
 class MyExpensesTableViewCell: UITableViewCell {
 
     @IBOutlet weak var imgVwItem: UIImageView!
-    @IBOutlet weak var lblName: UILabel!
     @IBOutlet weak var lblTktNo: UILabel!
     @IBOutlet weak var lblDesc: UILabel!
     @IBOutlet weak var lblDate: UILabel!
@@ -20,6 +19,9 @@ class MyExpensesTableViewCell: UITableViewCell {
     @IBOutlet weak var lblStatusText: UILabel!
     @IBOutlet weak var lblComment: UILabel!
     @IBOutlet weak var btnMore: UIButton!
+    @IBOutlet weak var lblTotalAmt: UILabel!
+    @IBOutlet weak var lblWalletAmt: UILabel!
+    @IBOutlet weak var lblNetAmt: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

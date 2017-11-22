@@ -30,7 +30,7 @@ class ServiceLayer: NSObject {
             }
             else
             {
-                if let error = obj.parsedDataDict["error"] as? String,let message = obj.parsedDataDict["message"] as? String
+                if let error = obj.parsedDataDict["error"] as? String,let message = obj.parsedDataDict["message"] as? String,let otp = obj.parsedDataDict["otp"] as? NSNumber
                 {
                     if error == "true"
                     {
@@ -40,7 +40,7 @@ class ServiceLayer: NSObject {
                     else
                     {
                         let x = message != "" ? message : self.SERVER_ERROR
-                        successMessage(x)
+                        successMessage(x + String(describing: otp))
                     }
                 }
                 else
@@ -274,6 +274,14 @@ class ServiceLayer: NSObject {
                                 {
                                     receipetBO.amount = amount
                                 }
+                                if let wallet_amount = receipt["wallet_amount"] as? String
+                                {
+                                    receipetBO.wallet_amount = wallet_amount
+                                }
+                                if let total = receipt["total"] as? String
+                                {
+                                    receipetBO.total = total
+                                }
                                 if let Description = receipt["description"] as? String
                                 {
                                     receipetBO.Description = Description
@@ -364,7 +372,7 @@ class ServiceLayer: NSObject {
             }
         }
     }
-    func uploadWith(imageData : Data,desc : String,mobileNo:String,amount : String,fileName : String,contentType:String,successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
+    func uploadWith(imageData : Data,desc : String,mobileNo:String,card:String,wallet:String,amount : String,fileName : String,contentType:String,successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
     {
         
         let strUrl = BASE_URL + "upload"
@@ -385,7 +393,15 @@ class ServiceLayer: NSObject {
         body.append("Content-Disposition: form-data; name=\"description\"\r\n\r\n".data(using: String.Encoding.utf8)!)
         body.append("\(desc)\r\n".data(using: String.Encoding.utf8, allowLossyConversion: true)!)
         body.append(("--\(boundary)\r\n").data(using: String.Encoding.utf8)!)
-        
+        body.append(("--\(boundary)\r\n").data(using: String.Encoding.utf8)!)
+        body.append("Content-Disposition: form-data; name=\"card\"\r\n\r\n".data(using: String.Encoding.utf8)!)
+        body.append("\(card)\r\n".data(using: String.Encoding.utf8, allowLossyConversion: true)!)
+        body.append(("--\(boundary)\r\n").data(using: String.Encoding.utf8)!)
+        body.append(("--\(boundary)\r\n").data(using: String.Encoding.utf8)!)
+        body.append("Content-Disposition: form-data; name=\"wallet\"\r\n\r\n".data(using: String.Encoding.utf8)!)
+        body.append("\(wallet)\r\n".data(using: String.Encoding.utf8, allowLossyConversion: true)!)
+        body.append(("--\(boundary)\r\n").data(using: String.Encoding.utf8)!)
+
         body.append("Content-Disposition: form-data; name=\"image\"; filename=\"\(fileName)\"\r\n".data(using: String.Encoding.utf8)!)
         body.append("Content-Type: contentType\r\n\r\n".data(using: String.Encoding.utf8)!)
         body.append(imageData)
@@ -467,7 +483,7 @@ class ServiceLayer: NSObject {
         
     }
 
-    func uploadEditedDetailsWith(imageData : Data,desc : String,mobileNo:String,amount : String,fileName : String,contentType:String,expenseID : String,successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
+    func uploadEditedDetailsWith(imageData : Data,card:String,wallet:String,desc : String,mobileNo:String,amount : String,fileName : String,contentType:String,expenseID : String,successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
     {
         
         let strUrl = BASE_URL + "editchanges/expid=\(expenseID)"
@@ -479,6 +495,14 @@ class ServiceLayer: NSObject {
         body.append(("--\(boundary)\r\n").data(using: String.Encoding.utf8)!)
         body.append("Content-Disposition: form-data; name=\"mobileno\"\r\n\r\n".data(using: String.Encoding.utf8)!)
         body.append("\(mobileNo)\r\n".data(using: String.Encoding.utf8, allowLossyConversion: true)!)
+        body.append(("--\(boundary)\r\n").data(using: String.Encoding.utf8)!)
+        body.append(("--\(boundary)\r\n").data(using: String.Encoding.utf8)!)
+        body.append("Content-Disposition: form-data; name=\"card\"\r\n\r\n".data(using: String.Encoding.utf8)!)
+        body.append("\(card)\r\n".data(using: String.Encoding.utf8, allowLossyConversion: true)!)
+        body.append(("--\(boundary)\r\n").data(using: String.Encoding.utf8)!)
+        body.append(("--\(boundary)\r\n").data(using: String.Encoding.utf8)!)
+        body.append("Content-Disposition: form-data; name=\"wallet\"\r\n\r\n".data(using: String.Encoding.utf8)!)
+        body.append("\(wallet)\r\n".data(using: String.Encoding.utf8, allowLossyConversion: true)!)
         body.append(("--\(boundary)\r\n").data(using: String.Encoding.utf8)!)
         body.append(("--\(boundary)\r\n").data(using: String.Encoding.utf8)!)
         body.append("Content-Disposition: form-data; name=\"amount\"\r\n\r\n".data(using: String.Encoding.utf8)!)
@@ -572,6 +596,149 @@ class ServiceLayer: NSObject {
         
         task.resume()
         
+    }
+    public func getWalletAmount(successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
+    {
+        let obj : HttpRequest = HttpRequest()
+        obj.tag = ParsingConstant.Login.rawValue
+        obj.MethodNamee = "GET"
+        obj._serviceURL = "\(BASE_URL_New)wallet/mobileno=\(TaksyKraftUserDefaults.getUserMobile())"///
+        obj.params = [:]
+        obj.doGetSOAPResponse {(success : Bool) -> Void in
+            if !success
+            {
+                failureMessage(self.SERVER_ERROR)
+            }
+            else
+            {
+                if let error = obj.parsedDataDict["error"] as? String
+                {
+                    if error == "true"
+                    {
+                        let x = self.SERVER_ERROR
+                        failureMessage(x)
+                    }
+                    else
+                    {
+                        if let balance = obj.parsedDataDict["balance"] as? String
+                        {
+                            successMessage(balance)
+                        }
+                        else
+                        {
+                            let x = self.SERVER_ERROR
+                            failureMessage(x)
+                        }
+                    }
+                }
+                else
+                {
+                    failureMessage(self.SERVER_ERROR)
+                }
+                
+            }
+        }
+    }
+    public func getEmployeeList(successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
+    {
+        let obj : HttpRequest = HttpRequest()
+        obj.tag = ParsingConstant.Login.rawValue
+        obj.MethodNamee = "GET"
+        obj._serviceURL = "\(BASE_URL_New)usersList"
+        obj.params = [:]
+        obj.doGetSOAPResponse {(success : Bool) -> Void in
+            if !success
+            {
+                failureMessage(self.SERVER_ERROR)
+            }
+            else
+            {
+                if let error = obj.parsedDataDict["error"] as? String,let message = obj.parsedDataDict["message"] as? String
+                {
+                    if error == "true"
+                    {
+                        let x = message != "" ? message : self.SERVER_ERROR
+                        failureMessage(x)
+                    }
+                    else
+                    {
+                        if let data = obj.parsedDataDict["data"] as? [[String:AnyObject]]
+                        {
+                            var arrData = [EmployeBO]()
+                            for receipt in data
+                            {
+                                let employeBO = EmployeBO()
+                                if let Name = receipt["Name"] as? String
+                                {
+                                    employeBO.Name = Name
+                                }
+                                if let Mobile = receipt["Mobile"] as? String
+                                {
+                                    employeBO.Mobile = Mobile
+                                }
+                                if let Location = receipt["Location"] as? String
+                                {
+                                    employeBO.Location = Location
+                                }
+                                
+                                arrData.append(employeBO)
+                            }
+                            successMessage(arrData)
+                        }
+                        else
+                        {
+                            let x = message != "" ? message : self.SERVER_ERROR
+                            failureMessage(x)
+                        }
+                    }
+                }
+                else
+                {
+                    failureMessage(self.SERVER_ERROR)
+                }
+                
+            }
+        }
+    }
+    func sendMoney(fromUser : String,toUser : String,amt : String,desc : String,successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
+    {
+        var dict = [String:AnyObject]()
+        dict["from_user"] = fromUser as AnyObject
+        dict["to_user"] = toUser as AnyObject
+        dict["amount"] = amt as AnyObject
+        dict["Description"] = desc as AnyObject
+        let obj : HttpRequest = HttpRequest()
+        obj.tag = ParsingConstant.Login.rawValue
+        obj.MethodNamee = "POST"
+        obj._serviceURL = "\(BASE_URL_New)sendMoney"
+        obj.params = dict
+        obj.doGetSOAPResponse {(success : Bool) -> Void in
+            if !success
+            {
+                failureMessage(self.SERVER_ERROR)
+            }
+            else
+            {
+                if let error = obj.parsedDataDict["error"] as? String,let message = obj.parsedDataDict["message"] as? String
+                {
+                    if error == "true"
+                    {
+                        let x = message != "" ? message : self.SERVER_ERROR
+                        failureMessage(x)
+                    }
+                    else
+                    {
+                        let x = message != "" ? message : self.SERVER_ERROR
+                        successMessage(x)
+                    }
+                }
+                else
+                {
+                    failureMessage(self.SERVER_ERROR)
+                }
+                
+            }
+        }
     }
 
     //MARK:- Utility Methods

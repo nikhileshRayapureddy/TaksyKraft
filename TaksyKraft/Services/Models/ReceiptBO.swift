@@ -9,21 +9,22 @@
 import UIKit
 
 class ReceiptBO: NSObject {
-    public var id = 0
-    public var receiptId = ""
-    public var image = ""
-    public var name = ""
-    public var uploadedby = ""
-    public var amount = ""
-    public var Description = ""
-    public var validate = ""
-    public var approved = ""
-    public var status = ""
-    public var created_at = ""
-    public var updated_at = ""
-    public var status_message = ""
-    public var comment = "N/A"
-    public var user = ""
-    
+    var id = 0
+    var receiptId = ""
+    var image = ""
+    var name = ""
+    var uploadedby = ""
+    var amount = ""
+    var Description = ""
+    var validate = ""
+    var approved = ""
+    var status = ""
+    var created_at = ""
+    var updated_at = ""
+    var status_message = ""
+    var comment = "N/A"
+    var user = ""
+    var wallet_amount = "N/A"
+    var total = "0"
 
 }
