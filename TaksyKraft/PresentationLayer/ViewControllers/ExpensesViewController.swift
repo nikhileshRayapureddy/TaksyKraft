@@ -253,8 +253,19 @@ extension ExpensesViewController : UITableViewDelegate,UITableViewDataSource
                 cell.btnApprove.setTitle("PAY NOW", for: .highlighted)
                 cell.btnApprove.addTarget(self, action: #selector(self.btnPayNowClicked(sender:)), for: .touchUpInside)
             }
-            
-            
+            else
+            {
+                cell.btnReject.setTitle("REJECT", for: .normal)
+                cell.btnReject.setTitle("REJECT", for: .selected)
+                cell.btnReject.setTitle("REJECT", for: .highlighted)
+                cell.btnReject.addTarget(self, action: #selector(self.btnRejectClicked(sender:)), for: .touchUpInside)
+                
+                cell.btnApprove.setTitle("PROCEED", for: .normal)
+                cell.btnApprove.setTitle("PROCEED", for: .selected)
+                cell.btnApprove.setTitle("PROCEED", for: .highlighted)
+                cell.btnApprove.addTarget(self, action: #selector(self.btnProceedClicked(sender:)), for: .touchUpInside)
+
+            }
         }
         return cell
     }
@@ -298,7 +309,7 @@ extension ExpensesViewController : UITableViewDelegate,UITableViewDataSource
     func btnRejectClicked(sender:UIButton)
     {
         
-        rejectPopup   =   (Bundle.main.loadNibNamed("RejectPopup", owner: nil, options: nil)![0] as? RejectPopup)!
+        rejectPopup = (Bundle.main.loadNibNamed("RejectPopup", owner: nil, options: nil)![0] as? RejectPopup)!
         rejectPopup?.frame = CGRect(x:0,y: 0,width: ScreenWidth, height:ScreenHeight)
         rejectPopup.txtVwResaon.layer.borderWidth = 1
         rejectPopup.txtVwResaon.layer.borderColor = UIColor.lightGray.cgColor
@@ -328,6 +339,27 @@ extension ExpensesViewController : UITableViewDelegate,UITableViewDataSource
         self.present(alert, animated: true, completion: nil)
         
     }
+    func btnProceedClicked(sender:UIButton)
+    {
+        let alert = UIAlertController(title: "Alert!", message: "Are you sure, You want to Proceed?", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
+            DispatchQueue.main.async {
+                let bo = self.arrList[sender.tag - 2500]
+                let serviceLayer = ServiceLayer()
+                serviceLayer.updateBillWith(billNo: String(bo.id), status: "6", comment: "0", successMessage: { (SR) in
+                    self.callForData()
+                    
+                }) { (FR) in
+                    self.showAlertWith(title: "Alert!", message: FR as! String)
+                }
+            }
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+        
+        
+    }
+
     func btnApproveClicked(sender:UIButton)
     {
         let alert = UIAlertController(title: "Alert!", message: "Are you sure, You want to Approve?", preferredStyle: UIAlertControllerStyle.alert)
