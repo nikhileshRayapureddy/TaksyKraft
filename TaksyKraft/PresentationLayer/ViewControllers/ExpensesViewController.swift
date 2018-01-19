@@ -214,7 +214,11 @@ extension ExpensesViewController : UITableViewDelegate,UITableViewDataSource
         cell.btnReject.tag = 1500 + indexPath.row
         cell.btnApprove.tag = 2500 + indexPath.row
         cell.btnReject.isHidden = false
-        
+        cell.btnApprove.removeTarget(self, action: #selector(self.btnApproveClicked(sender:)), for: .touchUpInside)
+        cell.btnApprove.removeTarget(self, action: #selector(self.btnPayNowClicked(sender:)), for: .touchUpInside)
+        cell.btnApprove.removeTarget(self, action: #selector(self.btnProceedClicked(sender:)), for: .touchUpInside)
+        cell.btnApprove.removeTarget(self, action: #selector(self.btnValidateClicked(sender:)), for: .touchUpInside)
+
         if TaksyKraftUserDefaults.getUserRole() == "1"
         {
             if bo.status == "1"
@@ -239,6 +243,7 @@ extension ExpensesViewController : UITableViewDelegate,UITableViewDataSource
                 cell.btnReject.setTitle("REJECT", for: .highlighted)
                 cell.btnReject.addTarget(self, action: #selector(self.btnRejectClicked(sender:)), for: .touchUpInside)
                 
+
                 cell.btnApprove.setTitle("VALIDATE", for: .normal)
                 cell.btnApprove.setTitle("VALIDATE", for: .selected)
                 cell.btnApprove.setTitle("VALIDATE", for: .highlighted)
