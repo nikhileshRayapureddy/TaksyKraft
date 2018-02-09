@@ -740,6 +740,101 @@ class ServiceLayer: NSObject {
             }
         }
     }
+    
+    func uploadWith(imageData : Data,successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
+    {
+        
+        let strUrl = "http://139.59.14.2/api/v3/upload-image"
+        let webStringURL = strUrl.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
+        var request  = URLRequest(url: URL(string:webStringURL)!)
+        request.httpMethod = "POST"
+        let boundary = "Orb"
+        let body = NSMutableData()
+        body.append(("--\(boundary)\r\n").data(using: String.Encoding.utf8)!)
+        body.append("Content-Disposition: form-data; name=\"image\";filename=\"\test.png\"\r\n".data(using: String.Encoding.utf8)!)
+        body.append("Content-Type: contentType\r\n\r\n".data(using: String.Encoding.utf8)!)
+        body.append(imageData)
+        body.append("\r\n".data(using: String.Encoding.utf8)!)
+        body.append("--\(boundary)--\r\n".data(using: String.Encoding.utf8)!)
+        
+        let content:String = "multipart/form-data; boundary=\(boundary)"
+        request.setValue(content, forHTTPHeaderField: "Content-Type")
+        request.setValue("\(body.length)", forHTTPHeaderField:"Content-Length")
+        request.setValue("Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImMwZjU3NzE4MDk2NmQxNWVkOTQ1YzVlY2ZlMjFhNmMwN2QxMWJjNWQwN2UxMDM3NGYzZDQ1MTkzN2I5NGQ1MDhmYjExZjY5MzQzODU4MmMxIn0.eyJhdWQiOiIxIiwianRpIjoiYzBmNTc3MTgwOTY2ZDE1ZWQ5NDVjNWVjZmUyMWE2YzA3ZDExYmM1ZDA3ZTEwMzc0ZjNkNDUxOTM3Yjk0ZDUwOGZiMTFmNjkzNDM4NTgyYzEiLCJpYXQiOjE1MTc5ODU4NTcsIm5iZiI6MTUxNzk4NTg1NywiZXhwIjoxNTQ5NTIxODU3LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.2NN2DCB_SqX0dvKg-JRFq0BXxyWjUJAFcXBDioOSnk9ItWN3IYj4ZCJZZZE1AUU16iDFersCm_YrEHBu8BsUEGEu01WbI8p58KUKg2FP-vFGAvRmHrTpULWh2Anfm0d1jf203zYMeRSY_VUPfiWz2McFpkM41jOBSxxgmRDgGlcAqSO3oVaXdrf-TcrGfzzGGR3NgrtRiEIFvzsx_dfN5AR9wU3IMAG9yEcgyCv-I-G-g-6gN1Bkg8tlHF3bXqE1tkFtvQpEQ7LEtSCvJV6003BjqT3x3UTvrGjweokTkpTQRO8_nR3ExiRYed_6LYNbGmbJpKxAQTuRD_BiF-x46bbpdFnjZ_leVvW7x5DODlz3OyPfDvlQFOisr6wubREXfDx9UtQ6s3Nz2hyALEnhOJDwZDvrh5JzDOMX2Gtl6PxZ1AZ0aN29ObmUqQV5Y4F6RW0GTkVqbYq8bCuIW8m2gbV96MpFwWsIPS0epVHHoE7kFTfKtbkwy1lW6PGfKJKjtssUe12LdRAmTVJ1QwPe8S3xBhFCeFD6IGEx7hc_vO8wjLcazx8dnBPdQfy8bVDgnw7zwxd_A1hrcvaSZN4PFMkfMDhv6PyKgjPWDwEXyw2NtPfKpBGcQe1cLI_BTIBhHY-8RVDFuBp3pO94-1vcmVdaHLnH9l9GT7Z1rBHqcSI", forHTTPHeaderField: "Authorization")
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        request.httpBody = body as Data?
+        
+        request.url = URL(string: webStringURL)!
+        let config = URLSessionConfiguration.ephemeral
+        config.timeoutIntervalForRequest = 40.0
+        config.timeoutIntervalForResource = 40.0
+        let session = URLSession(configuration: config)
+        
+        let task = session.dataTask(with: request) { (data, response, err) in
+            if data != nil
+            {
+                let dataString = String(data: data!, encoding: String.Encoding(rawValue: String.Encoding.utf8.rawValue))
+                print("data string = ", dataString! as String)
+                if dataString != ""
+                {
+                    
+                    if self.convertStringToDictionary(dataString!) != nil
+                    {
+                        return
+                        let parsedDataDict = self.convertStringToDictionary(dataString!)! as [String:AnyObject]
+                        if parsedDataDict.keys.count == 0
+                        {
+                            failureMessage(self.SERVER_ERROR)
+                        }
+                        else
+                        {
+                            if let error = parsedDataDict["error"] as? String
+                            {
+                                if Bool(error) == false
+                                {
+                                    if let message = parsedDataDict["message"] as? String
+                                    {
+                                        successMessage(message)
+                                    }
+                                    else
+                                    {
+                                        failureMessage(self.SERVER_ERROR)
+                                    }
+                                }
+                                else
+                                {
+                                    failureMessage(self.SERVER_ERROR)
+                                }
+                            }
+                        }
+                        
+                    }
+                    else
+                    {
+                        failureMessage(self.SERVER_ERROR)
+                    }
+                    
+                    
+                }
+                else
+                {
+                    failureMessage(self.SERVER_ERROR)
+                }
+                
+            }
+            else
+            {
+                failureMessage(self.SERVER_ERROR)
+                
+            }
+            
+            
+        }
+        
+        task.resume()
+        
+    }
+
 
     //MARK:- Utility Methods
     public func convertDictionaryToString(dict: [String:String]) -> String? {

@@ -43,6 +43,7 @@
 		A71D4F191FC55E820075CB61 /* EmployeeCustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71D4F181FC55E820075CB61 /* EmployeeCustomCell.swift */; };
 		A71D4F1B1FC55F9C0075CB61 /* EmployeBO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71D4F1A1FC55F9C0075CB61 /* EmployeBO.swift */; };
 		A71D4F1D1FC56FE20075CB61 /* SendMoneyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71D4F1C1FC56FE20075CB61 /* SendMoneyViewController.swift */; };
+		A7224BD52015DD0F00F0A59D /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7224BD42015DD0F00F0A59D /* DashboardViewController.swift */; };
 		A7461D6A1F66A82900F2B05C /* ExpensesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7461D681F66A82900F2B05C /* ExpensesTableViewCell.swift */; };
 		A7461D6B1F66A82900F2B05C /* ExpensesTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7461D691F66A82900F2B05C /* ExpensesTableViewCell.xib */; };
 		A7472CD61F0C9164007B677C /* FloatLabelTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7472CD41F0C9164007B677C /* FloatLabelTextField.swift */; };
@@ -76,6 +77,19 @@
 		A7CFB5171F0D66B7005B6CBB /* IQUIView+IQKeyboardToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CFB5051F0D66B7005B6CBB /* IQUIView+IQKeyboardToolbar.swift */; };
 		A7CFB5181F0D66B7005B6CBB /* IQKeyboardManager.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A7CFB5071F0D66B7005B6CBB /* IQKeyboardManager.bundle */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A735E56B2019E2F60074DB64 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		A70261AF1F1699CA0088D757 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -117,6 +131,7 @@
 		A71D4F181FC55E820075CB61 /* EmployeeCustomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeCustomCell.swift; sourceTree = "<group>"; };
 		A71D4F1A1FC55F9C0075CB61 /* EmployeBO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeBO.swift; sourceTree = "<group>"; };
 		A71D4F1C1FC56FE20075CB61 /* SendMoneyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMoneyViewController.swift; sourceTree = "<group>"; };
+		A7224BD42015DD0F00F0A59D /* DashboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewController.swift; sourceTree = "<group>"; };
 		A7461D681F66A82900F2B05C /* ExpensesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpensesTableViewCell.swift; sourceTree = "<group>"; };
 		A7461D691F66A82900F2B05C /* ExpensesTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExpensesTableViewCell.xib; sourceTree = "<group>"; };
 		A7472CD41F0C9164007B677C /* FloatLabelTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatLabelTextField.swift; sourceTree = "<group>"; };
@@ -243,6 +258,7 @@
 				A7BB0D101F0CC72800146A9F /* CreateExpenseViewController.swift */,
 				A71D4F161FC559B80075CB61 /* EmployListViewController.swift */,
 				A71D4F1C1FC56FE20075CB61 /* SendMoneyViewController.swift */,
+				A7224BD42015DD0F00F0A59D /* DashboardViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -406,6 +422,8 @@
 				A70574411F04FE79005D1936 /* Sources */,
 				A70574421F04FE79005D1936 /* Frameworks */,
 				A70574431F04FE79005D1936 /* Resources */,
+				A735E56B2019E2F60074DB64 /* Embed Frameworks */,
+				A735E5712019E59A0074DB64 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -469,6 +487,22 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		A735E5712019E59A0074DB64 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 8;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = "lib/strip-frameworks.sh";
+			shellScript = "";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		A70574411F04FE79005D1936 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -481,6 +515,7 @@
 				A7BB0D161F0CD5D600146A9F /* ReceiptBO.swift in Sources */,
 				A7472CD71F0C9164007B677C /* FloatLabelTextView.swift in Sources */,
 				A7461D6A1F66A82900F2B05C /* ExpensesTableViewCell.swift in Sources */,
+				A7224BD52015DD0F00F0A59D /* DashboardViewController.swift in Sources */,
 				A7CFB50F1F0D66B7005B6CBB /* IQKeyboardManagerConstantsInternal.swift in Sources */,
 				A70574AB1F04FF3F005D1936 /* RequrstModifier.swift in Sources */,
 				A70574A41F04FF3F005D1936 /* ImageProcessor.swift in Sources */,
@@ -660,6 +695,10 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 767WDHBUJ6;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/TaksyKraft",
+				);
 				INFOPLIST_FILE = TaksyKraft/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -680,6 +719,10 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 767WDHBUJ6;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/TaksyKraft",
+				);
 				INFOPLIST_FILE = TaksyKraft/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

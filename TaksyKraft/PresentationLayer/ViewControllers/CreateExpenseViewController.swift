@@ -154,6 +154,25 @@ class CreateExpenseViewController: BaseViewController,UIImagePickerControllerDel
         {
             app_delegate.showLoader(message: "Uploading...")
             let layer = ServiceLayer()
+            
+            layer.uploadWith(imageData: self.imageData, successMessage: { (response) in
+                DispatchQueue.main.async
+                    {
+                        let alert = UIAlertController(title: "Success!", message: "Image uploaded successfully", preferredStyle: UIAlertControllerStyle.alert)
+                        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+                        self.present(alert, animated: true, completion: nil)
+
+                }
+            }, failureMessage: { (error) in
+                DispatchQueue.main.async
+                    {
+                        let alert = UIAlertController(title: "Success!", message: "Image uploading failed.", preferredStyle: UIAlertControllerStyle.alert)
+                        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+                        self.present(alert, animated: true, completion: nil)
+                }
+
+            })
+            return
             let card = btnCard.isSelected == true ? "1" : "0"
             let wallet = btnWalletAmt.isSelected == true ? "1" : "0"
             if isFromEdit
@@ -406,7 +425,10 @@ class CreateExpenseViewController: BaseViewController,UIImagePickerControllerDel
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         isImageModified = true
-        imageData = UIImageJPEGRepresentation(info[UIImagePickerControllerOriginalImage] as! UIImage, 0.7)!
+        imageData = self.compressImageSize(image: info[UIImagePickerControllerOriginalImage] as! UIImage, compressionQuality: 1.0)
+            
+            
+        
         let imageSize: Int = imageData.count
         print("size of image in KB: %f ", Double(imageSize) / 1024.0)
 
@@ -444,6 +466,17 @@ class CreateExpenseViewController: BaseViewController,UIImagePickerControllerDel
         }
         lblImageName.text = fileName
         self.dismiss(animated: true, completion: nil)
+    }
+    func compressImageSize(image: UIImage,compressionQuality : CGFloat) -> Data
+    {
+        var imageData = Data()
+        imageData = UIImageJPEGRepresentation(image, CGFloat(compressionQuality))!
+        print("compressImageSize in KB: %f ", Double(imageData.count) / 1024.0)
+
+        if imageData.count > 2097152 {
+           return self.compressImageSize(image: image, compressionQuality: compressionQuality - 0.1)
+        }
+        return imageData
     }
 
     @IBAction func btnNoReceiptClicked(_ sender: UIButton) {
