@@ -10,11 +10,13 @@ import UIKit
 
 let UserMobile = "Mobile"
 let UserName = "Name"
-let UserRole = "UserRole"
+let User = "User"
 let LoginStatus = "LoginStatus"
 let isMyExpense = "isMyExpense"
 let isFromExpenses = "isFromExpenses"
 let Wallet = "Wallet"
+let accessToken = "accessToken"
+
 public class TaksyKraftUserDefaults: NSObject {
     
     public class func getLoginStatus() -> Bool{
@@ -26,6 +28,19 @@ public class TaksyKraftUserDefaults: NSObject {
         UserDefaults.standard.synchronize()
         
     }
+    public class func getAccessToken() -> String{
+        let str = UserDefaults.standard.object(forKey: accessToken) as? String ?? ""
+        
+        return str
+    }
+    public class func setAccessToken (object:String)
+    {
+        UserDefaults.standard.set(object, forKey:accessToken)
+        
+        UserDefaults.standard.synchronize()
+
+    }
+
     public class func getIsMyExpense() -> Bool{
         return UserDefaults.standard.bool(forKey: isMyExpense)
     }
@@ -71,23 +86,24 @@ public class TaksyKraftUserDefaults: NSObject {
         UserDefaults.standard.set(object, forKey:UserName)
         UserDefaults.standard.synchronize()
     }
-
-    public class func getUserRole() -> String{
-        return UserDefaults.standard.object(forKey: UserRole) as! String
-    }
-    public class func setUserRole (object:String)
-    {
-        UserDefaults.standard.set(object, forKey: UserRole)
-        UserDefaults.standard.synchronize()
-        
-    }
     public class func getWalletAmount() -> String
     {
         let str = UserDefaults.standard.object(forKey: Wallet) as? String ?? ""
         
         return str
     }
-    
+    public class func getUser() -> UserBO
+    {
+        let data = UserDefaults.standard.data(forKey: User)
+        return (NSKeyedUnarchiver.unarchiveObject(with: data!) as? UserBO)!
+    }
+    public class func setUser(object : UserBO)
+    {
+        let encodedData = NSKeyedArchiver.archivedData(withRootObject: object)
+        UserDefaults.standard.set(encodedData, forKey:User)
+        UserDefaults.standard.synchronize()
+    }
+
     public class func setWalletAmount(object : String)
     {
         

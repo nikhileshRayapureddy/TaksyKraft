@@ -3,427 +3,493 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 48;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A70261B01F1699CA0088D757 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A70261AF1F1699CA0088D757 /* AVFoundation.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		A70261B21F16A37C0088D757 /* RejectPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70261B11F16A37C0088D757 /* RejectPopup.swift */; };
-		A70261B41F16A3850088D757 /* RejectPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = A70261B31F16A3850088D757 /* RejectPopup.xib */; };
-		A705744E1F04FE79005D1936 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A705744C1F04FE79005D1936 /* Main.storyboard */; };
-		A70574511F04FE79005D1936 /* TaksyKraft.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A705744F1F04FE79005D1936 /* TaksyKraft.xcdatamodeld */; };
-		A70574531F04FE79005D1936 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A70574521F04FE79005D1936 /* Assets.xcassets */; };
-		A70574561F04FE79005D1936 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A70574541F04FE79005D1936 /* LaunchScreen.storyboard */; };
-		A70574651F04FEDE005D1936 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A705745E1F04FEDE005D1936 /* AppDelegate.swift */; };
-		A70574661F04FEDE005D1936 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70574631F04FEDE005D1936 /* ViewController.swift */; };
-		A70574921F04FF3F005D1936 /* HttpRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A705746D1F04FF3F005D1936 /* HttpRequest.swift */; };
-		A705749B1F04FF3F005D1936 /* TaksyKraftUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70574761F04FF3F005D1936 /* TaksyKraftUserDefaults.swift */; };
-		A705749C1F04FF3F005D1936 /* AnimatedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70574781F04FF3F005D1936 /* AnimatedImageView.swift */; };
-		A705749D1F04FF3F005D1936 /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70574791F04FF3F005D1936 /* Box.swift */; };
-		A705749E1F04FF3F005D1936 /* CacheSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A705747A1F04FF3F005D1936 /* CacheSerializer.swift */; };
-		A705749F1F04FF3F005D1936 /* Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A705747B1F04FF3F005D1936 /* Filter.swift */; };
-		A70574A01F04FF3F005D1936 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = A705747C1F04FF3F005D1936 /* Image.swift */; };
-		A70574A11F04FF3F005D1936 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = A705747D1F04FF3F005D1936 /* ImageCache.swift */; };
-		A70574A21F04FF3F005D1936 /* ImageDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A705747E1F04FF3F005D1936 /* ImageDownloader.swift */; };
-		A70574A31F04FF3F005D1936 /* ImagePrefetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = A705747F1F04FF3F005D1936 /* ImagePrefetcher.swift */; };
-		A70574A41F04FF3F005D1936 /* ImageProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70574801F04FF3F005D1936 /* ImageProcessor.swift */; };
-		A70574A51F04FF3F005D1936 /* ImageTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70574811F04FF3F005D1936 /* ImageTransition.swift */; };
-		A70574A61F04FF3F005D1936 /* ImageView+Kingfisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70574821F04FF3F005D1936 /* ImageView+Kingfisher.swift */; };
-		A70574A71F04FF3F005D1936 /* Indicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70574831F04FF3F005D1936 /* Indicator.swift */; };
-		A70574A81F04FF3F005D1936 /* Kingfisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70574851F04FF3F005D1936 /* Kingfisher.swift */; };
-		A70574A91F04FF3F005D1936 /* KingfisherManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70574861F04FF3F005D1936 /* KingfisherManager.swift */; };
-		A70574AA1F04FF3F005D1936 /* KingfisherOptionsInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70574871F04FF3F005D1936 /* KingfisherOptionsInfo.swift */; };
-		A70574AB1F04FF3F005D1936 /* RequrstModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70574881F04FF3F005D1936 /* RequrstModifier.swift */; };
-		A70574AC1F04FF3F005D1936 /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70574891F04FF3F005D1936 /* Resource.swift */; };
-		A70574AD1F04FF3F005D1936 /* String+MD5.swift in Sources */ = {isa = PBXBuildFile; fileRef = A705748A1F04FF3F005D1936 /* String+MD5.swift */; };
-		A70574AE1F04FF3F005D1936 /* ThreadHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A705748B1F04FF3F005D1936 /* ThreadHelper.swift */; };
-		A70574AF1F04FF3F005D1936 /* UIButton+Kingfisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = A705748C1F04FF3F005D1936 /* UIButton+Kingfisher.swift */; };
-		A70574B11F0501D0005D1936 /* ServiceLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70574B01F0501D0005D1936 /* ServiceLayer.swift */; };
-		A71D4F171FC559B80075CB61 /* EmployListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71D4F161FC559B80075CB61 /* EmployListViewController.swift */; };
-		A71D4F191FC55E820075CB61 /* EmployeeCustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71D4F181FC55E820075CB61 /* EmployeeCustomCell.swift */; };
-		A71D4F1B1FC55F9C0075CB61 /* EmployeBO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71D4F1A1FC55F9C0075CB61 /* EmployeBO.swift */; };
-		A71D4F1D1FC56FE20075CB61 /* SendMoneyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71D4F1C1FC56FE20075CB61 /* SendMoneyViewController.swift */; };
-		A7224BD52015DD0F00F0A59D /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7224BD42015DD0F00F0A59D /* DashboardViewController.swift */; };
-		A7461D6A1F66A82900F2B05C /* ExpensesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7461D681F66A82900F2B05C /* ExpensesTableViewCell.swift */; };
-		A7461D6B1F66A82900F2B05C /* ExpensesTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7461D691F66A82900F2B05C /* ExpensesTableViewCell.xib */; };
-		A7472CD61F0C9164007B677C /* FloatLabelTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7472CD41F0C9164007B677C /* FloatLabelTextField.swift */; };
-		A7472CD71F0C9164007B677C /* FloatLabelTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7472CD51F0C9164007B677C /* FloatLabelTextView.swift */; };
-		A7472CD91F0C979F007B677C /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7472CD81F0C979F007B677C /* BaseViewController.swift */; };
-		A7472CDD1F0CA29C007B677C /* MyExpensesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7472CDB1F0CA29C007B677C /* MyExpensesTableViewCell.swift */; };
-		A7472CDE1F0CA29C007B677C /* MyExpensesTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7472CDC1F0CA29C007B677C /* MyExpensesTableViewCell.xib */; };
-		A7472CE41F0CA9FB007B677C /* ExpensesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7472CE31F0CA9FB007B677C /* ExpensesViewController.swift */; };
-		A767987B1F66679D000BD5EF /* MyExpensesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A767987A1F66679D000BD5EF /* MyExpensesViewController.swift */; };
-		A7BB0D111F0CC72800146A9F /* CreateExpenseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BB0D101F0CC72800146A9F /* CreateExpenseViewController.swift */; };
-		A7BB0D161F0CD5D600146A9F /* ReceiptBO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BB0D151F0CD5D600146A9F /* ReceiptBO.swift */; };
-		A7BB0D191F0CE6BB00146A9F /* CustomPopOver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BB0D181F0CE6BB00146A9F /* CustomPopOver.swift */; };
-		A7BB0D1C1F0D060200146A9F /* ImageDetailPopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BB0D1A1F0D060200146A9F /* ImageDetailPopUp.swift */; };
-		A7BB0D1D1F0D060200146A9F /* ImageDetailPopUp.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7BB0D1B1F0D060200146A9F /* ImageDetailPopUp.xib */; };
-		A7BB0D1F1F0D1DD600146A9F /* UserBO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BB0D1E1F0D1DD600146A9F /* UserBO.swift */; };
-		A7CFB5081F0D66B7005B6CBB /* IQNSArray+Sort.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CFB4F21F0D66B7005B6CBB /* IQNSArray+Sort.swift */; };
-		A7CFB5091F0D66B7005B6CBB /* IQUIScrollView+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CFB4F31F0D66B7005B6CBB /* IQUIScrollView+Additions.swift */; };
-		A7CFB50A1F0D66B7005B6CBB /* IQUITextFieldView+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CFB4F41F0D66B7005B6CBB /* IQUITextFieldView+Additions.swift */; };
-		A7CFB50B1F0D66B7005B6CBB /* IQUIView+Hierarchy.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CFB4F51F0D66B7005B6CBB /* IQUIView+Hierarchy.swift */; };
-		A7CFB50C1F0D66B7005B6CBB /* IQUIViewController+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CFB4F61F0D66B7005B6CBB /* IQUIViewController+Additions.swift */; };
-		A7CFB50D1F0D66B7005B6CBB /* IQUIWindow+Hierarchy.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CFB4F71F0D66B7005B6CBB /* IQUIWindow+Hierarchy.swift */; };
-		A7CFB50E1F0D66B7005B6CBB /* IQKeyboardManagerConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CFB4F91F0D66B7005B6CBB /* IQKeyboardManagerConstants.swift */; };
-		A7CFB50F1F0D66B7005B6CBB /* IQKeyboardManagerConstantsInternal.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CFB4FA1F0D66B7005B6CBB /* IQKeyboardManagerConstantsInternal.swift */; };
-		A7CFB5101F0D66B7005B6CBB /* IQKeyboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CFB4FB1F0D66B7005B6CBB /* IQKeyboardManager.swift */; };
-		A7CFB5111F0D66B7005B6CBB /* IQKeyboardReturnKeyHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CFB4FD1F0D66B7005B6CBB /* IQKeyboardReturnKeyHandler.swift */; };
-		A7CFB5121F0D66B7005B6CBB /* IQTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CFB4FF1F0D66B7005B6CBB /* IQTextView.swift */; };
-		A7CFB5131F0D66B7005B6CBB /* IQBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CFB5011F0D66B7005B6CBB /* IQBarButtonItem.swift */; };
-		A7CFB5141F0D66B7005B6CBB /* IQPreviousNextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CFB5021F0D66B7005B6CBB /* IQPreviousNextView.swift */; };
-		A7CFB5151F0D66B7005B6CBB /* IQTitleBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CFB5031F0D66B7005B6CBB /* IQTitleBarButtonItem.swift */; };
-		A7CFB5161F0D66B7005B6CBB /* IQToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CFB5041F0D66B7005B6CBB /* IQToolbar.swift */; };
-		A7CFB5171F0D66B7005B6CBB /* IQUIView+IQKeyboardToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CFB5051F0D66B7005B6CBB /* IQUIView+IQKeyboardToolbar.swift */; };
-		A7CFB5181F0D66B7005B6CBB /* IQKeyboardManager.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A7CFB5071F0D66B7005B6CBB /* IQKeyboardManager.bundle */; };
+		A72CD7B4205A80C90012864F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A72CD7B2205A80C90012864F /* Main.storyboard */; };
+		A72CD7B6205A80C90012864F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A72CD7B5205A80C90012864F /* Assets.xcassets */; };
+		A72CD7B9205A80C90012864F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A72CD7B7205A80C90012864F /* LaunchScreen.storyboard */; };
+		A72CD831205A81710012864F /* FloatLabelTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD7C1205A81700012864F /* FloatLabelTextView.swift */; };
+		A72CD832205A81710012864F /* FloatLabelTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD7C2205A81700012864F /* FloatLabelTextField.swift */; };
+		A72CD833205A81710012864F /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD7C3205A81700012864F /* Reachability.swift */; };
+		A72CD834205A81710012864F /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD7C5205A81700012864F /* ImageCache.swift */; };
+		A72CD835205A81710012864F /* ThreadHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD7C6205A81700012864F /* ThreadHelper.swift */; };
+		A72CD836205A81710012864F /* Kingfisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD7C7205A81700012864F /* Kingfisher.swift */; };
+		A72CD837205A81710012864F /* ImageView+Kingfisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD7C8205A81700012864F /* ImageView+Kingfisher.swift */; };
+		A72CD838205A81710012864F /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD7C9205A81700012864F /* Image.swift */; };
+		A72CD839205A81710012864F /* Indicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD7CA205A81700012864F /* Indicator.swift */; };
+		A72CD83A205A81710012864F /* CacheSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD7CB205A81700012864F /* CacheSerializer.swift */; };
+		A72CD83B205A81710012864F /* UIButton+Kingfisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD7CC205A81700012864F /* UIButton+Kingfisher.swift */; };
+		A72CD83C205A81710012864F /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD7CD205A81700012864F /* Resource.swift */; };
+		A72CD83D205A81710012864F /* ImageDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD7CE205A81700012864F /* ImageDownloader.swift */; };
+		A72CD83E205A81710012864F /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD7D0205A81700012864F /* Box.swift */; };
+		A72CD83F205A81710012864F /* KingfisherManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD7D1205A81700012864F /* KingfisherManager.swift */; };
+		A72CD840205A81710012864F /* ImageTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD7D2205A81700012864F /* ImageTransition.swift */; };
+		A72CD841205A81710012864F /* AnimatedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD7D3205A81700012864F /* AnimatedImageView.swift */; };
+		A72CD842205A81710012864F /* RequrstModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD7D4205A81700012864F /* RequrstModifier.swift */; };
+		A72CD843205A81710012864F /* String+MD5.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD7D5205A81700012864F /* String+MD5.swift */; };
+		A72CD844205A81710012864F /* ImageProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD7D6205A81700012864F /* ImageProcessor.swift */; };
+		A72CD845205A81710012864F /* Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD7D7205A81700012864F /* Filter.swift */; };
+		A72CD846205A81710012864F /* KingfisherOptionsInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD7D8205A81700012864F /* KingfisherOptionsInfo.swift */; };
+		A72CD847205A81710012864F /* ImagePrefetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD7D9205A81700012864F /* ImagePrefetcher.swift */; };
+		A72CD848205A81710012864F /* TaksyKraftUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD7DA205A81700012864F /* TaksyKraftUserDefaults.swift */; };
+		A72CD849205A81710012864F /* IQTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD7DD205A81700012864F /* IQTextView.swift */; };
+		A72CD84A205A81710012864F /* IQPreviousNextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD7DF205A81700012864F /* IQPreviousNextView.swift */; };
+		A72CD84B205A81710012864F /* IQTitleBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD7E0205A81700012864F /* IQTitleBarButtonItem.swift */; };
+		A72CD84C205A81710012864F /* IQBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD7E1205A81700012864F /* IQBarButtonItem.swift */; };
+		A72CD84D205A81710012864F /* IQToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD7E2205A81700012864F /* IQToolbar.swift */; };
+		A72CD84E205A81710012864F /* IQUIView+IQKeyboardToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD7E3205A81700012864F /* IQUIView+IQKeyboardToolbar.swift */; };
+		A72CD84F205A81710012864F /* IQKeyboardManagerConstantsInternal.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD7E5205A81700012864F /* IQKeyboardManagerConstantsInternal.swift */; };
+		A72CD850205A81710012864F /* IQKeyboardManagerConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD7E6205A81700012864F /* IQKeyboardManagerConstants.swift */; };
+		A72CD851205A81710012864F /* IQKeyboardManager.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A72CD7E8205A81700012864F /* IQKeyboardManager.bundle */; };
+		A72CD852205A81710012864F /* IQKeyboardReturnKeyHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD7E9205A81700012864F /* IQKeyboardReturnKeyHandler.swift */; };
+		A72CD853205A81710012864F /* IQKeyboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD7EA205A81700012864F /* IQKeyboardManager.swift */; };
+		A72CD854205A81710012864F /* IQUIWindow+Hierarchy.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD7ED205A81700012864F /* IQUIWindow+Hierarchy.swift */; };
+		A72CD855205A81710012864F /* IQUIScrollView+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD7EE205A81700012864F /* IQUIScrollView+Additions.swift */; };
+		A72CD856205A81710012864F /* IQUIViewController+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD7EF205A81700012864F /* IQUIViewController+Additions.swift */; };
+		A72CD857205A81710012864F /* IQUITextFieldView+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD7F0205A81700012864F /* IQUITextFieldView+Additions.swift */; };
+		A72CD858205A81710012864F /* IQUIView+Hierarchy.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD7F1205A81700012864F /* IQUIView+Hierarchy.swift */; };
+		A72CD859205A81710012864F /* IQNSArray+Sort.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD7F2205A81700012864F /* IQNSArray+Sort.swift */; };
+		A72CD85A205A81710012864F /* HttpRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD7F4205A81700012864F /* HttpRequest.swift */; };
+		A72CD85B205A81710012864F /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A72CD7F6205A81700012864F /* Roboto-Medium.ttf */; };
+		A72CD85C205A81710012864F /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A72CD7F7205A81700012864F /* Roboto-Light.ttf */; };
+		A72CD85D205A81710012864F /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A72CD7F8205A81700012864F /* Roboto-Regular.ttf */; };
+		A72CD85E205A81710012864F /* Roboto-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A72CD7F9205A81700012864F /* Roboto-MediumItalic.ttf */; };
+		A72CD85F205A81710012864F /* Roboto-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A72CD7FA205A81700012864F /* Roboto-ThinItalic.ttf */; };
+		A72CD860205A81710012864F /* Roboto-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A72CD7FB205A81700012864F /* Roboto-BoldItalic.ttf */; };
+		A72CD861205A81710012864F /* Roboto-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A72CD7FC205A81700012864F /* Roboto-LightItalic.ttf */; };
+		A72CD862205A81710012864F /* Roboto-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A72CD7FD205A81700012864F /* Roboto-Italic.ttf */; };
+		A72CD863205A81710012864F /* Roboto-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A72CD7FE205A81700012864F /* Roboto-BlackItalic.ttf */; };
+		A72CD864205A81710012864F /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A72CD7FF205A81700012864F /* Roboto-Bold.ttf */; };
+		A72CD865205A81710012864F /* Roboto-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A72CD800205A81700012864F /* Roboto-Thin.ttf */; };
+		A72CD866205A81710012864F /* Roboto-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A72CD801205A81700012864F /* Roboto-Black.ttf */; };
+		A72CD867205A81710012864F /* ServiceLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD803205A81700012864F /* ServiceLayer.swift */; };
+		A72CD868205A81710012864F /* ReceiptBO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD805205A81700012864F /* ReceiptBO.swift */; };
+		A72CD869205A81710012864F /* ChequeBO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD806205A81700012864F /* ChequeBO.swift */; };
+		A72CD86A205A81710012864F /* EmployeBO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD807205A81700012864F /* EmployeBO.swift */; };
+		A72CD86B205A81710012864F /* TransactionBO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD808205A81700012864F /* TransactionBO.swift */; };
+		A72CD86C205A81710012864F /* UserBO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD809205A81700012864F /* UserBO.swift */; };
+		A72CD86D205A81710012864F /* TravelBO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD80A205A81700012864F /* TravelBO.swift */; };
+		A72CD86E205A81710012864F /* CityBO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD80B205A81700012864F /* CityBO.swift */; };
+		A72CD86F205A81710012864F /* AllExpensesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD80E205A81700012864F /* AllExpensesTableViewCell.swift */; };
+		A72CD870205A81710012864F /* EmployeeCustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD80F205A81700012864F /* EmployeeCustomCell.swift */; };
+		A72CD871205A81710012864F /* ImageZoomCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD810205A81700012864F /* ImageZoomCollectionViewCell.swift */; };
+		A72CD872205A81710012864F /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD811205A81700012864F /* ImageCollectionViewCell.swift */; };
+		A72CD873205A81710012864F /* MyExpensesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD812205A81700012864F /* MyExpensesTableViewCell.swift */; };
+		A72CD874205A81710012864F /* AllChequesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD813205A81700012864F /* AllChequesTableViewCell.swift */; };
+		A72CD875205A81710012864F /* MyTravelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD814205A81700012864F /* MyTravelTableViewCell.swift */; };
+		A72CD876205A81710012864F /* AllTravelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD815205A81700012864F /* AllTravelTableViewCell.swift */; };
+		A72CD877205A81710012864F /* MyChequesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD816205A81700012864F /* MyChequesTableViewCell.swift */; };
+		A72CD878205A81710012864F /* OnlineTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD817205A81700012864F /* OnlineTableViewCell.swift */; };
+		A72CD879205A81710012864F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD819205A81700012864F /* ViewController.swift */; };
+		A72CD87A205A81710012864F /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD81A205A81700012864F /* BaseViewController.swift */; };
+		A72CD87B205A81710012864F /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD81B205A81700012864F /* DashboardViewController.swift */; };
+		A72CD87C205A81710012864F /* CreateOnlineTransactionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD81C205A81700012864F /* CreateOnlineTransactionViewController.swift */; };
+		A72CD87D205A81710012864F /* VerifyOTPViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD81D205A81700012864F /* VerifyOTPViewController.swift */; };
+		A72CD87E205A81710012864F /* ImagePreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD81E205A81700012864F /* ImagePreviewViewController.swift */; };
+		A72CD87F205A81710012864F /* ChequeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD81F205A81700012864F /* ChequeViewController.swift */; };
+		A72CD880205A81710012864F /* ExpensesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD820205A81700012864F /* ExpensesViewController.swift */; };
+		A72CD881205A81710012864F /* CreateChequeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD821205A81700012864F /* CreateChequeViewController.swift */; };
+		A72CD882205A81710012864F /* TransactionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD822205A81700012864F /* TransactionViewController.swift */; };
+		A72CD883205A81710012864F /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD823205A81700012864F /* LoginViewController.swift */; };
+		A72CD884205A81710012864F /* CreateExpenseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD824205A81700012864F /* CreateExpenseViewController.swift */; };
+		A72CD885205A81710012864F /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD825205A81700012864F /* ProfileViewController.swift */; };
+		A72CD886205A81710012864F /* TravelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD826205A81700012864F /* TravelViewController.swift */; };
+		A72CD887205A81710012864F /* OnlineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD827205A81700012864F /* OnlineViewController.swift */; };
+		A72CD888205A81710012864F /* CreateTravelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD828205A81700012864F /* CreateTravelViewController.swift */; };
+		A72CD889205A81710012864F /* ImageDetailPopUp.xib in Resources */ = {isa = PBXBuildFile; fileRef = A72CD82A205A81700012864F /* ImageDetailPopUp.xib */; };
+		A72CD88A205A81710012864F /* CustomPopOver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD82B205A81700012864F /* CustomPopOver.swift */; };
+		A72CD88B205A81710012864F /* ImageDetailPopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD82C205A81700012864F /* ImageDetailPopUp.swift */; };
+		A72CD88C205A81710012864F /* RejectPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD82D205A81700012864F /* RejectPopup.swift */; };
+		A72CD88D205A81710012864F /* RejectPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = A72CD82E205A81700012864F /* RejectPopup.xib */; };
+		A72CD88E205A81710012864F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD830205A81700012864F /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		A735E56B2019E2F60074DB64 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
-		A70261AF1F1699CA0088D757 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
-		A70261B11F16A37C0088D757 /* RejectPopup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RejectPopup.swift; sourceTree = "<group>"; };
-		A70261B31F16A3850088D757 /* RejectPopup.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RejectPopup.xib; sourceTree = "<group>"; };
-		A70574451F04FE79005D1936 /* TaksyKraft.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TaksyKraft.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		A705744D1F04FE79005D1936 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		A70574501F04FE79005D1936 /* TaksyKraft.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TaksyKraft.xcdatamodel; sourceTree = "<group>"; };
-		A70574521F04FE79005D1936 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		A70574551F04FE79005D1936 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		A70574571F04FE79005D1936 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A705745E1F04FEDE005D1936 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		A70574631F04FEDE005D1936 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		A705746D1F04FF3F005D1936 /* HttpRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpRequest.swift; sourceTree = "<group>"; };
-		A70574761F04FF3F005D1936 /* TaksyKraftUserDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaksyKraftUserDefaults.swift; sourceTree = "<group>"; };
-		A70574781F04FF3F005D1936 /* AnimatedImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatedImageView.swift; sourceTree = "<group>"; };
-		A70574791F04FF3F005D1936 /* Box.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
-		A705747A1F04FF3F005D1936 /* CacheSerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheSerializer.swift; sourceTree = "<group>"; };
-		A705747B1F04FF3F005D1936 /* Filter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Filter.swift; sourceTree = "<group>"; };
-		A705747C1F04FF3F005D1936 /* Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
-		A705747D1F04FF3F005D1936 /* ImageCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
-		A705747E1F04FF3F005D1936 /* ImageDownloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageDownloader.swift; sourceTree = "<group>"; };
-		A705747F1F04FF3F005D1936 /* ImagePrefetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePrefetcher.swift; sourceTree = "<group>"; };
-		A70574801F04FF3F005D1936 /* ImageProcessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageProcessor.swift; sourceTree = "<group>"; };
-		A70574811F04FF3F005D1936 /* ImageTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageTransition.swift; sourceTree = "<group>"; };
-		A70574821F04FF3F005D1936 /* ImageView+Kingfisher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ImageView+Kingfisher.swift"; sourceTree = "<group>"; };
-		A70574831F04FF3F005D1936 /* Indicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Indicator.swift; sourceTree = "<group>"; };
-		A70574841F04FF3F005D1936 /* Kingfisher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kingfisher.h; sourceTree = "<group>"; };
-		A70574851F04FF3F005D1936 /* Kingfisher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Kingfisher.swift; sourceTree = "<group>"; };
-		A70574861F04FF3F005D1936 /* KingfisherManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KingfisherManager.swift; sourceTree = "<group>"; };
-		A70574871F04FF3F005D1936 /* KingfisherOptionsInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KingfisherOptionsInfo.swift; sourceTree = "<group>"; };
-		A70574881F04FF3F005D1936 /* RequrstModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequrstModifier.swift; sourceTree = "<group>"; };
-		A70574891F04FF3F005D1936 /* Resource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
-		A705748A1F04FF3F005D1936 /* String+MD5.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+MD5.swift"; sourceTree = "<group>"; };
-		A705748B1F04FF3F005D1936 /* ThreadHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreadHelper.swift; sourceTree = "<group>"; };
-		A705748C1F04FF3F005D1936 /* UIButton+Kingfisher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton+Kingfisher.swift"; sourceTree = "<group>"; };
-		A70574B01F0501D0005D1936 /* ServiceLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ServiceLayer.swift; path = Services/ServiceLayer.swift; sourceTree = "<group>"; };
-		A71D4F161FC559B80075CB61 /* EmployListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployListViewController.swift; sourceTree = "<group>"; };
-		A71D4F181FC55E820075CB61 /* EmployeeCustomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeCustomCell.swift; sourceTree = "<group>"; };
-		A71D4F1A1FC55F9C0075CB61 /* EmployeBO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeBO.swift; sourceTree = "<group>"; };
-		A71D4F1C1FC56FE20075CB61 /* SendMoneyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMoneyViewController.swift; sourceTree = "<group>"; };
-		A7224BD42015DD0F00F0A59D /* DashboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewController.swift; sourceTree = "<group>"; };
-		A7461D681F66A82900F2B05C /* ExpensesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpensesTableViewCell.swift; sourceTree = "<group>"; };
-		A7461D691F66A82900F2B05C /* ExpensesTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ExpensesTableViewCell.xib; sourceTree = "<group>"; };
-		A7472CD41F0C9164007B677C /* FloatLabelTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatLabelTextField.swift; sourceTree = "<group>"; };
-		A7472CD51F0C9164007B677C /* FloatLabelTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatLabelTextView.swift; sourceTree = "<group>"; };
-		A7472CD81F0C979F007B677C /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
-		A7472CDB1F0CA29C007B677C /* MyExpensesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyExpensesTableViewCell.swift; sourceTree = "<group>"; };
-		A7472CDC1F0CA29C007B677C /* MyExpensesTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyExpensesTableViewCell.xib; sourceTree = "<group>"; };
-		A7472CE31F0CA9FB007B677C /* ExpensesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpensesViewController.swift; sourceTree = "<group>"; };
-		A767987A1F66679D000BD5EF /* MyExpensesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyExpensesViewController.swift; sourceTree = "<group>"; };
-		A7BB0D101F0CC72800146A9F /* CreateExpenseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateExpenseViewController.swift; sourceTree = "<group>"; };
-		A7BB0D151F0CD5D600146A9F /* ReceiptBO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReceiptBO.swift; sourceTree = "<group>"; };
-		A7BB0D181F0CE6BB00146A9F /* CustomPopOver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomPopOver.swift; sourceTree = "<group>"; };
-		A7BB0D1A1F0D060200146A9F /* ImageDetailPopUp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageDetailPopUp.swift; sourceTree = "<group>"; };
-		A7BB0D1B1F0D060200146A9F /* ImageDetailPopUp.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageDetailPopUp.xib; sourceTree = "<group>"; };
-		A7BB0D1E1F0D1DD600146A9F /* UserBO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserBO.swift; sourceTree = "<group>"; };
-		A7CFB4F21F0D66B7005B6CBB /* IQNSArray+Sort.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IQNSArray+Sort.swift"; sourceTree = "<group>"; };
-		A7CFB4F31F0D66B7005B6CBB /* IQUIScrollView+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IQUIScrollView+Additions.swift"; sourceTree = "<group>"; };
-		A7CFB4F41F0D66B7005B6CBB /* IQUITextFieldView+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IQUITextFieldView+Additions.swift"; sourceTree = "<group>"; };
-		A7CFB4F51F0D66B7005B6CBB /* IQUIView+Hierarchy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IQUIView+Hierarchy.swift"; sourceTree = "<group>"; };
-		A7CFB4F61F0D66B7005B6CBB /* IQUIViewController+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IQUIViewController+Additions.swift"; sourceTree = "<group>"; };
-		A7CFB4F71F0D66B7005B6CBB /* IQUIWindow+Hierarchy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IQUIWindow+Hierarchy.swift"; sourceTree = "<group>"; };
-		A7CFB4F91F0D66B7005B6CBB /* IQKeyboardManagerConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IQKeyboardManagerConstants.swift; sourceTree = "<group>"; };
-		A7CFB4FA1F0D66B7005B6CBB /* IQKeyboardManagerConstantsInternal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IQKeyboardManagerConstantsInternal.swift; sourceTree = "<group>"; };
-		A7CFB4FB1F0D66B7005B6CBB /* IQKeyboardManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IQKeyboardManager.swift; sourceTree = "<group>"; };
-		A7CFB4FC1F0D66B7005B6CBB /* IQKeyboardManagerSwift.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IQKeyboardManagerSwift.h; sourceTree = "<group>"; };
-		A7CFB4FD1F0D66B7005B6CBB /* IQKeyboardReturnKeyHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IQKeyboardReturnKeyHandler.swift; sourceTree = "<group>"; };
-		A7CFB4FF1F0D66B7005B6CBB /* IQTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IQTextView.swift; sourceTree = "<group>"; };
-		A7CFB5011F0D66B7005B6CBB /* IQBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IQBarButtonItem.swift; sourceTree = "<group>"; };
-		A7CFB5021F0D66B7005B6CBB /* IQPreviousNextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IQPreviousNextView.swift; sourceTree = "<group>"; };
-		A7CFB5031F0D66B7005B6CBB /* IQTitleBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IQTitleBarButtonItem.swift; sourceTree = "<group>"; };
-		A7CFB5041F0D66B7005B6CBB /* IQToolbar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IQToolbar.swift; sourceTree = "<group>"; };
-		A7CFB5051F0D66B7005B6CBB /* IQUIView+IQKeyboardToolbar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IQUIView+IQKeyboardToolbar.swift"; sourceTree = "<group>"; };
-		A7CFB5071F0D66B7005B6CBB /* IQKeyboardManager.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = IQKeyboardManager.bundle; sourceTree = "<group>"; };
+		A72CD7AB205A80C90012864F /* TaksyKraft.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TaksyKraft.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A72CD7B3205A80C90012864F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		A72CD7B5205A80C90012864F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A72CD7B8205A80C90012864F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		A72CD7BA205A80C90012864F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A72CD7C1205A81700012864F /* FloatLabelTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatLabelTextView.swift; sourceTree = "<group>"; };
+		A72CD7C2205A81700012864F /* FloatLabelTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatLabelTextField.swift; sourceTree = "<group>"; };
+		A72CD7C3205A81700012864F /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
+		A72CD7C5205A81700012864F /* ImageCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
+		A72CD7C6205A81700012864F /* ThreadHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreadHelper.swift; sourceTree = "<group>"; };
+		A72CD7C7205A81700012864F /* Kingfisher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Kingfisher.swift; sourceTree = "<group>"; };
+		A72CD7C8205A81700012864F /* ImageView+Kingfisher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ImageView+Kingfisher.swift"; sourceTree = "<group>"; };
+		A72CD7C9205A81700012864F /* Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
+		A72CD7CA205A81700012864F /* Indicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Indicator.swift; sourceTree = "<group>"; };
+		A72CD7CB205A81700012864F /* CacheSerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheSerializer.swift; sourceTree = "<group>"; };
+		A72CD7CC205A81700012864F /* UIButton+Kingfisher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton+Kingfisher.swift"; sourceTree = "<group>"; };
+		A72CD7CD205A81700012864F /* Resource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
+		A72CD7CE205A81700012864F /* ImageDownloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageDownloader.swift; sourceTree = "<group>"; };
+		A72CD7CF205A81700012864F /* Kingfisher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kingfisher.h; sourceTree = "<group>"; };
+		A72CD7D0205A81700012864F /* Box.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
+		A72CD7D1205A81700012864F /* KingfisherManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KingfisherManager.swift; sourceTree = "<group>"; };
+		A72CD7D2205A81700012864F /* ImageTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageTransition.swift; sourceTree = "<group>"; };
+		A72CD7D3205A81700012864F /* AnimatedImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatedImageView.swift; sourceTree = "<group>"; };
+		A72CD7D4205A81700012864F /* RequrstModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequrstModifier.swift; sourceTree = "<group>"; };
+		A72CD7D5205A81700012864F /* String+MD5.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+MD5.swift"; sourceTree = "<group>"; };
+		A72CD7D6205A81700012864F /* ImageProcessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageProcessor.swift; sourceTree = "<group>"; };
+		A72CD7D7205A81700012864F /* Filter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Filter.swift; sourceTree = "<group>"; };
+		A72CD7D8205A81700012864F /* KingfisherOptionsInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KingfisherOptionsInfo.swift; sourceTree = "<group>"; };
+		A72CD7D9205A81700012864F /* ImagePrefetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePrefetcher.swift; sourceTree = "<group>"; };
+		A72CD7DA205A81700012864F /* TaksyKraftUserDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaksyKraftUserDefaults.swift; sourceTree = "<group>"; };
+		A72CD7DD205A81700012864F /* IQTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IQTextView.swift; sourceTree = "<group>"; };
+		A72CD7DF205A81700012864F /* IQPreviousNextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IQPreviousNextView.swift; sourceTree = "<group>"; };
+		A72CD7E0205A81700012864F /* IQTitleBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IQTitleBarButtonItem.swift; sourceTree = "<group>"; };
+		A72CD7E1205A81700012864F /* IQBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IQBarButtonItem.swift; sourceTree = "<group>"; };
+		A72CD7E2205A81700012864F /* IQToolbar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IQToolbar.swift; sourceTree = "<group>"; };
+		A72CD7E3205A81700012864F /* IQUIView+IQKeyboardToolbar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IQUIView+IQKeyboardToolbar.swift"; sourceTree = "<group>"; };
+		A72CD7E5205A81700012864F /* IQKeyboardManagerConstantsInternal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IQKeyboardManagerConstantsInternal.swift; sourceTree = "<group>"; };
+		A72CD7E6205A81700012864F /* IQKeyboardManagerConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IQKeyboardManagerConstants.swift; sourceTree = "<group>"; };
+		A72CD7E8205A81700012864F /* IQKeyboardManager.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = IQKeyboardManager.bundle; sourceTree = "<group>"; };
+		A72CD7E9205A81700012864F /* IQKeyboardReturnKeyHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IQKeyboardReturnKeyHandler.swift; sourceTree = "<group>"; };
+		A72CD7EA205A81700012864F /* IQKeyboardManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IQKeyboardManager.swift; sourceTree = "<group>"; };
+		A72CD7EB205A81700012864F /* IQKeyboardManagerSwift.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IQKeyboardManagerSwift.h; sourceTree = "<group>"; };
+		A72CD7ED205A81700012864F /* IQUIWindow+Hierarchy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IQUIWindow+Hierarchy.swift"; sourceTree = "<group>"; };
+		A72CD7EE205A81700012864F /* IQUIScrollView+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IQUIScrollView+Additions.swift"; sourceTree = "<group>"; };
+		A72CD7EF205A81700012864F /* IQUIViewController+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IQUIViewController+Additions.swift"; sourceTree = "<group>"; };
+		A72CD7F0205A81700012864F /* IQUITextFieldView+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IQUITextFieldView+Additions.swift"; sourceTree = "<group>"; };
+		A72CD7F1205A81700012864F /* IQUIView+Hierarchy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IQUIView+Hierarchy.swift"; sourceTree = "<group>"; };
+		A72CD7F2205A81700012864F /* IQNSArray+Sort.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IQNSArray+Sort.swift"; sourceTree = "<group>"; };
+		A72CD7F4205A81700012864F /* HttpRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpRequest.swift; sourceTree = "<group>"; };
+		A72CD7F6205A81700012864F /* Roboto-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Medium.ttf"; sourceTree = "<group>"; };
+		A72CD7F7205A81700012864F /* Roboto-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Light.ttf"; sourceTree = "<group>"; };
+		A72CD7F8205A81700012864F /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
+		A72CD7F9205A81700012864F /* Roboto-MediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-MediumItalic.ttf"; sourceTree = "<group>"; };
+		A72CD7FA205A81700012864F /* Roboto-ThinItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-ThinItalic.ttf"; sourceTree = "<group>"; };
+		A72CD7FB205A81700012864F /* Roboto-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-BoldItalic.ttf"; sourceTree = "<group>"; };
+		A72CD7FC205A81700012864F /* Roboto-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-LightItalic.ttf"; sourceTree = "<group>"; };
+		A72CD7FD205A81700012864F /* Roboto-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Italic.ttf"; sourceTree = "<group>"; };
+		A72CD7FE205A81700012864F /* Roboto-BlackItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-BlackItalic.ttf"; sourceTree = "<group>"; };
+		A72CD7FF205A81700012864F /* Roboto-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Bold.ttf"; sourceTree = "<group>"; };
+		A72CD800205A81700012864F /* Roboto-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Thin.ttf"; sourceTree = "<group>"; };
+		A72CD801205A81700012864F /* Roboto-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Black.ttf"; sourceTree = "<group>"; };
+		A72CD803205A81700012864F /* ServiceLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceLayer.swift; sourceTree = "<group>"; };
+		A72CD805205A81700012864F /* ReceiptBO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReceiptBO.swift; sourceTree = "<group>"; };
+		A72CD806205A81700012864F /* ChequeBO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChequeBO.swift; sourceTree = "<group>"; };
+		A72CD807205A81700012864F /* EmployeBO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmployeBO.swift; sourceTree = "<group>"; };
+		A72CD808205A81700012864F /* TransactionBO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionBO.swift; sourceTree = "<group>"; };
+		A72CD809205A81700012864F /* UserBO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserBO.swift; sourceTree = "<group>"; };
+		A72CD80A205A81700012864F /* TravelBO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TravelBO.swift; sourceTree = "<group>"; };
+		A72CD80B205A81700012864F /* CityBO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CityBO.swift; sourceTree = "<group>"; };
+		A72CD80E205A81700012864F /* AllExpensesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllExpensesTableViewCell.swift; sourceTree = "<group>"; };
+		A72CD80F205A81700012864F /* EmployeeCustomCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmployeeCustomCell.swift; sourceTree = "<group>"; };
+		A72CD810205A81700012864F /* ImageZoomCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageZoomCollectionViewCell.swift; sourceTree = "<group>"; };
+		A72CD811205A81700012864F /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
+		A72CD812205A81700012864F /* MyExpensesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyExpensesTableViewCell.swift; sourceTree = "<group>"; };
+		A72CD813205A81700012864F /* AllChequesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllChequesTableViewCell.swift; sourceTree = "<group>"; };
+		A72CD814205A81700012864F /* MyTravelTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyTravelTableViewCell.swift; sourceTree = "<group>"; };
+		A72CD815205A81700012864F /* AllTravelTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllTravelTableViewCell.swift; sourceTree = "<group>"; };
+		A72CD816205A81700012864F /* MyChequesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyChequesTableViewCell.swift; sourceTree = "<group>"; };
+		A72CD817205A81700012864F /* OnlineTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnlineTableViewCell.swift; sourceTree = "<group>"; };
+		A72CD819205A81700012864F /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		A72CD81A205A81700012864F /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		A72CD81B205A81700012864F /* DashboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardViewController.swift; sourceTree = "<group>"; };
+		A72CD81C205A81700012864F /* CreateOnlineTransactionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateOnlineTransactionViewController.swift; sourceTree = "<group>"; };
+		A72CD81D205A81700012864F /* VerifyOTPViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerifyOTPViewController.swift; sourceTree = "<group>"; };
+		A72CD81E205A81700012864F /* ImagePreviewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePreviewViewController.swift; sourceTree = "<group>"; };
+		A72CD81F205A81700012864F /* ChequeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChequeViewController.swift; sourceTree = "<group>"; };
+		A72CD820205A81700012864F /* ExpensesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpensesViewController.swift; sourceTree = "<group>"; };
+		A72CD821205A81700012864F /* CreateChequeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateChequeViewController.swift; sourceTree = "<group>"; };
+		A72CD822205A81700012864F /* TransactionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionViewController.swift; sourceTree = "<group>"; };
+		A72CD823205A81700012864F /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		A72CD824205A81700012864F /* CreateExpenseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateExpenseViewController.swift; sourceTree = "<group>"; };
+		A72CD825205A81700012864F /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		A72CD826205A81700012864F /* TravelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TravelViewController.swift; sourceTree = "<group>"; };
+		A72CD827205A81700012864F /* OnlineViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnlineViewController.swift; sourceTree = "<group>"; };
+		A72CD828205A81700012864F /* CreateTravelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateTravelViewController.swift; sourceTree = "<group>"; };
+		A72CD82A205A81700012864F /* ImageDetailPopUp.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageDetailPopUp.xib; sourceTree = "<group>"; };
+		A72CD82B205A81700012864F /* CustomPopOver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomPopOver.swift; sourceTree = "<group>"; };
+		A72CD82C205A81700012864F /* ImageDetailPopUp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageDetailPopUp.swift; sourceTree = "<group>"; };
+		A72CD82D205A81700012864F /* RejectPopup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RejectPopup.swift; sourceTree = "<group>"; };
+		A72CD82E205A81700012864F /* RejectPopup.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RejectPopup.xib; sourceTree = "<group>"; };
+		A72CD830205A81700012864F /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		A70574421F04FE79005D1936 /* Frameworks */ = {
+		A72CD7A8205A80C90012864F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A70261B01F1699CA0088D757 /* AVFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		A70261AE1F1699CA0088D757 /* Frameworks */ = {
+		A72CD7A2205A80C90012864F = {
 			isa = PBXGroup;
 			children = (
-				A70261AF1F1699CA0088D757 /* AVFoundation.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		A705743C1F04FE79005D1936 = {
-			isa = PBXGroup;
-			children = (
-				A70574471F04FE79005D1936 /* TaksyKraft */,
-				A70574461F04FE79005D1936 /* Products */,
-				A70261AE1F1699CA0088D757 /* Frameworks */,
+				A72CD7AD205A80C90012864F /* TaksyKraft */,
+				A72CD7AC205A80C90012864F /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		A70574461F04FE79005D1936 /* Products */ = {
+		A72CD7AC205A80C90012864F /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A70574451F04FE79005D1936 /* TaksyKraft.app */,
+				A72CD7AB205A80C90012864F /* TaksyKraft.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		A70574471F04FE79005D1936 /* TaksyKraft */ = {
+		A72CD7AD205A80C90012864F /* TaksyKraft */ = {
 			isa = PBXGroup;
 			children = (
-				A705745D1F04FEDE005D1936 /* ApplicationLayer */,
-				A705745F1F04FEDE005D1936 /* Services */,
-				A70574B01F0501D0005D1936 /* ServiceLayer.swift */,
-				A70574611F04FEDE005D1936 /* PresentationLayer */,
-				A70574641F04FEDE005D1936 /* Utilities */,
-				A705744C1F04FE79005D1936 /* Main.storyboard */,
-				A70574521F04FE79005D1936 /* Assets.xcassets */,
-				A70574541F04FE79005D1936 /* LaunchScreen.storyboard */,
-				A70574571F04FE79005D1936 /* Info.plist */,
-				A705744F1F04FE79005D1936 /* TaksyKraft.xcdatamodeld */,
+				A72CD82F205A81700012864F /* ApplicationLayer */,
+				A72CD80C205A81700012864F /* PresentationLayer */,
+				A72CD802205A81700012864F /* Services */,
+				A72CD7C0205A81700012864F /* Utilities */,
+				A72CD7B2205A80C90012864F /* Main.storyboard */,
+				A72CD7B5205A80C90012864F /* Assets.xcassets */,
+				A72CD7B7205A80C90012864F /* LaunchScreen.storyboard */,
+				A72CD7BA205A80C90012864F /* Info.plist */,
 			);
 			path = TaksyKraft;
 			sourceTree = "<group>";
 		};
-		A705745D1F04FEDE005D1936 /* ApplicationLayer */ = {
+		A72CD7C0205A81700012864F /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				A705745E1F04FEDE005D1936 /* AppDelegate.swift */,
-			);
-			path = ApplicationLayer;
-			sourceTree = "<group>";
-		};
-		A705745F1F04FEDE005D1936 /* Services */ = {
-			isa = PBXGroup;
-			children = (
-				A7BB0D141F0CD5D600146A9F /* Models */,
-			);
-			name = Services;
-			path = BusinessLayer;
-			sourceTree = "<group>";
-		};
-		A70574611F04FEDE005D1936 /* PresentationLayer */ = {
-			isa = PBXGroup;
-			children = (
-				A7BB0D171F0CE6B500146A9F /* CustomViews */,
-				A7472CDA1F0CA27F007B677C /* CustomCells */,
-				A70574621F04FEDE005D1936 /* ViewControllers */,
-			);
-			path = PresentationLayer;
-			sourceTree = "<group>";
-		};
-		A70574621F04FEDE005D1936 /* ViewControllers */ = {
-			isa = PBXGroup;
-			children = (
-				A70574631F04FEDE005D1936 /* ViewController.swift */,
-				A7472CD81F0C979F007B677C /* BaseViewController.swift */,
-				A7472CE31F0CA9FB007B677C /* ExpensesViewController.swift */,
-				A767987A1F66679D000BD5EF /* MyExpensesViewController.swift */,
-				A7BB0D101F0CC72800146A9F /* CreateExpenseViewController.swift */,
-				A71D4F161FC559B80075CB61 /* EmployListViewController.swift */,
-				A71D4F1C1FC56FE20075CB61 /* SendMoneyViewController.swift */,
-				A7224BD42015DD0F00F0A59D /* DashboardViewController.swift */,
-			);
-			path = ViewControllers;
-			sourceTree = "<group>";
-		};
-		A70574641F04FEDE005D1936 /* Utilities */ = {
-			isa = PBXGroup;
-			children = (
-				A7CFB4F01F0D66B7005B6CBB /* IQKeyboardManagerSwift */,
-				A7472CD41F0C9164007B677C /* FloatLabelTextField.swift */,
-				A7472CD51F0C9164007B677C /* FloatLabelTextView.swift */,
-				A70574671F04FF3F005D1936 /* ServiceCallHelpers */,
-				A70574761F04FF3F005D1936 /* TaksyKraftUserDefaults.swift */,
-				A70574771F04FF3F005D1936 /* ImageLoading */,
+				A72CD7C1205A81700012864F /* FloatLabelTextView.swift */,
+				A72CD7C2205A81700012864F /* FloatLabelTextField.swift */,
+				A72CD7C3205A81700012864F /* Reachability.swift */,
+				A72CD7C4205A81700012864F /* ImageLoading */,
+				A72CD7DA205A81700012864F /* TaksyKraftUserDefaults.swift */,
+				A72CD7DB205A81700012864F /* IQKeyboardManagerSwift */,
+				A72CD7F3205A81700012864F /* ServiceCallHelpers */,
+				A72CD7F5205A81700012864F /* Fonts */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
 		};
-		A70574671F04FF3F005D1936 /* ServiceCallHelpers */ = {
+		A72CD7C4205A81700012864F /* ImageLoading */ = {
 			isa = PBXGroup;
 			children = (
-				A705746D1F04FF3F005D1936 /* HttpRequest.swift */,
-			);
-			path = ServiceCallHelpers;
-			sourceTree = "<group>";
-		};
-		A70574771F04FF3F005D1936 /* ImageLoading */ = {
-			isa = PBXGroup;
-			children = (
-				A70574781F04FF3F005D1936 /* AnimatedImageView.swift */,
-				A70574791F04FF3F005D1936 /* Box.swift */,
-				A705747A1F04FF3F005D1936 /* CacheSerializer.swift */,
-				A705747B1F04FF3F005D1936 /* Filter.swift */,
-				A705747C1F04FF3F005D1936 /* Image.swift */,
-				A705747D1F04FF3F005D1936 /* ImageCache.swift */,
-				A705747E1F04FF3F005D1936 /* ImageDownloader.swift */,
-				A705747F1F04FF3F005D1936 /* ImagePrefetcher.swift */,
-				A70574801F04FF3F005D1936 /* ImageProcessor.swift */,
-				A70574811F04FF3F005D1936 /* ImageTransition.swift */,
-				A70574821F04FF3F005D1936 /* ImageView+Kingfisher.swift */,
-				A70574831F04FF3F005D1936 /* Indicator.swift */,
-				A70574841F04FF3F005D1936 /* Kingfisher.h */,
-				A70574851F04FF3F005D1936 /* Kingfisher.swift */,
-				A70574861F04FF3F005D1936 /* KingfisherManager.swift */,
-				A70574871F04FF3F005D1936 /* KingfisherOptionsInfo.swift */,
-				A70574881F04FF3F005D1936 /* RequrstModifier.swift */,
-				A70574891F04FF3F005D1936 /* Resource.swift */,
-				A705748A1F04FF3F005D1936 /* String+MD5.swift */,
-				A705748B1F04FF3F005D1936 /* ThreadHelper.swift */,
-				A705748C1F04FF3F005D1936 /* UIButton+Kingfisher.swift */,
+				A72CD7C5205A81700012864F /* ImageCache.swift */,
+				A72CD7C6205A81700012864F /* ThreadHelper.swift */,
+				A72CD7C7205A81700012864F /* Kingfisher.swift */,
+				A72CD7C8205A81700012864F /* ImageView+Kingfisher.swift */,
+				A72CD7C9205A81700012864F /* Image.swift */,
+				A72CD7CA205A81700012864F /* Indicator.swift */,
+				A72CD7CB205A81700012864F /* CacheSerializer.swift */,
+				A72CD7CC205A81700012864F /* UIButton+Kingfisher.swift */,
+				A72CD7CD205A81700012864F /* Resource.swift */,
+				A72CD7CE205A81700012864F /* ImageDownloader.swift */,
+				A72CD7CF205A81700012864F /* Kingfisher.h */,
+				A72CD7D0205A81700012864F /* Box.swift */,
+				A72CD7D1205A81700012864F /* KingfisherManager.swift */,
+				A72CD7D2205A81700012864F /* ImageTransition.swift */,
+				A72CD7D3205A81700012864F /* AnimatedImageView.swift */,
+				A72CD7D4205A81700012864F /* RequrstModifier.swift */,
+				A72CD7D5205A81700012864F /* String+MD5.swift */,
+				A72CD7D6205A81700012864F /* ImageProcessor.swift */,
+				A72CD7D7205A81700012864F /* Filter.swift */,
+				A72CD7D8205A81700012864F /* KingfisherOptionsInfo.swift */,
+				A72CD7D9205A81700012864F /* ImagePrefetcher.swift */,
 			);
 			path = ImageLoading;
 			sourceTree = "<group>";
 		};
-		A7472CDA1F0CA27F007B677C /* CustomCells */ = {
+		A72CD7DB205A81700012864F /* IQKeyboardManagerSwift */ = {
 			isa = PBXGroup;
 			children = (
-				A7472CDB1F0CA29C007B677C /* MyExpensesTableViewCell.swift */,
-				A7472CDC1F0CA29C007B677C /* MyExpensesTableViewCell.xib */,
-				A7461D681F66A82900F2B05C /* ExpensesTableViewCell.swift */,
-				A7461D691F66A82900F2B05C /* ExpensesTableViewCell.xib */,
-				A71D4F181FC55E820075CB61 /* EmployeeCustomCell.swift */,
-			);
-			path = CustomCells;
-			sourceTree = "<group>";
-		};
-		A7BB0D141F0CD5D600146A9F /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				A7BB0D151F0CD5D600146A9F /* ReceiptBO.swift */,
-				A7BB0D1E1F0D1DD600146A9F /* UserBO.swift */,
-				A71D4F1A1FC55F9C0075CB61 /* EmployeBO.swift */,
-			);
-			name = Models;
-			path = TaksyKraft/Services/Models;
-			sourceTree = SOURCE_ROOT;
-		};
-		A7BB0D171F0CE6B500146A9F /* CustomViews */ = {
-			isa = PBXGroup;
-			children = (
-				A7BB0D1A1F0D060200146A9F /* ImageDetailPopUp.swift */,
-				A7BB0D1B1F0D060200146A9F /* ImageDetailPopUp.xib */,
-				A7BB0D181F0CE6BB00146A9F /* CustomPopOver.swift */,
-				A70261B11F16A37C0088D757 /* RejectPopup.swift */,
-				A70261B31F16A3850088D757 /* RejectPopup.xib */,
-			);
-			path = CustomViews;
-			sourceTree = "<group>";
-		};
-		A7CFB4F01F0D66B7005B6CBB /* IQKeyboardManagerSwift */ = {
-			isa = PBXGroup;
-			children = (
-				A7CFB4F11F0D66B7005B6CBB /* Categories */,
-				A7CFB4F81F0D66B7005B6CBB /* Constants */,
-				A7CFB4FB1F0D66B7005B6CBB /* IQKeyboardManager.swift */,
-				A7CFB4FC1F0D66B7005B6CBB /* IQKeyboardManagerSwift.h */,
-				A7CFB4FD1F0D66B7005B6CBB /* IQKeyboardReturnKeyHandler.swift */,
-				A7CFB4FE1F0D66B7005B6CBB /* IQTextView */,
-				A7CFB5001F0D66B7005B6CBB /* IQToolbar */,
-				A7CFB5061F0D66B7005B6CBB /* Resources */,
+				A72CD7DC205A81700012864F /* IQTextView */,
+				A72CD7DE205A81700012864F /* IQToolbar */,
+				A72CD7E4205A81700012864F /* Constants */,
+				A72CD7E7205A81700012864F /* Resources */,
+				A72CD7E9205A81700012864F /* IQKeyboardReturnKeyHandler.swift */,
+				A72CD7EA205A81700012864F /* IQKeyboardManager.swift */,
+				A72CD7EB205A81700012864F /* IQKeyboardManagerSwift.h */,
+				A72CD7EC205A81700012864F /* Categories */,
 			);
 			path = IQKeyboardManagerSwift;
 			sourceTree = "<group>";
 		};
-		A7CFB4F11F0D66B7005B6CBB /* Categories */ = {
+		A72CD7DC205A81700012864F /* IQTextView */ = {
 			isa = PBXGroup;
 			children = (
-				A7CFB4F21F0D66B7005B6CBB /* IQNSArray+Sort.swift */,
-				A7CFB4F31F0D66B7005B6CBB /* IQUIScrollView+Additions.swift */,
-				A7CFB4F41F0D66B7005B6CBB /* IQUITextFieldView+Additions.swift */,
-				A7CFB4F51F0D66B7005B6CBB /* IQUIView+Hierarchy.swift */,
-				A7CFB4F61F0D66B7005B6CBB /* IQUIViewController+Additions.swift */,
-				A7CFB4F71F0D66B7005B6CBB /* IQUIWindow+Hierarchy.swift */,
-			);
-			path = Categories;
-			sourceTree = "<group>";
-		};
-		A7CFB4F81F0D66B7005B6CBB /* Constants */ = {
-			isa = PBXGroup;
-			children = (
-				A7CFB4F91F0D66B7005B6CBB /* IQKeyboardManagerConstants.swift */,
-				A7CFB4FA1F0D66B7005B6CBB /* IQKeyboardManagerConstantsInternal.swift */,
-			);
-			path = Constants;
-			sourceTree = "<group>";
-		};
-		A7CFB4FE1F0D66B7005B6CBB /* IQTextView */ = {
-			isa = PBXGroup;
-			children = (
-				A7CFB4FF1F0D66B7005B6CBB /* IQTextView.swift */,
+				A72CD7DD205A81700012864F /* IQTextView.swift */,
 			);
 			path = IQTextView;
 			sourceTree = "<group>";
 		};
-		A7CFB5001F0D66B7005B6CBB /* IQToolbar */ = {
+		A72CD7DE205A81700012864F /* IQToolbar */ = {
 			isa = PBXGroup;
 			children = (
-				A7CFB5011F0D66B7005B6CBB /* IQBarButtonItem.swift */,
-				A7CFB5021F0D66B7005B6CBB /* IQPreviousNextView.swift */,
-				A7CFB5031F0D66B7005B6CBB /* IQTitleBarButtonItem.swift */,
-				A7CFB5041F0D66B7005B6CBB /* IQToolbar.swift */,
-				A7CFB5051F0D66B7005B6CBB /* IQUIView+IQKeyboardToolbar.swift */,
+				A72CD7DF205A81700012864F /* IQPreviousNextView.swift */,
+				A72CD7E0205A81700012864F /* IQTitleBarButtonItem.swift */,
+				A72CD7E1205A81700012864F /* IQBarButtonItem.swift */,
+				A72CD7E2205A81700012864F /* IQToolbar.swift */,
+				A72CD7E3205A81700012864F /* IQUIView+IQKeyboardToolbar.swift */,
 			);
 			path = IQToolbar;
 			sourceTree = "<group>";
 		};
-		A7CFB5061F0D66B7005B6CBB /* Resources */ = {
+		A72CD7E4205A81700012864F /* Constants */ = {
 			isa = PBXGroup;
 			children = (
-				A7CFB5071F0D66B7005B6CBB /* IQKeyboardManager.bundle */,
+				A72CD7E5205A81700012864F /* IQKeyboardManagerConstantsInternal.swift */,
+				A72CD7E6205A81700012864F /* IQKeyboardManagerConstants.swift */,
+			);
+			path = Constants;
+			sourceTree = "<group>";
+		};
+		A72CD7E7205A81700012864F /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A72CD7E8205A81700012864F /* IQKeyboardManager.bundle */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		A72CD7EC205A81700012864F /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				A72CD7ED205A81700012864F /* IQUIWindow+Hierarchy.swift */,
+				A72CD7EE205A81700012864F /* IQUIScrollView+Additions.swift */,
+				A72CD7EF205A81700012864F /* IQUIViewController+Additions.swift */,
+				A72CD7F0205A81700012864F /* IQUITextFieldView+Additions.swift */,
+				A72CD7F1205A81700012864F /* IQUIView+Hierarchy.swift */,
+				A72CD7F2205A81700012864F /* IQNSArray+Sort.swift */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
+		A72CD7F3205A81700012864F /* ServiceCallHelpers */ = {
+			isa = PBXGroup;
+			children = (
+				A72CD7F4205A81700012864F /* HttpRequest.swift */,
+			);
+			path = ServiceCallHelpers;
+			sourceTree = "<group>";
+		};
+		A72CD7F5205A81700012864F /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				A72CD7F6205A81700012864F /* Roboto-Medium.ttf */,
+				A72CD7F7205A81700012864F /* Roboto-Light.ttf */,
+				A72CD7F8205A81700012864F /* Roboto-Regular.ttf */,
+				A72CD7F9205A81700012864F /* Roboto-MediumItalic.ttf */,
+				A72CD7FA205A81700012864F /* Roboto-ThinItalic.ttf */,
+				A72CD7FB205A81700012864F /* Roboto-BoldItalic.ttf */,
+				A72CD7FC205A81700012864F /* Roboto-LightItalic.ttf */,
+				A72CD7FD205A81700012864F /* Roboto-Italic.ttf */,
+				A72CD7FE205A81700012864F /* Roboto-BlackItalic.ttf */,
+				A72CD7FF205A81700012864F /* Roboto-Bold.ttf */,
+				A72CD800205A81700012864F /* Roboto-Thin.ttf */,
+				A72CD801205A81700012864F /* Roboto-Black.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		A72CD802205A81700012864F /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				A72CD803205A81700012864F /* ServiceLayer.swift */,
+				A72CD804205A81700012864F /* Models */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		A72CD804205A81700012864F /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A72CD805205A81700012864F /* ReceiptBO.swift */,
+				A72CD806205A81700012864F /* ChequeBO.swift */,
+				A72CD807205A81700012864F /* EmployeBO.swift */,
+				A72CD808205A81700012864F /* TransactionBO.swift */,
+				A72CD809205A81700012864F /* UserBO.swift */,
+				A72CD80A205A81700012864F /* TravelBO.swift */,
+				A72CD80B205A81700012864F /* CityBO.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		A72CD80C205A81700012864F /* PresentationLayer */ = {
+			isa = PBXGroup;
+			children = (
+				A72CD80D205A81700012864F /* CustomCells */,
+				A72CD818205A81700012864F /* ViewControllers */,
+				A72CD829205A81700012864F /* CustomViews */,
+			);
+			path = PresentationLayer;
+			sourceTree = "<group>";
+		};
+		A72CD80D205A81700012864F /* CustomCells */ = {
+			isa = PBXGroup;
+			children = (
+				A72CD80E205A81700012864F /* AllExpensesTableViewCell.swift */,
+				A72CD80F205A81700012864F /* EmployeeCustomCell.swift */,
+				A72CD810205A81700012864F /* ImageZoomCollectionViewCell.swift */,
+				A72CD811205A81700012864F /* ImageCollectionViewCell.swift */,
+				A72CD812205A81700012864F /* MyExpensesTableViewCell.swift */,
+				A72CD813205A81700012864F /* AllChequesTableViewCell.swift */,
+				A72CD814205A81700012864F /* MyTravelTableViewCell.swift */,
+				A72CD815205A81700012864F /* AllTravelTableViewCell.swift */,
+				A72CD816205A81700012864F /* MyChequesTableViewCell.swift */,
+				A72CD817205A81700012864F /* OnlineTableViewCell.swift */,
+			);
+			path = CustomCells;
+			sourceTree = "<group>";
+		};
+		A72CD818205A81700012864F /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				A72CD819205A81700012864F /* ViewController.swift */,
+				A72CD81A205A81700012864F /* BaseViewController.swift */,
+				A72CD81B205A81700012864F /* DashboardViewController.swift */,
+				A72CD81C205A81700012864F /* CreateOnlineTransactionViewController.swift */,
+				A72CD81D205A81700012864F /* VerifyOTPViewController.swift */,
+				A72CD81E205A81700012864F /* ImagePreviewViewController.swift */,
+				A72CD81F205A81700012864F /* ChequeViewController.swift */,
+				A72CD820205A81700012864F /* ExpensesViewController.swift */,
+				A72CD821205A81700012864F /* CreateChequeViewController.swift */,
+				A72CD822205A81700012864F /* TransactionViewController.swift */,
+				A72CD823205A81700012864F /* LoginViewController.swift */,
+				A72CD824205A81700012864F /* CreateExpenseViewController.swift */,
+				A72CD825205A81700012864F /* ProfileViewController.swift */,
+				A72CD826205A81700012864F /* TravelViewController.swift */,
+				A72CD827205A81700012864F /* OnlineViewController.swift */,
+				A72CD828205A81700012864F /* CreateTravelViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		A72CD829205A81700012864F /* CustomViews */ = {
+			isa = PBXGroup;
+			children = (
+				A72CD82A205A81700012864F /* ImageDetailPopUp.xib */,
+				A72CD82B205A81700012864F /* CustomPopOver.swift */,
+				A72CD82C205A81700012864F /* ImageDetailPopUp.swift */,
+				A72CD82D205A81700012864F /* RejectPopup.swift */,
+				A72CD82E205A81700012864F /* RejectPopup.xib */,
+			);
+			path = CustomViews;
+			sourceTree = "<group>";
+		};
+		A72CD82F205A81700012864F /* ApplicationLayer */ = {
+			isa = PBXGroup;
+			children = (
+				A72CD830205A81700012864F /* AppDelegate.swift */,
+			);
+			path = ApplicationLayer;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		A70574441F04FE79005D1936 /* TaksyKraft */ = {
+		A72CD7AA205A80C90012864F /* TaksyKraft */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A705745A1F04FE79005D1936 /* Build configuration list for PBXNativeTarget "TaksyKraft" */;
+			buildConfigurationList = A72CD7BD205A80C90012864F /* Build configuration list for PBXNativeTarget "TaksyKraft" */;
 			buildPhases = (
-				A70574411F04FE79005D1936 /* Sources */,
-				A70574421F04FE79005D1936 /* Frameworks */,
-				A70574431F04FE79005D1936 /* Resources */,
-				A735E56B2019E2F60074DB64 /* Embed Frameworks */,
-				A735E5712019E59A0074DB64 /* ShellScript */,
+				A72CD7A7205A80C90012864F /* Sources */,
+				A72CD7A8205A80C90012864F /* Frameworks */,
+				A72CD7A9205A80C90012864F /* Resources */,
 			);
 			buildRules = (
 			);
@@ -431,161 +497,173 @@
 			);
 			name = TaksyKraft;
 			productName = TaksyKraft;
-			productReference = A70574451F04FE79005D1936 /* TaksyKraft.app */;
+			productReference = A72CD7AB205A80C90012864F /* TaksyKraft.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		A705743D1F04FE79005D1936 /* Project object */ = {
+		A72CD7A3205A80C90012864F /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0830;
-				LastUpgradeCheck = 0830;
-				ORGANIZATIONNAME = TaksyKraft;
+				LastSwiftUpdateCheck = 0920;
+				LastUpgradeCheck = 0920;
+				ORGANIZATIONNAME = Nikhilesh;
 				TargetAttributes = {
-					A70574441F04FE79005D1936 = {
-						CreatedOnToolsVersion = 8.3.3;
-						DevelopmentTeam = 767WDHBUJ6;
+					A72CD7AA205A80C90012864F = {
+						CreatedOnToolsVersion = 9.2;
 						ProvisioningStyle = Manual;
 					};
 				};
 			};
-			buildConfigurationList = A70574401F04FE79005D1936 /* Build configuration list for PBXProject "TaksyKraft" */;
-			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			buildConfigurationList = A72CD7A6205A80C90012864F /* Build configuration list for PBXProject "TaksyKraft" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
 			);
-			mainGroup = A705743C1F04FE79005D1936;
-			productRefGroup = A70574461F04FE79005D1936 /* Products */;
+			mainGroup = A72CD7A2205A80C90012864F;
+			productRefGroup = A72CD7AC205A80C90012864F /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A70574441F04FE79005D1936 /* TaksyKraft */,
+				A72CD7AA205A80C90012864F /* TaksyKraft */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		A70574431F04FE79005D1936 /* Resources */ = {
+		A72CD7A9205A80C90012864F /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A7461D6B1F66A82900F2B05C /* ExpensesTableViewCell.xib in Resources */,
-				A70261B41F16A3850088D757 /* RejectPopup.xib in Resources */,
-				A7472CDE1F0CA29C007B677C /* MyExpensesTableViewCell.xib in Resources */,
-				A70574561F04FE79005D1936 /* LaunchScreen.storyboard in Resources */,
-				A7CFB5181F0D66B7005B6CBB /* IQKeyboardManager.bundle in Resources */,
-				A70574531F04FE79005D1936 /* Assets.xcassets in Resources */,
-				A7BB0D1D1F0D060200146A9F /* ImageDetailPopUp.xib in Resources */,
-				A705744E1F04FE79005D1936 /* Main.storyboard in Resources */,
+				A72CD864205A81710012864F /* Roboto-Bold.ttf in Resources */,
+				A72CD85B205A81710012864F /* Roboto-Medium.ttf in Resources */,
+				A72CD862205A81710012864F /* Roboto-Italic.ttf in Resources */,
+				A72CD889205A81710012864F /* ImageDetailPopUp.xib in Resources */,
+				A72CD861205A81710012864F /* Roboto-LightItalic.ttf in Resources */,
+				A72CD88D205A81710012864F /* RejectPopup.xib in Resources */,
+				A72CD85D205A81710012864F /* Roboto-Regular.ttf in Resources */,
+				A72CD7B9205A80C90012864F /* LaunchScreen.storyboard in Resources */,
+				A72CD85C205A81710012864F /* Roboto-Light.ttf in Resources */,
+				A72CD863205A81710012864F /* Roboto-BlackItalic.ttf in Resources */,
+				A72CD865205A81710012864F /* Roboto-Thin.ttf in Resources */,
+				A72CD85E205A81710012864F /* Roboto-MediumItalic.ttf in Resources */,
+				A72CD7B6205A80C90012864F /* Assets.xcassets in Resources */,
+				A72CD866205A81710012864F /* Roboto-Black.ttf in Resources */,
+				A72CD85F205A81710012864F /* Roboto-ThinItalic.ttf in Resources */,
+				A72CD851205A81710012864F /* IQKeyboardManager.bundle in Resources */,
+				A72CD860205A81710012864F /* Roboto-BoldItalic.ttf in Resources */,
+				A72CD7B4205A80C90012864F /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		A735E5712019E59A0074DB64 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 8;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 1;
-			shellPath = "lib/strip-frameworks.sh";
-			shellScript = "";
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
-		A70574411F04FE79005D1936 /* Sources */ = {
+		A72CD7A7205A80C90012864F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A70574661F04FEDE005D1936 /* ViewController.swift in Sources */,
-				A71D4F191FC55E820075CB61 /* EmployeeCustomCell.swift in Sources */,
-				A7CFB5121F0D66B7005B6CBB /* IQTextView.swift in Sources */,
-				A7CFB5141F0D66B7005B6CBB /* IQPreviousNextView.swift in Sources */,
-				A7BB0D161F0CD5D600146A9F /* ReceiptBO.swift in Sources */,
-				A7472CD71F0C9164007B677C /* FloatLabelTextView.swift in Sources */,
-				A7461D6A1F66A82900F2B05C /* ExpensesTableViewCell.swift in Sources */,
-				A7224BD52015DD0F00F0A59D /* DashboardViewController.swift in Sources */,
-				A7CFB50F1F0D66B7005B6CBB /* IQKeyboardManagerConstantsInternal.swift in Sources */,
-				A70574AB1F04FF3F005D1936 /* RequrstModifier.swift in Sources */,
-				A70574A41F04FF3F005D1936 /* ImageProcessor.swift in Sources */,
-				A7CFB5101F0D66B7005B6CBB /* IQKeyboardManager.swift in Sources */,
-				A70574AD1F04FF3F005D1936 /* String+MD5.swift in Sources */,
-				A7CFB50C1F0D66B7005B6CBB /* IQUIViewController+Additions.swift in Sources */,
-				A705749E1F04FF3F005D1936 /* CacheSerializer.swift in Sources */,
-				A7472CDD1F0CA29C007B677C /* MyExpensesTableViewCell.swift in Sources */,
-				A7CFB50B1F0D66B7005B6CBB /* IQUIView+Hierarchy.swift in Sources */,
-				A70574AA1F04FF3F005D1936 /* KingfisherOptionsInfo.swift in Sources */,
-				A7472CD61F0C9164007B677C /* FloatLabelTextField.swift in Sources */,
-				A7CFB50E1F0D66B7005B6CBB /* IQKeyboardManagerConstants.swift in Sources */,
-				A767987B1F66679D000BD5EF /* MyExpensesViewController.swift in Sources */,
-				A70574A61F04FF3F005D1936 /* ImageView+Kingfisher.swift in Sources */,
-				A7CFB5171F0D66B7005B6CBB /* IQUIView+IQKeyboardToolbar.swift in Sources */,
-				A70574A01F04FF3F005D1936 /* Image.swift in Sources */,
-				A705749C1F04FF3F005D1936 /* AnimatedImageView.swift in Sources */,
-				A70574AC1F04FF3F005D1936 /* Resource.swift in Sources */,
-				A70261B21F16A37C0088D757 /* RejectPopup.swift in Sources */,
-				A70574651F04FEDE005D1936 /* AppDelegate.swift in Sources */,
-				A71D4F171FC559B80075CB61 /* EmployListViewController.swift in Sources */,
-				A7BB0D1F1F0D1DD600146A9F /* UserBO.swift in Sources */,
-				A7BB0D1C1F0D060200146A9F /* ImageDetailPopUp.swift in Sources */,
-				A70574A71F04FF3F005D1936 /* Indicator.swift in Sources */,
-				A70574A21F04FF3F005D1936 /* ImageDownloader.swift in Sources */,
-				A71D4F1B1FC55F9C0075CB61 /* EmployeBO.swift in Sources */,
-				A70574AE1F04FF3F005D1936 /* ThreadHelper.swift in Sources */,
-				A7BB0D191F0CE6BB00146A9F /* CustomPopOver.swift in Sources */,
-				A705749D1F04FF3F005D1936 /* Box.swift in Sources */,
-				A705749F1F04FF3F005D1936 /* Filter.swift in Sources */,
-				A70574921F04FF3F005D1936 /* HttpRequest.swift in Sources */,
-				A70574B11F0501D0005D1936 /* ServiceLayer.swift in Sources */,
-				A7CFB50D1F0D66B7005B6CBB /* IQUIWindow+Hierarchy.swift in Sources */,
-				A7BB0D111F0CC72800146A9F /* CreateExpenseViewController.swift in Sources */,
-				A7CFB5111F0D66B7005B6CBB /* IQKeyboardReturnKeyHandler.swift in Sources */,
-				A70574A81F04FF3F005D1936 /* Kingfisher.swift in Sources */,
-				A7CFB5081F0D66B7005B6CBB /* IQNSArray+Sort.swift in Sources */,
-				A705749B1F04FF3F005D1936 /* TaksyKraftUserDefaults.swift in Sources */,
-				A70574A91F04FF3F005D1936 /* KingfisherManager.swift in Sources */,
-				A70574A11F04FF3F005D1936 /* ImageCache.swift in Sources */,
-				A7472CE41F0CA9FB007B677C /* ExpensesViewController.swift in Sources */,
-				A70574A51F04FF3F005D1936 /* ImageTransition.swift in Sources */,
-				A70574A31F04FF3F005D1936 /* ImagePrefetcher.swift in Sources */,
-				A7CFB5131F0D66B7005B6CBB /* IQBarButtonItem.swift in Sources */,
-				A7CFB5161F0D66B7005B6CBB /* IQToolbar.swift in Sources */,
-				A70574AF1F04FF3F005D1936 /* UIButton+Kingfisher.swift in Sources */,
-				A71D4F1D1FC56FE20075CB61 /* SendMoneyViewController.swift in Sources */,
-				A7CFB5091F0D66B7005B6CBB /* IQUIScrollView+Additions.swift in Sources */,
-				A70574511F04FE79005D1936 /* TaksyKraft.xcdatamodeld in Sources */,
-				A7472CD91F0C979F007B677C /* BaseViewController.swift in Sources */,
-				A7CFB50A1F0D66B7005B6CBB /* IQUITextFieldView+Additions.swift in Sources */,
-				A7CFB5151F0D66B7005B6CBB /* IQTitleBarButtonItem.swift in Sources */,
+				A72CD835205A81710012864F /* ThreadHelper.swift in Sources */,
+				A72CD842205A81710012864F /* RequrstModifier.swift in Sources */,
+				A72CD852205A81710012864F /* IQKeyboardReturnKeyHandler.swift in Sources */,
+				A72CD84C205A81710012864F /* IQBarButtonItem.swift in Sources */,
+				A72CD86F205A81710012864F /* AllExpensesTableViewCell.swift in Sources */,
+				A72CD87F205A81710012864F /* ChequeViewController.swift in Sources */,
+				A72CD885205A81710012864F /* ProfileViewController.swift in Sources */,
+				A72CD881205A81710012864F /* CreateChequeViewController.swift in Sources */,
+				A72CD872205A81710012864F /* ImageCollectionViewCell.swift in Sources */,
+				A72CD84A205A81710012864F /* IQPreviousNextView.swift in Sources */,
+				A72CD844205A81710012864F /* ImageProcessor.swift in Sources */,
+				A72CD83E205A81710012864F /* Box.swift in Sources */,
+				A72CD858205A81710012864F /* IQUIView+Hierarchy.swift in Sources */,
+				A72CD83B205A81710012864F /* UIButton+Kingfisher.swift in Sources */,
+				A72CD874205A81710012864F /* AllChequesTableViewCell.swift in Sources */,
+				A72CD857205A81710012864F /* IQUITextFieldView+Additions.swift in Sources */,
+				A72CD875205A81710012864F /* MyTravelTableViewCell.swift in Sources */,
+				A72CD856205A81710012864F /* IQUIViewController+Additions.swift in Sources */,
+				A72CD83D205A81710012864F /* ImageDownloader.swift in Sources */,
+				A72CD838205A81710012864F /* Image.swift in Sources */,
+				A72CD867205A81710012864F /* ServiceLayer.swift in Sources */,
+				A72CD877205A81710012864F /* MyChequesTableViewCell.swift in Sources */,
+				A72CD845205A81710012864F /* Filter.swift in Sources */,
+				A72CD84B205A81710012864F /* IQTitleBarButtonItem.swift in Sources */,
+				A72CD83A205A81710012864F /* CacheSerializer.swift in Sources */,
+				A72CD869205A81710012864F /* ChequeBO.swift in Sources */,
+				A72CD841205A81710012864F /* AnimatedImageView.swift in Sources */,
+				A72CD87E205A81710012864F /* ImagePreviewViewController.swift in Sources */,
+				A72CD849205A81710012864F /* IQTextView.swift in Sources */,
+				A72CD883205A81710012864F /* LoginViewController.swift in Sources */,
+				A72CD87B205A81710012864F /* DashboardViewController.swift in Sources */,
+				A72CD86C205A81710012864F /* UserBO.swift in Sources */,
+				A72CD831205A81710012864F /* FloatLabelTextView.swift in Sources */,
+				A72CD873205A81710012864F /* MyExpensesTableViewCell.swift in Sources */,
+				A72CD832205A81710012864F /* FloatLabelTextField.swift in Sources */,
+				A72CD880205A81710012864F /* ExpensesViewController.swift in Sources */,
+				A72CD882205A81710012864F /* TransactionViewController.swift in Sources */,
+				A72CD855205A81710012864F /* IQUIScrollView+Additions.swift in Sources */,
+				A72CD87D205A81710012864F /* VerifyOTPViewController.swift in Sources */,
+				A72CD879205A81710012864F /* ViewController.swift in Sources */,
+				A72CD886205A81710012864F /* TravelViewController.swift in Sources */,
+				A72CD871205A81710012864F /* ImageZoomCollectionViewCell.swift in Sources */,
+				A72CD86D205A81710012864F /* TravelBO.swift in Sources */,
+				A72CD836205A81710012864F /* Kingfisher.swift in Sources */,
+				A72CD84D205A81710012864F /* IQToolbar.swift in Sources */,
+				A72CD84E205A81710012864F /* IQUIView+IQKeyboardToolbar.swift in Sources */,
+				A72CD87C205A81710012864F /* CreateOnlineTransactionViewController.swift in Sources */,
+				A72CD85A205A81710012864F /* HttpRequest.swift in Sources */,
+				A72CD854205A81710012864F /* IQUIWindow+Hierarchy.swift in Sources */,
+				A72CD837205A81710012864F /* ImageView+Kingfisher.swift in Sources */,
+				A72CD88B205A81710012864F /* ImageDetailPopUp.swift in Sources */,
+				A72CD884205A81710012864F /* CreateExpenseViewController.swift in Sources */,
+				A72CD87A205A81710012864F /* BaseViewController.swift in Sources */,
+				A72CD846205A81710012864F /* KingfisherOptionsInfo.swift in Sources */,
+				A72CD888205A81710012864F /* CreateTravelViewController.swift in Sources */,
+				A72CD834205A81710012864F /* ImageCache.swift in Sources */,
+				A72CD86A205A81710012864F /* EmployeBO.swift in Sources */,
+				A72CD887205A81710012864F /* OnlineViewController.swift in Sources */,
+				A72CD876205A81710012864F /* AllTravelTableViewCell.swift in Sources */,
+				A72CD868205A81710012864F /* ReceiptBO.swift in Sources */,
+				A72CD83C205A81710012864F /* Resource.swift in Sources */,
+				A72CD88C205A81710012864F /* RejectPopup.swift in Sources */,
+				A72CD839205A81710012864F /* Indicator.swift in Sources */,
+				A72CD848205A81710012864F /* TaksyKraftUserDefaults.swift in Sources */,
+				A72CD83F205A81710012864F /* KingfisherManager.swift in Sources */,
+				A72CD843205A81710012864F /* String+MD5.swift in Sources */,
+				A72CD853205A81710012864F /* IQKeyboardManager.swift in Sources */,
+				A72CD840205A81710012864F /* ImageTransition.swift in Sources */,
+				A72CD850205A81710012864F /* IQKeyboardManagerConstants.swift in Sources */,
+				A72CD86E205A81710012864F /* CityBO.swift in Sources */,
+				A72CD88A205A81710012864F /* CustomPopOver.swift in Sources */,
+				A72CD88E205A81710012864F /* AppDelegate.swift in Sources */,
+				A72CD859205A81710012864F /* IQNSArray+Sort.swift in Sources */,
+				A72CD878205A81710012864F /* OnlineTableViewCell.swift in Sources */,
+				A72CD870205A81710012864F /* EmployeeCustomCell.swift in Sources */,
+				A72CD84F205A81710012864F /* IQKeyboardManagerConstantsInternal.swift in Sources */,
+				A72CD833205A81710012864F /* Reachability.swift in Sources */,
+				A72CD847205A81710012864F /* ImagePrefetcher.swift in Sources */,
+				A72CD86B205A81710012864F /* TransactionBO.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		A705744C1F04FE79005D1936 /* Main.storyboard */ = {
+		A72CD7B2205A80C90012864F /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				A705744D1F04FE79005D1936 /* Base */,
+				A72CD7B3205A80C90012864F /* Base */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
-		A70574541F04FE79005D1936 /* LaunchScreen.storyboard */ = {
+		A72CD7B7205A80C90012864F /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				A70574551F04FE79005D1936 /* Base */,
+				A72CD7B8205A80C90012864F /* Base */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -593,17 +671,19 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		A70574581F04FE79005D1936 /* Debug */ = {
+		A72CD7BB205A80C90012864F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -611,16 +691,21 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -634,7 +719,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -643,17 +728,19 @@
 			};
 			name = Debug;
 		};
-		A70574591F04FE79005D1936 /* Release */ = {
+		A72CD7BC205A80C90012864F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -661,16 +748,21 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -678,7 +770,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -686,89 +778,68 @@
 			};
 			name = Release;
 		};
-		A705745B1F04FE79005D1936 /* Debug */ = {
+		A72CD7BE205A80C90012864F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 767WDHBUJ6;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/TaksyKraft",
-				);
 				INFOPLIST_FILE = TaksyKraft/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.taksykraft.Expenses;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "d8c4aafa-c2d1-46a7-810e-c83ff47c4271";
-				PROVISIONING_PROFILE_SPECIFIER = Expenses_Dev;
+				PROVISIONING_PROFILE = "dd263f5c-d9ae-4ea3-a0b2-cef5a657b214";
+				PROVISIONING_PROFILE_SPECIFIER = Expenses_Dist;
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
-		A705745C1F04FE79005D1936 /* Release */ = {
+		A72CD7BF205A80C90012864F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 767WDHBUJ6;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/TaksyKraft",
-				);
 				INFOPLIST_FILE = TaksyKraft/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.taksykraft.Expenses;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "f206bc1f-8254-448a-b7f0-448c289fc701";
-				PROVISIONING_PROFILE_SPECIFIER = Expenses_Dev;
+				PROVISIONING_PROFILE = "dd263f5c-d9ae-4ea3-a0b2-cef5a657b214";
+				PROVISIONING_PROFILE_SPECIFIER = Expenses_Dist;
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A70574401F04FE79005D1936 /* Build configuration list for PBXProject "TaksyKraft" */ = {
+		A72CD7A6205A80C90012864F /* Build configuration list for PBXProject "TaksyKraft" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				A70574581F04FE79005D1936 /* Debug */,
-				A70574591F04FE79005D1936 /* Release */,
+				A72CD7BB205A80C90012864F /* Debug */,
+				A72CD7BC205A80C90012864F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A705745A1F04FE79005D1936 /* Build configuration list for PBXNativeTarget "TaksyKraft" */ = {
+		A72CD7BD205A80C90012864F /* Build configuration list for PBXNativeTarget "TaksyKraft" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				A705745B1F04FE79005D1936 /* Debug */,
-				A705745C1F04FE79005D1936 /* Release */,
+				A72CD7BE205A80C90012864F /* Debug */,
+				A72CD7BF205A80C90012864F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		A705744F1F04FE79005D1936 /* TaksyKraft.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				A70574501F04FE79005D1936 /* TaksyKraft.xcdatamodel */,
-			);
-			currentVersion = A70574501F04FE79005D1936 /* TaksyKraft.xcdatamodel */;
-			path = TaksyKraft.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
-	rootObject = A705743D1F04FE79005D1936 /* Project object */;
+	rootObject = A72CD7A3205A80C90012864F /* Project object */;
 }

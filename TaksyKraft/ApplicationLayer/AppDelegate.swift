@@ -11,6 +11,8 @@ import CoreData
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
+    var isServerReachable : Bool = false
+    var reachability: Reachability?
 
     var window: UIWindow?
     var navCtrl = UINavigationController()
@@ -19,31 +21,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         var vc = UIViewController()
         if TaksyKraftUserDefaults.getLoginStatus()
         {
-            self.getWalletBalance()
-            let role = TaksyKraftUserDefaults.getUserRole()
-            if role == "1"
-            {
-                vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ExpensesViewController") as! ExpensesViewController
-                
-            }
-            else if role == "2"
-            {
-                vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ExpensesViewController") as! ExpensesViewController
-            }
-            else
-            {
-                vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CreateExpenseViewController") as! CreateExpenseViewController
-            }
-
-            UIApplication.shared.statusBarStyle = .lightContent
-            let statWindow = UIApplication.shared.value(forKey:"statusBarWindow") as! UIView
-            let statusBar = statWindow.subviews[0] as UIView
-            statusBar.backgroundColor = Color_NavBarTint
-
+            vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DashboardViewController") as! DashboardViewController
         }
         else
         {
-            vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ViewController") as! ViewController
+            vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
             navCtrl.isNavigationBarHidden = true
        }
         
@@ -51,6 +33,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window?.rootViewController = navCtrl
         self.window?.backgroundColor = Color_NavBarTint
         IQKeyboardManager.sharedManager().enable = true
+        
+        
+        self.setupReachability(hostName: "", useClosures: true)
+        self.startNotifier()
+        print("reachable = ",isServerReachable)
+        isServerReachable = (reachability?.isReachable)!
+        print("reachable after= ",isServerReachable)
+
         return true
     }
 
@@ -64,7 +54,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
-        self.getWalletBalance()
     }
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
@@ -125,17 +114,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // Fallback on earlier versions
         }
 
-    }
-    func getWalletBalance()
-    {
-        let layer = ServiceLayer()
-        layer.getWalletAmount(successMessage: { (bal) in
-            DispatchQueue.main.async {
-                TaksyKraftUserDefaults.setWalletAmount(object: "₹ \(bal as! String)")
-            }
-        }) { (error) in
-            
-        }
     }
     //MARK:- Loader  methods
     func showLoader(message:String)
@@ -205,5 +183,58 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
     }
+    // MARK: - Reachability
+    
+    func setupReachability(hostName: String?, useClosures: Bool) {
+        
+        let reachabil = hostName == "" ? Reachability() : Reachability(hostname: hostName!)
+        reachability = reachabil
+        if useClosures {
+            reachability?.whenReachable = { reachability in
+                DispatchQueue.main.async {
+                    self.isServerReachable = true
+                }
+            }
+            reachability?.whenUnreachable = { reachability in
+                DispatchQueue.main.async {
+                    self.isServerReachable = false
+                }
+            }
+            print("reachable setup = ",isServerReachable)
+        } else {
+            NotificationCenter.default.addObserver(self, selector: #selector(self.reachabilityChanged(_:)), name: ReachabilityChangedNotification, object: reachability)
+        }
+    }
+    
+    func startNotifier() {
+        print("--- start notifier")
+        do {
+            try reachability?.startNotifier()
+        } catch {
+            
+            return
+        }
+    }
+    
+    func stopNotifier() {
+        print("--- stop notifier")
+        reachability?.stopNotifier()
+        NotificationCenter.default.removeObserver(self, name: ReachabilityChangedNotification, object: nil)
+        reachability = nil
+    }
+    func reachabilityChanged(_ note: Notification) {
+        let reachability = note.object as! Reachability
+        
+        if reachability.isReachable {
+            isServerReachable = true
+        } else {
+            isServerReachable = false
+        }
+    }
+    
+    deinit {
+        stopNotifier()
+    }
+
 }
 

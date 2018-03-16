@@ -7,115 +7,151 @@
 //
 
 import UIKit
-let Color_NavBarTint = UIColor(red: 84.0/255.0, green: 130.0/255.0, blue: 153.0/255.0, alpha: 1.0)
+let Color_NavBarTint = UIColor.white
 let ScreenWidth  =  UIScreen.main.bounds.size.width
 let ScreenHeight = UIScreen.main.bounds.size.height
-
+let app_delegate =  UIApplication.shared.delegate as! AppDelegate
+let TXTVW_MAX_COUNT = 120
 class BaseViewController: UIViewController {
-    var lblWallet = UILabel()
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
     }
-    func designNavBarWithTitleAndBack(title:String,showBack : Bool,isMenu : Bool)
+    func designNavBarWithTitleAndBack(title:String,showBack : Bool,isRefresh : Bool)
     {
         self.navigationController?.navigationBar.isHidden = false
         self.navigationController?.isNavigationBarHidden = false
         self.navigationItem.hidesBackButton = true
         self.navigationController!.navigationBar.isTranslucent = false
         self.navigationController!.navigationBar.barTintColor = Color_NavBarTint
-
+        
+        let negativeSpacer = UIBarButtonItem.init(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
+        negativeSpacer.width = -15;
+        
         let leftBarButtonItems = UIView()
-        leftBarButtonItems.frame = CGRect(x:0,y: 0,width: ScreenWidth-30,height: 44)
+        leftBarButtonItems.frame = CGRect(x:0,y: 0,width: 50,height: 44)
         let backButton = UIButton(type: UIButtonType.custom)
         let titleLbl = UILabel()
         if showBack
         {
-            backButton.frame = CGRect(x: 0, y: -2  , width: 40 , height: 44)
+            backButton.frame = CGRect(x: 0, y: 0  , width: 40 , height: 44)
             backButton.imageEdgeInsets = UIEdgeInsetsMake(10, 2,2,10)
-            backButton.setImage(UIImage(named: "back"), for: UIControlState.normal)
+            backButton.backgroundColor = .clear
+            backButton.setImage(#imageLiteral(resourceName: "Back_Blue"), for: UIControlState.normal)
             backButton.addTarget(self, action: #selector(backClicked(sender:)), for: .touchUpInside)
             leftBarButtonItems.addSubview(backButton)
+            let bItem = UIBarButtonItem(customView:leftBarButtonItems)
+            self.navigationItem.leftBarButtonItems = [ negativeSpacer, bItem]
+            
         }
         if title != ""
         {
+            let logoContainer = UIView(frame: CGRect(x: 0, y: 0, width: 160, height: 44))
+            logoContainer.backgroundColor = UIColor.clear
             if showBack
             {
-                titleLbl.frame = CGRect(x: backButton.frame.width+1,y:8,width: ScreenWidth-55,height: 30)
+//                if isRefresh
+//                {
+                    logoContainer.frame = CGRect(x: 0,y:0,width: ScreenWidth-160,height: 44)
+//                }
+//                else
+//                {
+//                    logoContainer.frame = CGRect(x: 0,y:0,width: ScreenWidth-80,height: 44)
+//                }
             }
             else
             {
-                titleLbl.frame = CGRect(x: 10,y:8,width: ScreenWidth-55,height: 30)
+                logoContainer.frame = CGRect(x: 0,y:0,width: ScreenWidth-15,height: 44)
             }
-            titleLbl.font = UIFont(name: "Helvetica-Bold", size: 16)
+            titleLbl.frame = CGRect(x: 0, y: 0, width: logoContainer.frame.size.width, height: logoContainer.frame.size.height)
+            titleLbl.font = UIFont(name: "Roboto-Regular", size: 16)
             titleLbl.text = title
-            titleLbl.textAlignment = .left
-            titleLbl.textColor = UIColor.white
-            leftBarButtonItems.addSubview(titleLbl)
+            titleLbl.textAlignment = .center
+            titleLbl.backgroundColor = UIColor.clear
+            titleLbl.textColor = UIColor.black
+            logoContainer.addSubview(titleLbl)
+            self.navigationItem.titleView = logoContainer
         }
+        
+        let rightBarButtonItems = UIView()
+        rightBarButtonItems.frame = CGRect(x:0,y: 0,width: 50,height: 44)
+        let btnRefresh = UIButton(type: UIButtonType.custom)
+        btnRefresh.frame = CGRect(x: 0, y: 0  , width: 50 , height: 44)
+        btnRefresh.imageView?.contentMode = .scaleAspectFit
+        btnRefresh.setImage(#imageLiteral(resourceName: "Refresh"), for: UIControlState.normal)
+
+        if isRefresh
+        {
+            btnRefresh.isHidden = false
+        }
+        else
+        {
+            btnRefresh.isHidden = true
+        }
+        btnRefresh.backgroundColor = .clear
+        btnRefresh.addTarget(self, action: #selector(btnRefreshClicked(sender:)), for: .touchUpInside)
+        rightBarButtonItems.addSubview(btnRefresh)
+        if #available(iOS 11.0, *)
+        {
+            self.navigationItem.rightBarButtonItems = [UIBarButtonItem(customView:rightBarButtonItems)]
+        }
+        else
+        {
+            self.navigationItem.rightBarButtonItems = [negativeSpacer,UIBarButtonItem(customView:rightBarButtonItems)]
+        }
+        
+    }
+    func designNavBarForDashBoard()
+    {
+        self.navigationController?.navigationBar.isHidden = false
+        self.navigationController?.isNavigationBarHidden = false
+        self.navigationItem.hidesBackButton = true
+        self.navigationController!.navigationBar.isTranslucent = false
+        self.navigationController!.navigationBar.barTintColor = Color_NavBarTint
+        
+        let leftBarButtonItems = UIView()
+        leftBarButtonItems.frame = CGRect(x:0,y: 0,width: 50,height: 44)
+        let btnProfile = UIButton(type: UIButtonType.custom)
+        btnProfile.frame = CGRect(x: 0, y: 0  , width: 40 , height: 44)
+        btnProfile.setImage(#imageLiteral(resourceName: "Profile"), for: UIControlState.normal)
+        btnProfile.addTarget(self, action: #selector(btnProfileClicked(sender:)), for: .touchUpInside)
+        leftBarButtonItems.addSubview(btnProfile)
+        
         let bItem = UIBarButtonItem(customView:leftBarButtonItems)
         let negativeSpacer = UIBarButtonItem.init(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
         negativeSpacer.width = -15;
         self.navigationItem.leftBarButtonItems = [ negativeSpacer, bItem]
+        let logoContainer = UIView(frame: CGRect(x: 0, y: 0, width: 160, height: 44))
+
+        let imgVw = UIImageView()
+        imgVw.frame = CGRect(x: 0, y: 12, width: 160, height: 24)
+        imgVw.backgroundColor = .clear
+        imgVw.image = #imageLiteral(resourceName: "TaksyKraft_Logo")
+        logoContainer.addSubview(imgVw)
+        self.navigationItem.titleView = logoContainer
         
-        if isMenu
-        {
-            let rightBarButtonItems = UIView()
-            rightBarButtonItems.frame = CGRect(x:0,y: 0,width: 130,height: 44)
-            let btnMenu = UIButton(type: UIButtonType.custom)
-            btnMenu.frame = CGRect(x: 80, y: 0  , width: 50 , height: 44)
-            btnMenu.setImage(#imageLiteral(resourceName: "menu"), for: UIControlState.normal)
-            btnMenu.addTarget(self, action: #selector(btnMenuClicked(sender:)), for: .touchUpInside)
-
-            lblWallet.frame = CGRect(x: 0, y: 0  , width: 80 , height: 44)
-            lblWallet.text = TaksyKraftUserDefaults.getWalletAmount()
-            lblWallet.backgroundColor = UIColor.clear
-            lblWallet.textColor = UIColor(red: 72.0/255.0, green: 151.0/255.0, blue: 8.0/255.0, alpha: 1.0)
-            lblWallet.textAlignment = .right
-            lblWallet.font = UIFont.systemFont(ofSize: 18)
-            
-            rightBarButtonItems.addSubview(lblWallet)
-            rightBarButtonItems.addSubview(btnMenu)
-            if #available(iOS 11.0, *)
-            {
-                self.navigationItem.rightBarButtonItems = [UIBarButtonItem(customView:rightBarButtonItems)]
-            }
-            else
-            {
-                self.navigationItem.rightBarButtonItems = [negativeSpacer,UIBarButtonItem(customView:rightBarButtonItems)]
-            }
-        }
-        else
-        {
-            let rightBarButtonItems = UIView()
-            rightBarButtonItems.frame = CGRect(x:0,y: 0,width: 80,height: 44)
-            lblWallet.frame = CGRect(x: 0, y: 0  , width: 80 , height: 44)
-            lblWallet.text = TaksyKraftUserDefaults.getWalletAmount()
-            lblWallet.backgroundColor = UIColor.clear
-            lblWallet.textColor = UIColor(red: 72.0/255.0, green: 151.0/255.0, blue: 8.0/255.0, alpha: 1.0)
-            lblWallet.font = UIFont.systemFont(ofSize: 18)
-            rightBarButtonItems.addSubview(lblWallet)
-            if #available(iOS 11.0, *)
-            {
-                self.navigationItem.rightBarButtonItems = [UIBarButtonItem(customView:rightBarButtonItems)]
-            }
-            else
-            {
-                self.navigationItem.rightBarButtonItems = [negativeSpacer,UIBarButtonItem(customView:rightBarButtonItems)]
-            }
-
-        }
     }
-    func btnMenuClicked( sender:UIButton)
+    func logout()
+    {
+        TaksyKraftUserDefaults.setLoginStatus(object: false)
+        let vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
+        app_delegate.navCtrl.isNavigationBarHidden = true
+        app_delegate.navCtrl = UINavigationController(rootViewController: vc)
+        app_delegate.window?.rootViewController = app_delegate.navCtrl
+        app_delegate.window?.backgroundColor = Color_NavBarTint
+
+    }
+    func btnProfileClicked( sender:UIButton)
+    {
+        let vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ProfileViewController") as! ProfileViewController
+        self.navigationController?.pushViewController(vc, animated: true)
+
+    }
+    func btnRefreshClicked( sender:UIButton)
     {
 
     }
-    func reloadWallet()
-    {
-        lblWallet.text = TaksyKraftUserDefaults.getWalletAmount()
-    }
-    
     func backClicked( sender:UIButton)
     {
         let _ =    self.navigationController?.popViewController(animated: true)
@@ -137,4 +173,19 @@ class BaseViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
+}
+extension String {
+    func height(withConstrainedWidth width: CGFloat, font: UIFont) -> CGFloat {
+        let constraintRect = CGSize(width: width, height: .greatestFiniteMagnitude)
+        let boundingBox = self.boundingRect(with: constraintRect, options: .usesLineFragmentOrigin, attributes: [NSFontAttributeName: font], context: nil)
+        
+        return ceil(boundingBox.height)
+    }
+    
+    func width(withConstraintedHeight height: CGFloat, font: UIFont) -> CGFloat {
+        let constraintRect = CGSize(width: .greatestFiniteMagnitude, height: height)
+        let boundingBox = self.boundingRect(with: constraintRect, options: .usesLineFragmentOrigin, attributes: [NSFontAttributeName: font], context: nil)
+        
+        return ceil(boundingBox.width)
+    }
 }

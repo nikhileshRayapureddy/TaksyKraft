@@ -7,711 +7,25 @@
 //
 
 import UIKit
+let EXP_TOKEN_ERR = "Your TaksyKraft Expenses App Access Token Is Invalid Or Has Expired"
 public enum ParsingConstant : Int
 {
+    case GetOTP
+    case VerifyOTP
     case Login
 }
 class ServiceLayer: NSObject {
     let SERVER_ERROR = "Server not responding.\nPlease try after some time."
-    let BASE_URL = "http://188.166.218.149/api/v1/"
-    let BASE_URL_New = "http://188.166.218.149/api/v2/"
-    public func loginWithEmailId(mobileNo:String,successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
+    let BASE_URL = "http://139.59.14.2/api/v3/"
+    public func getOtpWith(mobileNo:String,successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
     {
-
+        var params = [String:AnyObject]()
+        params["mobile"] = mobileNo as AnyObject
         let obj : HttpRequest = HttpRequest()
-        obj.tag = ParsingConstant.Login.rawValue
-        obj.MethodNamee = "GET"
-        obj._serviceURL = "\(BASE_URL_New)login/mn=\(mobileNo)/fcm=12345"
-        obj.params = [:]
-        obj.doGetSOAPResponse {(success : Bool) -> Void in
-            if !success
-            {
-                failureMessage(self.SERVER_ERROR)
-            }
-            else
-            {
-                if let error = obj.parsedDataDict["error"] as? String,let message = obj.parsedDataDict["message"] as? String,let otp = obj.parsedDataDict["otp"] as? NSNumber
-                {
-                    if error == "true"
-                    {
-                        let x = message != "" ? message : self.SERVER_ERROR
-                        failureMessage(x)
-                    }
-                    else
-                    {
-                        let x = message != "" ? message : self.SERVER_ERROR
-                        successMessage(x + String(describing: otp))
-                    }
-                }
-                else
-                {
-                    failureMessage(self.SERVER_ERROR)
-                }
-                
-            }
-        }
-    }
-    public func checkLoginWith(mobileNo:String,Otp : String,successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
-    {
-        let obj : HttpRequest = HttpRequest()
-        obj.tag = ParsingConstant.Login.rawValue
-        obj.MethodNamee = "GET"
-        obj._serviceURL = "\(BASE_URL)checklogin/mn=\(mobileNo)/otp=\(Otp)"
-        obj.params = [:]
-        obj.doGetSOAPResponse {(success : Bool) -> Void in
-            if !success
-            {
-                failureMessage(self.SERVER_ERROR)
-            }
-            else
-            {
-                if let error = obj.parsedDataDict["error"] as? String,let message = obj.parsedDataDict["message"] as? String
-                {
-                    if error == "true"
-                    {
-                        let x = message != "" ? message : self.SERVER_ERROR
-                        failureMessage(x)
-                    }
-                    else
-                    {
-                        if let data = obj.parsedDataDict["data"] as? [[String:AnyObject]]
-                        {
-                            let user = data[0]
-                            
-                            let BO = UserBO()
-                            if let id = user["id"] as? NSNumber
-                            {
-                                BO.id = Int(id)
-                            }
-                            if let name = user["name"] as? String
-                            {
-                                TaksyKraftUserDefaults.setUserName(object: name)
-                                BO.name = name
-                            }
-                            if let mobile = user["mobile"] as? String
-                            {
-                                BO.mobile = mobile
-                            }
-                            if let otp = user["otp"] as? String
-                            {
-                                BO.otp = otp
-                            }
-                            if let role = user["role"] as? String
-                            {
-                                BO.role = role
-                            }
-                            if let created_at = user["created_at"] as? String
-                            {
-                                BO.created_at = created_at
-                            }
-                            if let updated_at = user["updated_at"] as? String
-                            {
-                                BO.updated_at = updated_at
-                            }
-                            successMessage(BO)
-                        }
-                        else
-                        {
-                            let x = message != "" ? message : self.SERVER_ERROR
-                            failureMessage(x)
-                        }
-                    }
-                }
-                else
-                {
-                    failureMessage(self.SERVER_ERROR)
-                }
-                
-            }
-        }
-    }
-    public func getBillDetailsWith(mobileNo:String,successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
-    {
-        let obj : HttpRequest = HttpRequest()
-        obj.tag = ParsingConstant.Login.rawValue
-        obj.MethodNamee = "GET"
-        obj._serviceURL = "\(BASE_URL)billdetails/\(mobileNo)"
-        obj.params = [:]
-        obj.doGetSOAPResponse {(success : Bool) -> Void in
-            if !success
-            {
-                failureMessage(self.SERVER_ERROR)
-            }
-            else
-            {
-                if let error = obj.parsedDataDict["error"] as? String
-                {
-                    if error == "true"
-                    {
-                        failureMessage(self.SERVER_ERROR)
-                    }
-                    else
-                    {
-                        if let data = obj.parsedDataDict["data"] as? [[String:AnyObject]]
-                        {
-                            var arrData = [ReceiptBO]()
-                            for receipt in data
-                            {
-                                let receipetBO = ReceiptBO()
-                                if let id = receipt["id"] as? NSNumber
-                                {
-                                    receipetBO.id = Int(id)
-                                }
-                                if let receiptId = receipt["receiptId"] as? String
-                                {
-                                    receipetBO.receiptId = receiptId
-                                }
-                                if let image = receipt["image"] as? String
-                                {
-                                    receipetBO.image = image
-                                }
-                                if let name = receipt["name"] as? String
-                                {
-                                    receipetBO.name = name
-                                }
-                                if let uploadedby = receipt["uploadedby"] as? String
-                                {
-                                    receipetBO.uploadedby = uploadedby
-                                }
-                                if let amount = receipt["amount"] as? String
-                                {
-                                    receipetBO.amount = amount
-                                }
-                                if let Description = receipt["description"] as? String
-                                {
-                                    receipetBO.Description = Description
-                                }
-                                if let status = receipt["status"] as? String
-                                {
-                                    receipetBO.status = status
-                                }
-
-                                if let created_at = receipt["created_at"] as? [String:AnyObject]
-                                {
-                                    if let date = created_at["date"] as? String
-                                    {
-                                        receipetBO.created_at = date
-                                    }
-                                }
-                                if let updated_at = receipt["updated_at"] as? [String:AnyObject]
-                                {
-                                    if let date = updated_at["date"] as? String
-                                    {
-                                        receipetBO.updated_at = date
-                                    }
-                                }
-                                    arrData.append(receipetBO)
-                            }
-                            for i in 0..<arrData.count/2 {
-                                (arrData[i],arrData[arrData.count - i - 1])  = (arrData[arrData.count - i - 1],arrData[i])
-                            }
-
-                            successMessage(arrData)
-                        }
-                        else
-                        {
-                            failureMessage("No Data Found")
-                        }
-                    }
-                }
-                else
-                {
-                    failureMessage(self.SERVER_ERROR)
-                }
-                
-            }
-        }
-    }
-    public func getBillHistoryWith(mobileNo:String,successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
-    {
-        let obj : HttpRequest = HttpRequest()
-        obj.tag = ParsingConstant.Login.rawValue
-        obj.MethodNamee = "GET"
-        obj._serviceURL = "\(BASE_URL)billhistorynew/\(mobileNo)"
-        obj.params = [:]
-        obj.doGetSOAPResponse {(success : Bool) -> Void in
-            if !success
-            {
-                failureMessage(self.SERVER_ERROR)
-            }
-            else
-            {
-                if let error = obj.parsedDataDict["error"] as? String
-                {
-                    if error == "true"
-                    {
-                        failureMessage(self.SERVER_ERROR)
-                    }
-                    else
-                    {
-                        if let data = obj.parsedDataDict["data"] as? [[String:AnyObject]]
-                        {
-                            var arrData = [ReceiptBO]()
-                            for receipt in data
-                            {
-                                let receipetBO = ReceiptBO()
-                                if let id = receipt["id"] as? NSNumber
-                                {
-                                    receipetBO.id = Int(id)
-                                }
-                                if let receiptId = receipt["receiptId"] as? String
-                                {
-                                    receipetBO.receiptId = receiptId
-                                }
-                                if let image = receipt["image"] as? String
-                                {
-                                    receipetBO.image = image
-                                }
-                                if let name = receipt["name"] as? String
-                                {
-                                    receipetBO.name = name
-                                }
-                                if let uploadedby = receipt["uploadedby"] as? String
-                                {
-                                    receipetBO.uploadedby = uploadedby
-                                }
-                                if let amount = receipt["amount"] as? String
-                                {
-                                    receipetBO.amount = amount
-                                }
-                                if let wallet_amount = receipt["wallet_amount"] as? String
-                                {
-                                    receipetBO.wallet_amount = wallet_amount
-                                }
-                                if let total = receipt["total"] as? String
-                                {
-                                    receipetBO.total = total
-                                }
-                                if let Description = receipt["description"] as? String
-                                {
-                                    receipetBO.Description = Description
-                                }
-                                if let validate = receipt["validate"] as? String
-                                {
-                                    receipetBO.validate = validate
-                                }
-                                if let approved = receipt["approved"] as? String
-                                {
-                                    receipetBO.approved = approved
-                                }
-                                if let status_message = receipt["status_message"] as? String
-                                {
-                                    receipetBO.status_message = status_message
-                                }
-                                if let created_at = receipt["created_at"] as? String
-                                {
-                                    receipetBO.created_at = created_at
-                                }
-                                if let updated_at = receipt["updated_at"] as? String
-                                {
-                                    receipetBO.updated_at = updated_at
-                                }
-                                if let comment = receipt["comment"] as? String
-                                {
-                                    receipetBO.comment = comment
-                                }
-                                if let user = receipt["user"] as? String
-                                {
-                                    receipetBO.user = user
-                                }
-
-                                    arrData.append(receipetBO)
-                            }
-                            for i in 0..<arrData.count/2 {
-                                (arrData[i],arrData[arrData.count - i - 1])  = (arrData[arrData.count - i - 1],arrData[i])
-                            }
-
-                            successMessage(arrData)
-                        }
-                        else
-                        {
-                            failureMessage("No Data Found")
-                        }
-                    }
-                }
-                else
-                {
-                    failureMessage(self.SERVER_ERROR)
-                }
-                
-            }
-        }
-    }
-    public func updateBillWith(billNo:String,status:String,comment:String,successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
-    {
-        //188.166.218.149/api/v1/billupdatenew/no=124/status=4/{comment?}/{mobileno}
-        let obj : HttpRequest = HttpRequest()
-        obj.tag = ParsingConstant.Login.rawValue
-        obj.MethodNamee = "GET"
-        obj._serviceURL = "\(BASE_URL)billupdatenew/no=\(billNo)/status=\(status)/\(comment)/\(TaksyKraftUserDefaults.getUserMobile())"
-        obj.params = [:]
-        obj.doGetSOAPResponse {(success : Bool) -> Void in
-            if !success
-            {
-                failureMessage(self.SERVER_ERROR)
-            }
-            else
-            {
-                if let error = obj.parsedDataDict["error"] as? String,let message = obj.parsedDataDict["message"] as? String
-                {
-                    if error == "true"
-                    {
-                        let x = message != "" ? message : self.SERVER_ERROR
-                        failureMessage(x)
-                    }
-                    else
-                    {
-                        successMessage(message)
-                    }
-                }
-                else
-                {
-                    failureMessage(self.SERVER_ERROR)
-                }
-                
-            }
-        }
-    }
-    func uploadWith(imageData : Data,desc : String,mobileNo:String,card:String,wallet:String,amount : String,fileName : String,contentType:String,successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
-    {
-        
-        let strUrl = BASE_URL + "upload"
-        let webStringURL = strUrl.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
-        var request  = URLRequest(url: URL(string:webStringURL)!)
-        request.httpMethod = "POST"
-        let boundary = "Orb"
-        let body = NSMutableData()
-        body.append(("--\(boundary)\r\n").data(using: String.Encoding.utf8)!)
-        body.append("Content-Disposition: form-data; name=\"mobileno\"\r\n\r\n".data(using: String.Encoding.utf8)!)
-        body.append("\(mobileNo)\r\n".data(using: String.Encoding.utf8, allowLossyConversion: true)!)
-        body.append(("--\(boundary)\r\n").data(using: String.Encoding.utf8)!)
-        body.append(("--\(boundary)\r\n").data(using: String.Encoding.utf8)!)
-        body.append("Content-Disposition: form-data; name=\"amount\"\r\n\r\n".data(using: String.Encoding.utf8)!)
-        body.append("\(amount)\r\n".data(using: String.Encoding.utf8, allowLossyConversion: true)!)
-        body.append(("--\(boundary)\r\n").data(using: String.Encoding.utf8)!)
-        body.append(("--\(boundary)\r\n").data(using: String.Encoding.utf8)!)
-        body.append("Content-Disposition: form-data; name=\"description\"\r\n\r\n".data(using: String.Encoding.utf8)!)
-        body.append("\(desc)\r\n".data(using: String.Encoding.utf8, allowLossyConversion: true)!)
-        body.append(("--\(boundary)\r\n").data(using: String.Encoding.utf8)!)
-        body.append(("--\(boundary)\r\n").data(using: String.Encoding.utf8)!)
-        body.append("Content-Disposition: form-data; name=\"card\"\r\n\r\n".data(using: String.Encoding.utf8)!)
-        body.append("\(card)\r\n".data(using: String.Encoding.utf8, allowLossyConversion: true)!)
-        body.append(("--\(boundary)\r\n").data(using: String.Encoding.utf8)!)
-        body.append(("--\(boundary)\r\n").data(using: String.Encoding.utf8)!)
-        body.append("Content-Disposition: form-data; name=\"wallet\"\r\n\r\n".data(using: String.Encoding.utf8)!)
-        body.append("\(wallet)\r\n".data(using: String.Encoding.utf8, allowLossyConversion: true)!)
-        body.append(("--\(boundary)\r\n").data(using: String.Encoding.utf8)!)
-
-        body.append("Content-Disposition: form-data; name=\"image\"; filename=\"\(fileName)\"\r\n".data(using: String.Encoding.utf8)!)
-        body.append("Content-Type: contentType\r\n\r\n".data(using: String.Encoding.utf8)!)
-        body.append(imageData)
-        body.append("\r\n".data(using: String.Encoding.utf8)!)
-        body.append("--\(boundary)--\r\n".data(using: String.Encoding.utf8)!)
-        
-        let content:String = "multipart/form-data; boundary=\(boundary)"
-        request.setValue(content, forHTTPHeaderField: "Content-Type")
-        request.setValue("\(body.length)", forHTTPHeaderField:"Content-Length")
-        request.httpBody = body as Data?
-        request.url = URL(string: webStringURL)!
-        let config = URLSessionConfiguration.ephemeral
-        config.timeoutIntervalForRequest = 40.0
-        config.timeoutIntervalForResource = 40.0
-        let session = URLSession(configuration: config)
-        
-        let task = session.dataTask(with: request) { (data, response, err) in
-            if data != nil
-            {
-                let dataString = String(data: data!, encoding: String.Encoding(rawValue: String.Encoding.utf8.rawValue))
-                print("data string = ", dataString! as String)
-                if dataString != ""
-                {
-                    
-                    if self.convertStringToDictionary(dataString!) != nil
-                    {
-                        
-                        let parsedDataDict = self.convertStringToDictionary(dataString!)! as [String:AnyObject]
-                        if parsedDataDict.keys.count == 0
-                        {
-                            failureMessage(self.SERVER_ERROR)
-                        }
-                        else
-                        {
-                            if let error = parsedDataDict["error"] as? String
-                            {
-                                if Bool(error) == false
-                                {
-                                    if let message = parsedDataDict["message"] as? String
-                                    {
-                                        successMessage(message)
-                                    }
-                                    else
-                                    {
-                                        failureMessage(self.SERVER_ERROR)
-                                    }
-                                }
-                                else
-                                {
-                                    failureMessage(self.SERVER_ERROR)
-                                }
-                            }
-                        }
-                        
-                    }
-                    else
-                    {
-                        failureMessage(self.SERVER_ERROR)
-                    }
-                    
-                    
-                }
-                else
-                {
-                    failureMessage(self.SERVER_ERROR)
-                }
-                
-            }
-            else
-            {
-                failureMessage(self.SERVER_ERROR)
-                
-            }
-            
-            
-        }
-        
-        task.resume()
-        
-    }
-
-    func uploadEditedDetailsWith(imageData : Data,card:String,wallet:String,desc : String,mobileNo:String,amount : String,fileName : String,contentType:String,expenseID : String,successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
-    {
-        
-        let strUrl = BASE_URL + "editchanges/expid=\(expenseID)"
-        let webStringURL = strUrl.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
-        var request  = URLRequest(url: URL(string:webStringURL)!)
-        request.httpMethod = "POST"
-        let boundary = "Orb"
-        let body = NSMutableData()
-        body.append(("--\(boundary)\r\n").data(using: String.Encoding.utf8)!)
-        body.append("Content-Disposition: form-data; name=\"mobileno\"\r\n\r\n".data(using: String.Encoding.utf8)!)
-        body.append("\(mobileNo)\r\n".data(using: String.Encoding.utf8, allowLossyConversion: true)!)
-        body.append(("--\(boundary)\r\n").data(using: String.Encoding.utf8)!)
-        body.append(("--\(boundary)\r\n").data(using: String.Encoding.utf8)!)
-        body.append("Content-Disposition: form-data; name=\"card\"\r\n\r\n".data(using: String.Encoding.utf8)!)
-        body.append("\(card)\r\n".data(using: String.Encoding.utf8, allowLossyConversion: true)!)
-        body.append(("--\(boundary)\r\n").data(using: String.Encoding.utf8)!)
-        body.append(("--\(boundary)\r\n").data(using: String.Encoding.utf8)!)
-        body.append("Content-Disposition: form-data; name=\"wallet\"\r\n\r\n".data(using: String.Encoding.utf8)!)
-        body.append("\(wallet)\r\n".data(using: String.Encoding.utf8, allowLossyConversion: true)!)
-        body.append(("--\(boundary)\r\n").data(using: String.Encoding.utf8)!)
-        body.append(("--\(boundary)\r\n").data(using: String.Encoding.utf8)!)
-        body.append("Content-Disposition: form-data; name=\"amount\"\r\n\r\n".data(using: String.Encoding.utf8)!)
-        body.append("\(amount)\r\n".data(using: String.Encoding.utf8, allowLossyConversion: true)!)
-        body.append(("--\(boundary)\r\n").data(using: String.Encoding.utf8)!)
-        body.append(("--\(boundary)\r\n").data(using: String.Encoding.utf8)!)
-        body.append("Content-Disposition: form-data; name=\"description\"\r\n\r\n".data(using: String.Encoding.utf8)!)
-        body.append("\(desc)\r\n".data(using: String.Encoding.utf8, allowLossyConversion: true)!)
-        body.append(("--\(boundary)\r\n").data(using: String.Encoding.utf8)!)
-        
-        if imageData.count > 0
-        {
-            body.append("Content-Disposition: form-data; name=\"image\"; filename=\"\(fileName)\"\r\n".data(using: String.Encoding.utf8)!)
-            body.append("Content-Type: contentType\r\n\r\n".data(using: String.Encoding.utf8)!)
-            body.append(imageData)
-            body.append("\r\n".data(using: String.Encoding.utf8)!)
-            body.append("--\(boundary)--\r\n".data(using: String.Encoding.utf8)!)
-        }
-      
-        
-        let content:String = "multipart/form-data; boundary=\(boundary)"
-        request.setValue(content, forHTTPHeaderField: "Content-Type")
-        request.setValue("\(body.length)", forHTTPHeaderField:"Content-Length")
-        request.httpBody = body as Data?
-        request.url = URL(string: webStringURL)!
-        let config = URLSessionConfiguration.ephemeral
-        config.timeoutIntervalForRequest = 40.0
-        config.timeoutIntervalForResource = 40.0
-        let session = URLSession(configuration: config)
-        
-        let task = session.dataTask(with: request) { (data, response, err) in
-            if data != nil
-            {
-                let dataString = String(data: data!, encoding: String.Encoding(rawValue: String.Encoding.utf8.rawValue))
-                print("data string = ", dataString! as String)
-                if dataString != ""
-                {
-                    
-                    if self.convertStringToDictionary(dataString!) != nil
-                    {
-                        
-                        let parsedDataDict = self.convertStringToDictionary(dataString!)! as [String:AnyObject]
-                        if parsedDataDict.keys.count == 0
-                        {
-                            failureMessage(self.SERVER_ERROR)
-                        }
-                        else
-                        {
-                            if let error = parsedDataDict["error"] as? String
-                            {
-                                if Bool(error) == false
-                                {
-                                    if let message = parsedDataDict["message"] as? String
-                                    {
-                                        successMessage(message)
-                                    }
-                                    else
-                                    {
-                                        failureMessage(self.SERVER_ERROR)
-                                    }
-                                }
-                                else
-                                {
-                                    failureMessage(self.SERVER_ERROR)
-                                }
-                            }
-                        }
-                        
-                    }
-                    else
-                    {
-                        failureMessage(self.SERVER_ERROR)
-                    }
-                    
-                    
-                }
-                else
-                {
-                    failureMessage(self.SERVER_ERROR)
-                }
-                
-            }
-            else
-            {
-                failureMessage(self.SERVER_ERROR)
-                
-            }
-            
-            
-        }
-        
-        task.resume()
-        
-    }
-    public func getWalletAmount(successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
-    {
-        let obj : HttpRequest = HttpRequest()
-        obj.tag = ParsingConstant.Login.rawValue
-        obj.MethodNamee = "GET"
-        obj._serviceURL = "\(BASE_URL_New)wallet/mobileno=\(TaksyKraftUserDefaults.getUserMobile())"///
-        obj.params = [:]
-        obj.doGetSOAPResponse {(success : Bool) -> Void in
-            if !success
-            {
-                failureMessage(self.SERVER_ERROR)
-            }
-            else
-            {
-                if let error = obj.parsedDataDict["error"] as? String
-                {
-                    if error == "true"
-                    {
-                        let x = self.SERVER_ERROR
-                        failureMessage(x)
-                    }
-                    else
-                    {
-                        if let balance = obj.parsedDataDict["balance"] as? String
-                        {
-                            successMessage(balance)
-                        }
-                        else
-                        {
-                            let x = self.SERVER_ERROR
-                            failureMessage(x)
-                        }
-                    }
-                }
-                else
-                {
-                    failureMessage(self.SERVER_ERROR)
-                }
-                
-            }
-        }
-    }
-    public func getEmployeeList(successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
-    {
-        let obj : HttpRequest = HttpRequest()
-        obj.tag = ParsingConstant.Login.rawValue
-        obj.MethodNamee = "GET"
-        obj._serviceURL = "\(BASE_URL_New)usersList"
-        obj.params = [:]
-        obj.doGetSOAPResponse {(success : Bool) -> Void in
-            if !success
-            {
-                failureMessage(self.SERVER_ERROR)
-            }
-            else
-            {
-                if let error = obj.parsedDataDict["error"] as? String,let message = obj.parsedDataDict["message"] as? String
-                {
-                    if error == "true"
-                    {
-                        let x = message != "" ? message : self.SERVER_ERROR
-                        failureMessage(x)
-                    }
-                    else
-                    {
-                        if let data = obj.parsedDataDict["data"] as? [[String:AnyObject]]
-                        {
-                            var arrData = [EmployeBO]()
-                            for receipt in data
-                            {
-                                let employeBO = EmployeBO()
-                                if let Name = receipt["Name"] as? String
-                                {
-                                    employeBO.Name = Name
-                                }
-                                if let Mobile = receipt["Mobile"] as? String
-                                {
-                                    employeBO.Mobile = Mobile
-                                }
-                                if let Location = receipt["Location"] as? String
-                                {
-                                    employeBO.Location = Location
-                                }
-                                
-                                arrData.append(employeBO)
-                            }
-                            successMessage(arrData)
-                        }
-                        else
-                        {
-                            let x = message != "" ? message : self.SERVER_ERROR
-                            failureMessage(x)
-                        }
-                    }
-                }
-                else
-                {
-                    failureMessage(self.SERVER_ERROR)
-                }
-                
-            }
-        }
-    }
-    func sendMoney(fromUser : String,toUser : String,amt : String,desc : String,successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
-    {
-        var dict = [String:AnyObject]()
-        dict["from_user"] = fromUser as AnyObject
-        dict["to_user"] = toUser as AnyObject
-        dict["amount"] = amt as AnyObject
-        dict["Description"] = desc as AnyObject
-        let obj : HttpRequest = HttpRequest()
-        obj.tag = ParsingConstant.Login.rawValue
+        obj.tag = ParsingConstant.GetOTP.rawValue
         obj.MethodNamee = "POST"
-        obj._serviceURL = "\(BASE_URL_New)sendMoney"
-        obj.params = dict
+        obj._serviceURL = "\(BASE_URL)get-otp"
+        obj.params = params
         obj.doGetSOAPResponse {(success : Bool) -> Void in
             if !success
             {
@@ -719,9 +33,9 @@ class ServiceLayer: NSObject {
             }
             else
             {
-                if let error = obj.parsedDataDict["error"] as? String,let message = obj.parsedDataDict["message"] as? String
+                if let error = obj.parsedDataDict["error"] as? Bool,let message = obj.parsedDataDict["message"] as? String
                 {
-                    if error == "true"
+                    if error == true
                     {
                         let x = message != "" ? message : self.SERVER_ERROR
                         failureMessage(x)
@@ -740,11 +54,1428 @@ class ServiceLayer: NSObject {
             }
         }
     }
+    public func verifyOTPWith(mobileNo:String,Otp : String,successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
+    {
+        var params = [String:AnyObject]()
+        params["mobile"] = mobileNo as AnyObject
+        params["otp"] = Otp as AnyObject
+
+        let obj : HttpRequest = HttpRequest()
+        obj.tag = ParsingConstant.VerifyOTP.rawValue
+        obj.MethodNamee = "POST"
+        obj._serviceURL = "\(BASE_URL)verify-otp"
+        obj.params = params
+        obj.doGetSOAPResponse {(success : Bool) -> Void in
+            if !success
+            {
+                failureMessage(self.SERVER_ERROR)
+            }
+            else
+            {
+                if let error = obj.parsedDataDict["error"] as? String,let message = obj.parsedDataDict["message"] as? String
+                {
+                    if error == "true"
+                    {
+                        let x = message != "" ? message : self.SERVER_ERROR
+                        failureMessage(x)
+                    }
+                    else
+                    {
+                        if let data = obj.parsedDataDict["data"] as? [String:AnyObject],let message = obj.parsedDataDict["message"] as? String
+                        {
+                            if let accessToken = data["accessToken"] as? String
+                            {
+                                TaksyKraftUserDefaults.setAccessToken(object: "Bearer " + accessToken)
+                                successMessage("Success")
+                            }
+                            else
+                            {
+                                failureMessage(message)
+                            }
+                        }
+                        else
+                        {
+                            let x = message != "" ? message : self.SERVER_ERROR
+                            failureMessage(x)
+                        }
+                    }
+                }
+                else
+                {
+                    failureMessage(self.SERVER_ERROR)
+                }
+                
+            }
+        }
+    }
+    public func getProfile(successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
+    {
+        let obj : HttpRequest = HttpRequest()
+        obj.tag = ParsingConstant.Login.rawValue
+        obj.MethodNamee = "GET"
+        obj._serviceURL = "\(BASE_URL)my-profile"
+        obj.params = [:]
+        obj.doGetSOAPResponse {(success : Bool) -> Void in
+            if !success
+            {
+                failureMessage(self.SERVER_ERROR)
+            }
+            else
+            {
+                if let error = obj.parsedDataDict["error"] as? String
+                {
+                    if error == "true"
+                    {
+                        failureMessage(self.SERVER_ERROR)
+                    }
+                    else
+                    {
+                        if let data = obj.parsedDataDict["data"] as? [String:AnyObject]
+                        {
+                            let userBO = UserBO(Id: 0, strname: "", strempId: "", strmobile: "", strdesignation: "", strbloodGroup: "", strrole: "", strprofile_image: "")
+                            if let id = data["id"] as? Int
+                            {
+                                userBO.id = id
+                            }
+                            if let name = data["name"] as? String
+                            {
+                                userBO.name = name
+                            }
+                            if let empId = data["empId"] as? String
+                            {
+                                userBO.empId = empId
+                            }
+                            if let mobile = data["mobile"] as? String
+                            {
+                                userBO.mobile = mobile
+                            }
+                            if let designation = data["designation"] as? String
+                            {
+                                userBO.designation = designation
+                            }
+                            if let bloodGroup = data["bloodGroup"] as? String
+                            {
+                                userBO.bloodGroup = bloodGroup
+                            }
+                            if let role = data["role"] as? String
+                            {
+                                userBO.role = role
+                            }
+                            if let profile_image = data["profile_image"] as? String
+                            {
+                                userBO.profile_image = profile_image
+                            }
+                            TaksyKraftUserDefaults.setUser(object: userBO)
+                            successMessage(userBO)
+                            
+                        }
+                        else
+                        {
+                            failureMessage("No Data Found")
+                        }
+                    }
+                }
+                else if let message = obj.parsedDataDict["message"] as? String
+                {
+                    failureMessage(message)
+                }
+                else
+                {
+                    failureMessage(self.SERVER_ERROR)
+                }
+                
+            }
+        }
+    }
+    //MARK: - Expenses
+    public func getMyExpenses(successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
+    {
+        let obj : HttpRequest = HttpRequest()
+        obj.tag = ParsingConstant.Login.rawValue
+        obj.MethodNamee = "GET"
+        obj._serviceURL = "\(BASE_URL)expenses"
+        obj.params = [:]
+        obj.doGetSOAPResponse {(success : Bool) -> Void in
+            if !success
+            {
+                failureMessage(self.SERVER_ERROR)
+            }
+            else
+            {
+                if let error = obj.parsedDataDict["error"] as? String
+                {
+                    if error == "true"
+                    {
+                        if let message = obj.parsedDataDict["message"] as? String
+                        {
+                            failureMessage(message)
+                        }
+                        else
+                        {
+                            failureMessage(self.SERVER_ERROR)
+                        }
+                    }
+                    else
+                    {
+                        if let data = obj.parsedDataDict["data"] as? [[String:AnyObject]]
+                        {
+                            var arrData = [ReceiptBO]()
+                            for receipt in data
+                            {
+                                let receipetBO = ReceiptBO()
+                                if let expenseId = receipt["expenseId"] as? String
+                                {
+                                    receipetBO.expenseId = expenseId
+                                }
+                                if let image = receipt["image"] as? String
+                                {
+                                    receipetBO.image = image
+                                }
+                                if let amount = receipt["amount"] as? String
+                                {
+                                    receipetBO.amount = amount
+                                }
+                                if let Description = receipt["description"] as? String
+                                {
+                                    receipetBO.Description = Description
+                                }
+                                if let status = receipt["status"] as? String
+                                {
+                                    receipetBO.status = status
+                                }
+                                if let uploadedDate = receipt["uploadedDate"] as? String
+                                {
+                                    receipetBO.uploadedDate = uploadedDate
+                                }
+                                if let empId = receipt["empId"] as? String
+                                {
+                                    receipetBO.empId = empId
+                                }
+                                if let empName = receipt["empName"] as? String
+                                {
+                                    receipetBO.empName = empName
+                                }
+                                if let comment = receipt["comment"] as? String
+                                {
+                                    receipetBO.comment = comment
+                                }
+                                arrData.append(receipetBO)
+                            }
+                            successMessage(arrData)
+                        }
+                        else
+                        {
+                            failureMessage("No Data Found")
+                        }
+                    }
+                }
+                else if let message = obj.parsedDataDict["message"] as? String
+                {
+                    failureMessage(message)
+                }
+
+                else
+                {
+                    failureMessage(self.SERVER_ERROR)
+                }
+                
+            }
+        }
+    }
+    public func getAllExpenses(successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
+    {
+        let obj : HttpRequest = HttpRequest()
+        obj.tag = ParsingConstant.Login.rawValue
+        obj.MethodNamee = "GET"
+        obj._serviceURL = "\(BASE_URL)expenses/all"
+        obj.params = [:]
+        obj.doGetSOAPResponse {(success : Bool) -> Void in
+            if !success
+            {
+                if let message = obj.parsedDataDict["message"] as? String
+                {
+                    failureMessage(message)
+                }
+                else
+                {
+                    failureMessage(self.SERVER_ERROR)
+                }
+            }
+            else
+            {
+                if let error = obj.parsedDataDict["error"] as? String
+                {
+                    if error == "true"
+                    {
+                        if let message = obj.parsedDataDict["message"] as? String
+                        {
+                            failureMessage(message)
+                        }
+                        else
+                        {
+                            failureMessage(self.SERVER_ERROR)
+                        }
+                    }
+                    else
+                    {
+                        if let data = obj.parsedDataDict["data"] as? [[String:AnyObject]]
+                        {
+                            var arrData = [ReceiptBO]()
+                            for receipt in data
+                            {
+                                let receipetBO = ReceiptBO()
+                                if let expenseId = receipt["expenseId"] as? String
+                                {
+                                    receipetBO.expenseId = expenseId
+                                }
+                                if let image = receipt["image"] as? String
+                                {
+                                    receipetBO.image = image
+                                }
+                                if let amount = receipt["amount"] as? String
+                                {
+                                    receipetBO.amount = amount
+                                }
+                                if let Description = receipt["description"] as? String
+                                {
+                                    receipetBO.Description = Description
+                                }
+                                if let status = receipt["status"] as? String
+                                {
+                                    receipetBO.status = status
+                                }
+                                if let uploadedDate = receipt["uploadedDate"] as? String
+                                {
+                                    receipetBO.uploadedDate = uploadedDate
+                                }
+                                if let empId = receipt["empId"] as? String
+                                {
+                                    receipetBO.empId = empId
+                                }
+                                if let empName = receipt["empName"] as? String
+                                {
+                                    receipetBO.empName = empName
+                                }
+                                arrData.append(receipetBO)
+                            }
+                            successMessage(arrData)
+                        }
+                        else
+                        {
+                            failureMessage("No Data Found")
+                        }
+                    }
+                }
+                else if let message = obj.parsedDataDict["message"] as? String
+                {
+                    failureMessage(message)
+                }
+                else
+                {
+                    failureMessage(self.SERVER_ERROR)
+                }
+                
+            }
+        }
+    }
+    public func deleteExpenseWith(strID:String,successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
+    {
+        var params = [String:AnyObject]()
+        params["expenseId"] = strID as AnyObject
+        let obj : HttpRequest = HttpRequest()
+        obj.tag = ParsingConstant.Login.rawValue
+        obj.MethodNamee = "POST"
+        obj._serviceURL = "\(BASE_URL)expenses/delete"
+        obj.params = params
+        obj.doGetSOAPResponse {(success : Bool) -> Void in
+            if !success
+            {
+                if let message = obj.parsedDataDict["message"] as? String
+                {
+                    failureMessage(message)
+                }
+                else
+                {
+                    failureMessage(self.SERVER_ERROR)
+                }
+            }
+            else
+            {
+                if let error = obj.parsedDataDict["error"] as? String
+                {
+                    if error == "true"
+                    {
+                        failureMessage(self.SERVER_ERROR)
+                    }
+                    else
+                    {
+                        if let message = obj.parsedDataDict["message"] as? String
+                        {
+                            successMessage(message)
+                        }
+                        else
+                        {
+                            failureMessage("No Data Found")
+                        }
+                    }
+                }
+                else if let message = obj.parsedDataDict["message"] as? String
+                {
+                    failureMessage(message)
+                }
+
+                else
+                {
+                    failureMessage(self.SERVER_ERROR)
+                }
+                
+            }
+        }
+    }
     
+    public func createOrUpdateExpenseWith(strID:String,strAmt:String,strDescription:String,strImage:String,successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
+    {
+        var params = [String:AnyObject]()
+        params["amount"] = strAmt as AnyObject
+        params["description"] = strDescription as AnyObject
+        params["image"] = strImage as AnyObject
+        params["expenseId"] = strID as AnyObject
+        let obj : HttpRequest = HttpRequest()
+        obj.tag = ParsingConstant.Login.rawValue
+        obj.MethodNamee = "POST"
+        obj._serviceURL = "\(BASE_URL)expenses/create"
+        obj.params = params
+        obj.doGetSOAPResponse {(success : Bool) -> Void in
+            if !success
+            {
+                if let message = obj.parsedDataDict["message"] as? String
+                {
+                    failureMessage(message)
+                }
+                else
+                {
+                    failureMessage(self.SERVER_ERROR)
+                }
+            }
+            else
+            {
+                if let error = obj.parsedDataDict["error"] as? String,let message = obj.parsedDataDict["message"] as? String
+                {
+                    if error == "true"
+                    {
+                        failureMessage(message)
+                    }
+                    else
+                    {
+                        successMessage(message)
+                    }
+                }
+                else if let message = obj.parsedDataDict["message"] as? String
+                {
+                    failureMessage(message)
+                }
+                else
+                {
+                    failureMessage(self.SERVER_ERROR)
+                }
+                
+            }
+        }
+    }
+    public func updateStatusOfExpenseWith(strID:String,strStatus:String,strComment : String,successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
+    {
+        var params = [String:AnyObject]()
+        params["status"] = strStatus as AnyObject
+        params["expenseId"] = strID as AnyObject
+        params["comment"] = strComment as AnyObject
+
+        let obj : HttpRequest = HttpRequest()
+        obj.tag = ParsingConstant.Login.rawValue
+        obj.MethodNamee = "POST"
+        obj._serviceURL = "\(BASE_URL)expenses/update-status"
+        obj.params = params
+        obj.doGetSOAPResponse {(success : Bool) -> Void in
+            if !success
+            {
+                failureMessage(self.SERVER_ERROR)
+            }
+            else
+            {
+                if let error = obj.parsedDataDict["error"] as? String,let message = obj.parsedDataDict["message"] as? String
+                {
+                    if error == "true"
+                    {
+                        if let message = obj.parsedDataDict["message"] as? String
+                        {
+                            failureMessage(message)
+                        }
+                        else
+                        {
+                            failureMessage(self.SERVER_ERROR)
+                        }
+                    }
+                    else
+                    {
+                        successMessage(message)
+                    }
+                }
+                else if let message = obj.parsedDataDict["message"] as? String
+                {
+                    failureMessage(message)
+                }
+                else
+                {
+                    failureMessage(self.SERVER_ERROR)
+                }
+                
+            }
+        }
+    }
+
+    //MARK: - Travel
+    public func getMyTravels(successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
+    {
+        let obj : HttpRequest = HttpRequest()
+        obj.tag = ParsingConstant.Login.rawValue
+        obj.MethodNamee = "GET"
+        obj._serviceURL = "\(BASE_URL)travels"
+        obj.params = [:]
+        obj.doGetSOAPResponse {(success : Bool) -> Void in
+            if !success
+            {
+                failureMessage(self.SERVER_ERROR)
+            }
+            else
+            {
+                if let error = obj.parsedDataDict["error"] as? String
+                {
+                    if error == "true"
+                    {
+                        if let message = obj.parsedDataDict["message"] as? String
+                        {
+                            failureMessage(message)
+                        }
+                        else
+                        {
+                            failureMessage(self.SERVER_ERROR)
+                        }
+                    }
+                    else
+                    {
+                        if let data = obj.parsedDataDict["data"] as? [[String:AnyObject]]
+                        {
+                            var arrData = [TravelBO]()
+                            for receipt in data
+                            {
+                                let travelBO = TravelBO()
+                                if let travelId = receipt["travelId"] as? String
+                                {
+                                    travelBO.travelId = travelId
+                                }
+                                if let from = receipt["from"] as? String
+                                {
+                                    travelBO.from = from
+                                }
+                                if let to = receipt["to"] as? String
+                                {
+                                    travelBO.to = to
+                                }
+                                if let date_of_journey = receipt["date_of_journey"] as? String
+                                {
+                                    travelBO.date_of_journey = date_of_journey
+                                }
+                                if let Description = receipt["description"] as? String
+                                {
+                                    travelBO.Description = Description
+                                }
+                                if let status = receipt["status"] as? String
+                                {
+                                    travelBO.status = status
+                                }
+                                if let uploadedDate = receipt["uploadedDate"] as? String
+                                {
+                                    travelBO.uploadedDate = uploadedDate
+                                }
+                                if let empId = receipt["empId"] as? String
+                                {
+                                    travelBO.empId = empId
+                                }
+                                if let empName = receipt["empName"] as? String
+                                {
+                                    travelBO.empName = empName
+                                }
+                                if let comment = receipt["comment"] as? String
+                                {
+                                    travelBO.comment = comment
+                                }
+                                arrData.append(travelBO)
+                            }
+                            successMessage(arrData)
+                        }
+                        else
+                        {
+                            failureMessage("No Data Found")
+                        }
+                    }
+                }
+                else if let message = obj.parsedDataDict["message"] as? String
+                {
+                    failureMessage(message)
+                }
+                    
+                else
+                {
+                    failureMessage(self.SERVER_ERROR)
+                }
+                
+            }
+        }
+    }
+    public func getAllTravels(successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
+    {
+        let obj : HttpRequest = HttpRequest()
+        obj.tag = ParsingConstant.Login.rawValue
+        obj.MethodNamee = "GET"
+        obj._serviceURL = "\(BASE_URL)travels/all"
+        obj.params = [:]
+        obj.doGetSOAPResponse {(success : Bool) -> Void in
+            if !success
+            {
+                failureMessage(self.SERVER_ERROR)
+            }
+            else
+            {
+                if let error = obj.parsedDataDict["error"] as? String
+                {
+                    if error == "true"
+                    {
+                        if let message = obj.parsedDataDict["message"] as? String
+                        {
+                            failureMessage(message)
+                        }
+                        else
+                        {
+                            failureMessage(self.SERVER_ERROR)
+                        }
+                    }
+                    else
+                    {
+                        if let data = obj.parsedDataDict["data"] as? [[String:AnyObject]]
+                        {
+                            var arrData = [TravelBO]()
+                            for receipt in data
+                            {
+                                let travelBO = TravelBO()
+                                if let travelId = receipt["travelId"] as? String
+                                {
+                                    travelBO.travelId = travelId
+                                }
+                                if let from = receipt["from"] as? String
+                                {
+                                    travelBO.from = from
+                                }
+                                if let to = receipt["to"] as? String
+                                {
+                                    travelBO.to = to
+                                }
+                                if let date_of_journey = receipt["date_of_journey"] as? String
+                                {
+                                    travelBO.date_of_journey = date_of_journey
+                                }
+                                if let Description = receipt["description"] as? String
+                                {
+                                    travelBO.Description = Description
+                                }
+                                if let status = receipt["status"] as? String
+                                {
+                                    travelBO.status = status
+                                }
+                                if let uploadedDate = receipt["uploadedDate"] as? String
+                                {
+                                    travelBO.uploadedDate = uploadedDate
+                                }
+                                if let empId = receipt["empId"] as? String
+                                {
+                                    travelBO.empId = empId
+                                }
+                                if let empName = receipt["empName"] as? String
+                                {
+                                    travelBO.empName = empName
+                                }
+                                if let comment = receipt["comment"] as? String
+                                {
+                                    travelBO.comment = comment
+                                }
+                                arrData.append(travelBO)
+                            }
+                            successMessage(arrData)
+                        }
+                        else
+                        {
+                            failureMessage("No Data Found")
+                        }
+                    }
+                }
+                else if let message = obj.parsedDataDict["message"] as? String
+                {
+                    failureMessage(message)
+                }
+                    
+                else
+                {
+                    failureMessage(self.SERVER_ERROR)
+                }
+                
+            }
+        }
+    }
+    public func deleteTravelWith(strID:String,successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
+    {
+        var params = [String:AnyObject]()
+        params["travelId"] = strID as AnyObject
+        let obj : HttpRequest = HttpRequest()
+        obj.tag = ParsingConstant.Login.rawValue
+        obj.MethodNamee = "POST"
+        obj._serviceURL = "\(BASE_URL)travels/delete"
+        obj.params = params
+        obj.doGetSOAPResponse {(success : Bool) -> Void in
+            if !success
+            {
+                failureMessage(self.SERVER_ERROR)
+            }
+            else
+            {
+                if let error = obj.parsedDataDict["error"] as? String
+                {
+                    if error == "true"
+                    {
+                        if let message = obj.parsedDataDict["message"] as? String
+                        {
+                            failureMessage(message)
+                        }
+                        else
+                        {
+                            failureMessage(self.SERVER_ERROR)
+                        }
+                    }
+                    else
+                    {
+                        if let message = obj.parsedDataDict["message"] as? String
+                        {
+                            successMessage(message)
+                        }
+                        else
+                        {
+                            failureMessage("No Data Found")
+                        }
+                    }
+                }
+                else if let message = obj.parsedDataDict["message"] as? String
+                {
+                    failureMessage(message)
+                }
+                    
+                else
+                {
+                    failureMessage(self.SERVER_ERROR)
+                }
+                
+            }
+        }
+    }
+    
+    public func createOrUpdateTravelWith(strId:String,strFrom:String,strTo:String,strJourneyDate:String,strDesc:String,successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
+    {
+        var params = [String:AnyObject]()
+        params["from"] = strFrom as AnyObject
+        params["to"] = strTo as AnyObject
+        params["date_of_journey"] = strJourneyDate as AnyObject
+        params["description"] = strDesc as AnyObject
+        params["travelId"] = strId as AnyObject
+        let obj : HttpRequest = HttpRequest()
+        obj.tag = ParsingConstant.Login.rawValue
+        obj.MethodNamee = "POST"
+        obj._serviceURL = "\(BASE_URL)travels/create"
+        obj.params = params
+        obj.doGetSOAPResponse {(success : Bool) -> Void in
+            if !success
+            {
+                failureMessage(self.SERVER_ERROR)
+            }
+            else
+            {
+                if let error = obj.parsedDataDict["error"] as? String,let message = obj.parsedDataDict["message"] as? String
+                {
+                    if error == "true"
+                    {
+                        if let message = obj.parsedDataDict["message"] as? String
+                        {
+                            failureMessage(message)
+                        }
+                        else
+                        {
+                            failureMessage(self.SERVER_ERROR)
+                        }
+                    }
+                    else
+                    {
+                        successMessage(message)
+                    }
+                }
+                else if let message = obj.parsedDataDict["message"] as? String
+                {
+                    failureMessage(message)
+                }
+                else
+                {
+                    failureMessage(self.SERVER_ERROR)
+                }
+                
+            }
+        }
+    }
+    public func updateStatusOfTravelWith(strID:String,strStatus:String,strComment : String,successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
+    {
+        var params = [String:AnyObject]()
+        params["status"] = strStatus as AnyObject
+        params["travelId"] = strID as AnyObject
+        params["comment"] = strComment as AnyObject
+        
+        let obj : HttpRequest = HttpRequest()
+        obj.tag = ParsingConstant.Login.rawValue
+        obj.MethodNamee = "POST"
+        obj._serviceURL = "\(BASE_URL)travels/update-status"
+        obj.params = params
+        obj.doGetSOAPResponse {(success : Bool) -> Void in
+            if !success
+            {
+                failureMessage(self.SERVER_ERROR)
+            }
+            else
+            {
+                if let error = obj.parsedDataDict["error"] as? String,let message = obj.parsedDataDict["message"] as? String
+                {
+                    if error == "true"
+                    {
+                        failureMessage(message)
+                    }
+                    else
+                    {
+                        successMessage(message)
+                    }
+                }
+                else if let message = obj.parsedDataDict["message"] as? String
+                {
+                    failureMessage(message)
+                }
+                else
+                {
+                    failureMessage(self.SERVER_ERROR)
+                }
+                
+            }
+        }
+    }
+    //MARK: - Cheques
+    public func getMyCheques(successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
+    {
+        let obj : HttpRequest = HttpRequest()
+        obj.tag = ParsingConstant.Login.rawValue
+        obj.MethodNamee = "GET"
+        obj._serviceURL = "\(BASE_URL)cheques/all"
+        obj.params = [:]
+        obj.doGetSOAPResponse {(success : Bool) -> Void in
+            if !success
+            {
+                failureMessage(self.SERVER_ERROR)
+            }
+            else
+            {
+                if let error = obj.parsedDataDict["error"] as? String
+                {
+                    if error == "true"
+                    {
+                        if let message = obj.parsedDataDict["message"] as? String
+                        {
+                            failureMessage(message)
+                        }
+                        else
+                        {
+                            failureMessage(self.SERVER_ERROR)
+                        }
+                    }
+                    else
+                    {
+                        if let data = obj.parsedDataDict["data"] as? [[String:AnyObject]]
+                        {
+                            var arrData = [ChequeBO]()
+                            for receipt in data
+                            {
+                                let chequeBO = ChequeBO()
+                                if let chequeId = receipt["chequeId"] as? String
+                                {
+                                    chequeBO.chequeId = chequeId
+                                }
+                                if let chequeNo = receipt["chequeNo"] as? String
+                                {
+                                    chequeBO.chequeNo = chequeNo
+                                }
+                                if let amount = receipt["amount"] as? String
+                                {
+                                    chequeBO.amount = amount
+                                }
+                                if let description = receipt["description"] as? String
+                                {
+                                    chequeBO.Description = description
+                                }
+                                if let invoice_image = receipt["invoice_image"] as? [String]
+                                {
+                                    chequeBO.invoice_image = invoice_image
+                                }
+                                if let cheque_image = receipt["cheque_image"] as? String
+                                {
+                                    chequeBO.cheque_image = cheque_image
+                                }
+                                if let chequeClearanceDate = receipt["chequeClearanceDate"] as? String
+                                {
+                                    chequeBO.chequeClearanceDate = chequeClearanceDate
+                                }
+                                if let status = receipt["status"] as? String
+                                {
+                                    chequeBO.status = status
+                                }
+                                if let approvedDate = receipt["approvedDate"] as? String
+                                {
+                                    chequeBO.approvedDate = approvedDate
+                                }
+                                if let uploadedDate = receipt["uploadedDate"] as? String
+                                {
+                                    chequeBO.uploadedDate = uploadedDate
+                                }
+                                if let empId = receipt["empId"] as? String
+                                {
+                                    chequeBO.empId = empId
+                                }
+                                if let empName = receipt["empName"] as? String
+                                {
+                                    chequeBO.empName = empName
+                                }
+                                arrData.append(chequeBO)
+                            }
+                            successMessage(arrData)
+                        }
+                        else
+                        {
+                            failureMessage("No Data Found")
+                        }
+                    }
+                }
+                else if let message = obj.parsedDataDict["message"] as? String
+                {
+                    failureMessage(message)
+                }
+                    
+                else
+                {
+                    failureMessage(self.SERVER_ERROR)
+                }
+                
+            }
+        }
+    }
+    public func getAllCheques(successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
+    {
+        let obj : HttpRequest = HttpRequest()
+        obj.tag = ParsingConstant.Login.rawValue
+        obj.MethodNamee = "GET"
+        obj._serviceURL = "\(BASE_URL)cheques/all"
+        obj.params = [:]
+        obj.doGetSOAPResponse {(success : Bool) -> Void in
+            if !success
+            {
+                failureMessage(self.SERVER_ERROR)
+            }
+            else
+            {
+                if let error = obj.parsedDataDict["error"] as? String
+                {
+                    if error == "true"
+                    {
+                        if let message = obj.parsedDataDict["message"] as? String
+                        {
+                            failureMessage(message)
+                        }
+                        else
+                        {
+                            failureMessage(self.SERVER_ERROR)
+                        }
+                    }
+                    else
+                    {
+                        if let error = obj.parsedDataDict["error"] as? String
+                        {
+                            if error == "true"
+                            {
+                                failureMessage(self.SERVER_ERROR)
+                            }
+                            else
+                            {
+                                if let data = obj.parsedDataDict["data"] as? [[String:AnyObject]]
+                                {
+                                    var arrData = [ChequeBO]()
+                                    for receipt in data
+                                    {
+                                        let chequeBO = ChequeBO()
+                                        if let chequeId = receipt["chequeId"] as? String
+                                        {
+                                            chequeBO.chequeId = chequeId
+                                        }
+                                        if let chequeNo = receipt["chequeNo"] as? String
+                                        {
+                                            chequeBO.chequeNo = chequeNo
+                                        }
+                                        if let amount = receipt["amount"] as? String
+                                        {
+                                            chequeBO.amount = amount
+                                        }
+                                        if let description = receipt["description"] as? String
+                                        {
+                                            chequeBO.Description = description
+                                        }
+                                        if let comment = receipt["comment"] as? String
+                                        {
+                                            chequeBO.comment = comment
+                                        }
+                                        if let invoice_image = receipt["invoice_image"] as? [String]
+                                        {
+                                            chequeBO.invoice_image = invoice_image
+                                        }
+                                        if let cheque_image = receipt["cheque_image"] as? String
+                                        {
+                                            chequeBO.cheque_image = cheque_image
+                                        }
+                                        if let chequeClearanceDate = receipt["chequeClearanceDate"] as? String
+                                        {
+                                            chequeBO.chequeClearanceDate = chequeClearanceDate
+                                        }
+                                        if let status = receipt["status"] as? String
+                                        {
+                                            chequeBO.status = status
+                                        }
+                                        if let approvedDate = receipt["approvedDate"] as? String
+                                        {
+                                            chequeBO.approvedDate = approvedDate
+                                        }
+                                        if let uploadedDate = receipt["uploadedDate"] as? String
+                                        {
+                                            chequeBO.uploadedDate = uploadedDate
+                                        }
+                                        if let empId = receipt["empId"] as? String
+                                        {
+                                            chequeBO.empId = empId
+                                        }
+                                        if let empName = receipt["empName"] as? String
+                                        {
+                                            chequeBO.empName = empName
+                                        }
+                                        arrData.append(chequeBO)
+                                    }
+                                    successMessage(arrData)
+                                }
+                                else
+                                {
+                                    failureMessage("No Data Found")
+                                }
+                            }
+                        }
+                        else if let message = obj.parsedDataDict["message"] as? String
+                        {
+                            failureMessage(message)
+                        }
+                            
+                        else
+                        {
+                            failureMessage(self.SERVER_ERROR)
+                        }
+                        
+                    }
+                }
+                else if let message = obj.parsedDataDict["message"] as? String
+                {
+                    failureMessage(message)
+                }
+                    
+                else
+                {
+                    failureMessage(self.SERVER_ERROR)
+                }
+                
+            }
+        }
+    }
+    public func createOrUpdateChequeWith(strId:String,strAmount:String,strChequeNo:String,strChequeClearanceDate:String,strDesc:String,strCheque_image : String,arrImages : [String],successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
+    {
+        var params = [String:AnyObject]()
+        params["chequeNo"] = strChequeNo as AnyObject
+        params["amount"] = strAmount as AnyObject
+        params["chequeClearanceDate"] = strChequeClearanceDate as AnyObject
+        params["description"] = strDesc as AnyObject
+        params["cheque_image"] = strCheque_image as AnyObject
+        params["chequeId"] = strId as AnyObject
+        var str = "["
+        
+        for img in arrImages
+        {
+            if img != ""
+            {
+                str = str + "\"\(img)\","
+            }
+        }
+        str.removeLast()
+        str.append("]")
+        params["invoice_image"] = str as AnyObject
+        let obj : HttpRequest = HttpRequest()
+        obj.tag = ParsingConstant.Login.rawValue
+        obj.MethodNamee = "POST"
+        obj._serviceURL = "\(BASE_URL)cheques/create"
+        obj.params = params
+        obj.doGetSOAPResponse {(success : Bool) -> Void in
+            if !success
+            {
+                failureMessage(self.SERVER_ERROR)
+            }
+            else
+            {
+                if let error = obj.parsedDataDict["error"] as? String,let message = obj.parsedDataDict["message"] as? String
+                {
+                    if error == "true"
+                    {
+                        if let message = obj.parsedDataDict["message"] as? String
+                        {
+                            failureMessage(message)
+                        }
+                        else
+                        {
+                            failureMessage(self.SERVER_ERROR)
+                        }
+                    }
+                    else
+                    {
+                        successMessage(message)
+                    }
+                }
+                else if let message = obj.parsedDataDict["message"] as? String
+                {
+                    failureMessage(message)
+                }
+                else
+                {
+                    failureMessage(self.SERVER_ERROR)
+                }
+                
+            }
+        }
+    }
+    public func updateStatusOfChequeWith(strID:String,strStatus:String,strComment : String,successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
+    {
+        var params = [String:AnyObject]()
+        params["status"] = strStatus as AnyObject
+        params["chequeId"] = strID as AnyObject
+        params["comment"] = strComment as AnyObject
+        
+        let obj : HttpRequest = HttpRequest()
+        obj.tag = ParsingConstant.Login.rawValue
+        obj.MethodNamee = "POST"
+        obj._serviceURL = "\(BASE_URL)cheques/update-status"
+        obj.params = params
+        obj.doGetSOAPResponse {(success : Bool) -> Void in
+            if !success
+            {
+                failureMessage(self.SERVER_ERROR)
+            }
+            else
+            {
+                if let error = obj.parsedDataDict["error"] as? String,let message = obj.parsedDataDict["message"] as? String
+                {
+                    if error == "true"
+                    {
+                        if let message = obj.parsedDataDict["message"] as? String
+                        {
+                            failureMessage(message)
+                        }
+                        else
+                        {
+                            failureMessage(self.SERVER_ERROR)
+                        }
+                    }
+                    else
+                    {
+                        successMessage(message)
+                    }
+                }
+                else if let message = obj.parsedDataDict["message"] as? String
+                {
+                    failureMessage(message)
+                }
+                else
+                {
+                    failureMessage(self.SERVER_ERROR)
+                }
+                
+            }
+        }
+    }
+
+    //MARK: - Cities
+    public func getAllOnlineTransactions(successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
+    {
+        let obj : HttpRequest = HttpRequest()
+        obj.tag = ParsingConstant.Login.rawValue
+        obj.MethodNamee = "GET"
+        obj._serviceURL = "\(BASE_URL)online-transactions/all"
+        obj.params = [:]
+        obj.doGetSOAPResponse {(success : Bool) -> Void in
+            if !success
+            {
+                failureMessage(self.SERVER_ERROR)
+            }
+            else
+            {
+                if let error = obj.parsedDataDict["error"] as? String
+                {
+                    if error == "true"
+                    {
+                        if let message = obj.parsedDataDict["message"] as? String
+                        {
+                            failureMessage(message)
+                        }
+                        else
+                        {
+                            failureMessage(self.SERVER_ERROR)
+                        }
+                    }
+                    else
+                    {
+                        if let data = obj.parsedDataDict["data"] as? [[String:AnyObject]]
+                        {
+                            var arrData = [TransactionBO]()
+                            for onlineTrx in data
+                            {
+                                let onlineTrxBO = TransactionBO()
+                                if let transId = onlineTrx["transId"] as? String
+                                {
+                                    onlineTrxBO.transId = transId
+                                }
+                                if let amount = onlineTrx["amount"] as? String
+                                {
+                                    onlineTrxBO.amount = amount
+                                }
+                                if let notes = onlineTrx["notes"] as? String
+                                {
+                                    onlineTrxBO.notes = notes
+                                }
+                                if let onlineTransactionId = onlineTrx["onlineTransactionId"] as? String
+                                {
+                                    onlineTrxBO.onlineTransactionId = onlineTransactionId
+                                }
+                                if let transactionDate = onlineTrx["transactionDate"] as? String
+                                {
+                                    onlineTrxBO.transactionDate = transactionDate
+                                }
+                                if let transactionImage = onlineTrx["transactionImage"] as? String
+                                {
+                                    onlineTrxBO.transactionImage = transactionImage
+                                }
+                                if let invoice = onlineTrx["invoice"] as? [String]
+                                {
+                                    onlineTrxBO.invoice = invoice
+                                }
+                                if let usedOtp = onlineTrx["usedOtp"] as? String
+                                {
+                                    onlineTrxBO.usedOtp = usedOtp
+                                }
+                                if let uploadedDate = onlineTrx["uploadedDate"] as? String
+                                {
+                                    onlineTrxBO.uploadedDate = uploadedDate
+                                }
+                                if let empId = onlineTrx["empId"] as? String
+                                {
+                                    onlineTrxBO.empId = empId
+                                }
+                                if let empName = onlineTrx["empName"] as? String
+                                {
+                                    onlineTrxBO.empName = empName
+                                }
+
+                                arrData.append(onlineTrxBO)
+                            }
+                            successMessage(arrData)
+                        }
+                        else
+                        {
+                            failureMessage("No Data Found")
+                        }
+                    }
+                }
+                else if let message = obj.parsedDataDict["message"] as? String
+                {
+                    failureMessage(message)
+                }
+                    
+                else
+                {
+                    failureMessage(self.SERVER_ERROR)
+                }
+                
+            }
+        }
+    }
+    public func createOrUpdateOnlineTransactionWith(strId:String,strAmount:String,strOnlineTransactionId:String,strTransactionDate:String,strNotes:String,strTransactionImage : String,arrImages : [String],strUsedOtp:String,successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
+    {
+        var params = [String:AnyObject]()
+        params["amount"] = strAmount as AnyObject
+        params["onlineTransactionId"] = strOnlineTransactionId as AnyObject
+        params["transactionDate"] = strTransactionDate as AnyObject
+        params["notes"] = strNotes as AnyObject
+        params["transactionImage"] = strTransactionImage as AnyObject
+        
+        var str = "["
+        
+        for img in arrImages
+        {
+            if img != ""
+            {
+                str = str + "\"\(img)\","
+            }
+        }
+        str.removeLast()
+        str.append("]")
+        params["invoice"] = str as AnyObject
+        params["usedOtp"] = strUsedOtp as AnyObject
+        params["transId"] = strId as AnyObject
+        let obj : HttpRequest = HttpRequest()
+        obj.tag = ParsingConstant.Login.rawValue
+        obj.MethodNamee = "POST"
+        obj._serviceURL = "\(BASE_URL)online-transactions/create"
+        obj.params = params
+        obj.doGetSOAPResponse {(success : Bool) -> Void in
+            if !success
+            {
+                failureMessage(self.SERVER_ERROR)
+            }
+            else
+            {
+                if let error = obj.parsedDataDict["error"] as? String,let message = obj.parsedDataDict["message"] as? String
+                {
+                    if error == "true"
+                    {
+                        if let message = obj.parsedDataDict["message"] as? String
+                        {
+                            failureMessage(message)
+                        }
+                        else
+                        {
+                            failureMessage(self.SERVER_ERROR)
+                        }
+                    }
+                    else
+                    {
+                        successMessage(message)
+                    }
+                }
+                else if let message = obj.parsedDataDict["message"] as? String
+                {
+                    failureMessage(message)
+                }
+                else
+                {
+                    failureMessage(self.SERVER_ERROR)
+                }
+                
+            }
+        }
+    }
+    //MARK: - Cities
+    public func getAllCities(successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
+    {
+        let obj : HttpRequest = HttpRequest()
+        obj.tag = ParsingConstant.Login.rawValue
+        obj.MethodNamee = "GET"
+        obj._serviceURL = "\(BASE_URL)city"
+        obj.params = [:]
+        obj.doGetSOAPResponse {(success : Bool) -> Void in
+            if !success
+            {
+                failureMessage(self.SERVER_ERROR)
+            }
+            else
+            {
+                if let error = obj.parsedDataDict["error"] as? String
+                {
+                    if error == "true"
+                    {
+                        if let message = obj.parsedDataDict["message"] as? String
+                        {
+                            failureMessage(message)
+                        }
+                        else
+                        {
+                            failureMessage(self.SERVER_ERROR)
+                        }
+                    }
+                    else
+                    {
+                        if let data = obj.parsedDataDict["data"] as? [[String:AnyObject]]
+                        {
+                            var arrData = [CityBO]()
+                            for receipt in data
+                            {
+                                let cityBO = CityBO()
+                                if let countryName = receipt["countryName"] as? String
+                                {
+                                    cityBO.countryName = countryName
+                                }
+                                if let countryCode = receipt["countryCode"] as? String
+                                {
+                                    cityBO.countryCode = countryCode
+                                }
+                                if let cityName = receipt["cityName"] as? String
+                                {
+                                    cityBO.cityName = cityName
+                                }
+                                if let cityCode = receipt["cityCode"] as? String
+                                {
+                                    cityBO.cityCode = cityCode
+                                }
+                                arrData.append(cityBO)
+                            }
+                            successMessage(arrData)
+                        }
+                        else
+                        {
+                            failureMessage("No Data Found")
+                        }
+                    }
+                }
+                else if let message = obj.parsedDataDict["message"] as? String
+                {
+                    failureMessage(message)
+                }
+                    
+                else
+                {
+                    failureMessage(self.SERVER_ERROR)
+                }
+                
+            }
+        }
+    }
+
+    //MARK:- Image Uploading
     func uploadWith(imageData : Data,successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
     {
         
-        let strUrl = "http://139.59.14.2/api/v3/upload-image"
+        let strUrl = "\(BASE_URL)upload-image"
         let webStringURL = strUrl.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
         var request  = URLRequest(url: URL(string:webStringURL)!)
         request.httpMethod = "POST"
@@ -760,14 +1491,14 @@ class ServiceLayer: NSObject {
         let content:String = "multipart/form-data; boundary=\(boundary)"
         request.setValue(content, forHTTPHeaderField: "Content-Type")
         request.setValue("\(body.length)", forHTTPHeaderField:"Content-Length")
-        request.setValue("Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImMwZjU3NzE4MDk2NmQxNWVkOTQ1YzVlY2ZlMjFhNmMwN2QxMWJjNWQwN2UxMDM3NGYzZDQ1MTkzN2I5NGQ1MDhmYjExZjY5MzQzODU4MmMxIn0.eyJhdWQiOiIxIiwianRpIjoiYzBmNTc3MTgwOTY2ZDE1ZWQ5NDVjNWVjZmUyMWE2YzA3ZDExYmM1ZDA3ZTEwMzc0ZjNkNDUxOTM3Yjk0ZDUwOGZiMTFmNjkzNDM4NTgyYzEiLCJpYXQiOjE1MTc5ODU4NTcsIm5iZiI6MTUxNzk4NTg1NywiZXhwIjoxNTQ5NTIxODU3LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.2NN2DCB_SqX0dvKg-JRFq0BXxyWjUJAFcXBDioOSnk9ItWN3IYj4ZCJZZZE1AUU16iDFersCm_YrEHBu8BsUEGEu01WbI8p58KUKg2FP-vFGAvRmHrTpULWh2Anfm0d1jf203zYMeRSY_VUPfiWz2McFpkM41jOBSxxgmRDgGlcAqSO3oVaXdrf-TcrGfzzGGR3NgrtRiEIFvzsx_dfN5AR9wU3IMAG9yEcgyCv-I-G-g-6gN1Bkg8tlHF3bXqE1tkFtvQpEQ7LEtSCvJV6003BjqT3x3UTvrGjweokTkpTQRO8_nR3ExiRYed_6LYNbGmbJpKxAQTuRD_BiF-x46bbpdFnjZ_leVvW7x5DODlz3OyPfDvlQFOisr6wubREXfDx9UtQ6s3Nz2hyALEnhOJDwZDvrh5JzDOMX2Gtl6PxZ1AZ0aN29ObmUqQV5Y4F6RW0GTkVqbYq8bCuIW8m2gbV96MpFwWsIPS0epVHHoE7kFTfKtbkwy1lW6PGfKJKjtssUe12LdRAmTVJ1QwPe8S3xBhFCeFD6IGEx7hc_vO8wjLcazx8dnBPdQfy8bVDgnw7zwxd_A1hrcvaSZN4PFMkfMDhv6PyKgjPWDwEXyw2NtPfKpBGcQe1cLI_BTIBhHY-8RVDFuBp3pO94-1vcmVdaHLnH9l9GT7Z1rBHqcSI", forHTTPHeaderField: "Authorization")
+        request.addValue(TaksyKraftUserDefaults.getAccessToken(), forHTTPHeaderField: "Authorization")
         request.setValue("application/json", forHTTPHeaderField: "Accept")
         request.httpBody = body as Data?
         
         request.url = URL(string: webStringURL)!
         let config = URLSessionConfiguration.ephemeral
-        config.timeoutIntervalForRequest = 40.0
-        config.timeoutIntervalForResource = 40.0
+        config.timeoutIntervalForRequest = 120.0
+        config.timeoutIntervalForResource = 120.0
         let session = URLSession(configuration: config)
         
         let task = session.dataTask(with: request) { (data, response, err) in
@@ -780,7 +1511,6 @@ class ServiceLayer: NSObject {
                     
                     if self.convertStringToDictionary(dataString!) != nil
                     {
-                        return
                         let parsedDataDict = self.convertStringToDictionary(dataString!)! as [String:AnyObject]
                         if parsedDataDict.keys.count == 0
                         {
@@ -792,9 +1522,9 @@ class ServiceLayer: NSObject {
                             {
                                 if Bool(error) == false
                                 {
-                                    if let message = parsedDataDict["message"] as? String
+                                    if let data = parsedDataDict["data"] as? String
                                     {
-                                        successMessage(message)
+                                        successMessage(data)
                                     }
                                     else
                                     {
@@ -803,8 +1533,23 @@ class ServiceLayer: NSObject {
                                 }
                                 else
                                 {
-                                    failureMessage(self.SERVER_ERROR)
+                                    if let message = parsedDataDict["message"] as? String
+                                    {
+                                        failureMessage(message)
+                                    }
+                                    else
+                                    {
+                                        failureMessage(self.SERVER_ERROR)
+                                    }
                                 }
+                            }
+                            else if let message = parsedDataDict["message"] as? String
+                            {
+                                failureMessage(message)
+                            }
+                            else
+                            {
+                                failureMessage(self.SERVER_ERROR)
                             }
                         }
                         

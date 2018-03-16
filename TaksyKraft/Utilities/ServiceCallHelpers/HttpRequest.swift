@@ -60,8 +60,15 @@ class HttpRequest
     
     func doGetSOAPResponse ( _ completion: @escaping (_ result: Bool) -> Void)
     {
+        
+        if app_delegate.isServerReachable == false
+        {
+            self.parsedDataDict = ["error" : "true" as AnyObject,"message":"No Internet Connectivity\nPlease try again later." as AnyObject]
+            completion(true)
+        }
+        
         var requestBody:Data?
-        if self.ServiceBody.characters.count > 0
+        if self.ServiceBody.count > 0
         {
             requestBody = self.ServiceBody.data(using: String.Encoding.utf8)
         }
@@ -70,7 +77,7 @@ class HttpRequest
             requestBody = self.doPrepareSOAPEnvelope().data(using: String.Encoding.utf8.rawValue)
         }
         var strUrl : NSString = _serviceURL as NSString
-        if serviceName.characters.count > 0
+        if serviceName.count > 0
         {
             strUrl = NSString(format: "%@/%@", strUrl,serviceName)
         }
@@ -81,7 +88,12 @@ class HttpRequest
         
         request.httpMethod = MethodNamee
         
-        
+        if self.tag != ParsingConstant.GetOTP.rawValue && self.tag != ParsingConstant.VerifyOTP.rawValue
+        {
+            request.addValue(TaksyKraftUserDefaults.getAccessToken(), forHTTPHeaderField: "Authorization")
+        }
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+
         request.httpBody = requestBody
         webStringURL =    webStringURL.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)! as NSString
         
@@ -95,25 +107,37 @@ class HttpRequest
         config.timeoutIntervalForResource = 180.0
         let session = URLSession(configuration: config)
         let task = session.dataTask(with: request) { (data, response, err) in
-            let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
-            print("Response : ",dataString ?? "")
-            let data = self.convertStringToDictionary(dataString!)
-            if data is [String:AnyObject]
-            {
-                self.parsedDataDict = self.convertStringToDictionary(dataString!) as! [String:AnyObject]
-            }else
+            if err == nil{
+                let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
+                print("Response : ",dataString ?? "")
+                let data = self.convertStringToDictionary(dataString!)
+                if data is [String:AnyObject]
+                {
+                    self.parsedDataDict = self.convertStringToDictionary(dataString!) as! [String:AnyObject]
+                }else
+                {
+                    var dict =  [String:AnyObject]()
+                    dict["data"] = self.convertStringToDictionary(dataString!) as AnyObject?
+                    self.parsedDataDict = dict
+                }
+                
+                completion (true)
+            }
+            else
             {
                 var dict =  [String:AnyObject]()
-                dict["data"] = self.convertStringToDictionary(dataString!) as AnyObject?
+                dict["error"] = true as AnyObject
+                dict["message"] = err?.localizedDescription as AnyObject?
                 self.parsedDataDict = dict
+
+                completion (false)
+
             }
-            
-            completion (true)
         }
         
         task.resume()
+        }
         
-    }
     
     func convertStringToDictionary(_ text: NSString) -> AnyObject {
         if let data = text.data(using: String.Encoding.utf8.rawValue) {

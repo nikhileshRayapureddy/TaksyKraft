@@ -12,128 +12,65 @@ class CreateExpenseViewController: BaseViewController,UIImagePickerControllerDel
 
     @IBOutlet weak var lblName: UILabel!
     @IBOutlet weak var lblMobileNo: UILabel!
-    @IBOutlet weak var txtFldAmount: FloatLabelTextField!
-    @IBOutlet weak var txtVwDesc: FloatLabelTextView!
-    @IBOutlet weak var lblImageName: UILabel!
-    @IBOutlet weak var btnUploadImage: UIButton!
+    @IBOutlet weak var txtFldAmount: UITextField!
+    @IBOutlet weak var txtVwDesc: UITextView!
+    @IBOutlet weak var btnExpenseImage: UIButton!
     @IBOutlet weak var btnNoReceipt: UIButton!
     @IBOutlet weak var btnSubmit: UIButton!
     @IBOutlet weak var vwUploadBg: UIView!
     @IBOutlet weak var constVwUploagImageBgHeight: NSLayoutConstraint!
     
-    @IBOutlet weak var btnWalletAmt: UIButton!
-    @IBOutlet weak var btnCard: UIButton!
+    @IBOutlet weak var constBtnAttachImageHeight: NSLayoutConstraint!
+    @IBOutlet weak var constBtnExpenseImageHeight: NSLayoutConstraint!
+    @IBOutlet weak var btnAttachImage: UIButton!
     var imgBg = UIImageView()
 
-    var imageData = Data()
-    var fileName = ""
-    var arrTitles = [String]()
-    var isFromEdit = false
-    var isImageModified = false
-
-    var receiptBO = ReceiptBO()
-
+    @IBOutlet weak var imgExpenseImageOverlay: UIImageView!
+    var imageURL = ""
+    var expenseBO = ReceiptBO()
+    var isImageEditing = false
+    var isEdited = false
+    @IBOutlet weak var lblCharCount: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        txtVwDesc.layer.cornerRadius = 5
-        txtVwDesc.layer.masksToBounds = true
-        txtVwDesc.layer.borderColor = UIColor.lightGray.cgColor
-        txtVwDesc.layer.borderWidth = 1
-        vwUploadBg.layer.cornerRadius = 5
-        vwUploadBg.layer.masksToBounds = true
-        vwUploadBg.layer.borderColor = UIColor.lightGray.cgColor
-        vwUploadBg.layer.borderWidth = 1
-        if isFromEdit
-        {
-            self.designNavBarWithTitleAndBack(title: "Create New Form",showBack: true, isMenu: false)
-            txtFldAmount.text = receiptBO.amount
-            txtVwDesc.text = receiptBO.Description
-            fileName = receiptBO.image
-            lblImageName.text = fileName
-            do {
-                imageData = try Data(contentsOf: URL(string:IMAGE_BASE_URL + receiptBO.image)!)
-            } catch {
-                print("Invalid URL")
-            }
-            
-        }
-        else
-        {
-            if TaksyKraftUserDefaults.getUserRole() == "1" || TaksyKraftUserDefaults.getUserRole() == "2"
-            {
-                self.designNavBarWithTitleAndBack(title: "Create New Form",showBack: true, isMenu: false)
-            }
-            else
-            {
-                self.designNavBarWithTitleAndBack(title: "Create New Form",showBack: false, isMenu: true)
-                arrTitles = ["My Expenses","Logout"]
-            }
-        }
-        lblMobileNo.text = TaksyKraftUserDefaults.getUserMobile()
-        lblName.text = TaksyKraftUserDefaults.getUserName()
 
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.isNavigationBarHidden = false
-
+        self.designNavBarWithTitleAndBack(title: "Create New Form",showBack: true, isRefresh: false)
+        lblMobileNo.text = TaksyKraftUserDefaults.getUser().mobile
+        lblName.text = TaksyKraftUserDefaults.getUser().name
+        if expenseBO.expenseId != "" && isImageEditing == false
+        {
+            txtFldAmount.text = expenseBO.amount
+            txtVwDesc.text = expenseBO.Description
+            if expenseBO.image != "pzrUPuD8zqdWKaxD7cAfLjptKhNjag5XUckkk3ho.png"
+            {
+                imageURL = expenseBO.image
+                let url = URL(string: IMAGE_BASE_URL + expenseBO.image)
+                btnExpenseImage.kf.setImage(with: url, for: .normal, placeholder: #imageLiteral(resourceName: "Bill_Default"), options: [.transition(ImageTransition.fade(1))], progressBlock: { receivedSize, totalSize in
+                }, completionHandler: { image, error, cacheType, imageURL in
+                })
+                btnExpenseImage.layer.cornerRadius = btnExpenseImage.frame.size.width/2
+                btnExpenseImage.layer.masksToBounds = true
+                
+                constVwUploagImageBgHeight.constant = 75
+                constBtnExpenseImageHeight.constant = 75
+                constBtnAttachImageHeight.constant = 0
+                btnAttachImage.isHidden = true
+            }
+            else
+            {
+                self.btnNoReceiptClicked(self.btnNoReceipt)
+            }
+            
+            
+        }
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.navigationController?.isNavigationBarHidden = true
-    }
-    override func btnMenuClicked( sender:UIButton)
-    {
-        self.showPopOver(arrTitles: arrTitles, sender: sender ,tag:500)
-    }
-    func showPopOver(arrTitles : [String] ,sender : UIView ,tag : Int)  {
-        imgBg = UIImageView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height))
-        imgBg.backgroundColor = UIColor.black.withAlphaComponent(0.8)
-        self.view.addSubview(imgBg)
-        
-        let popoverVC = CustomPopOver()
-        popoverVC.tag = tag
-        popoverVC.modalPresentationStyle = .popover
-        popoverVC.titles = arrTitles
-        popoverVC.preferredContentSize = CGSize (width: 150, height: CGFloat(popoverVC.titles.count) * 45.0)
-        popoverVC.delegate = self
-        
-        if let popoverController = popoverVC.popoverPresentationController
-        {
-            popoverController.sourceView = sender
-            let bound = sender.bounds
-            popoverController.sourceRect = bound
-            popoverController.permittedArrowDirections = .any
-            popoverController.delegate = self
-        }
-        
-        self.present(popoverVC, animated: true, completion: nil)
-        
-    }
-    
-    func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController)
-    {
-        imgBg.removeFromSuperview()
-    }
-    
-    public func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle
-    {
-        return .none
-    }
-    
-
-    @IBAction func btnWalletAmtClicked(_ sender: UIButton) {
-        sender.isSelected = !sender.isSelected
-    }
-    
-    @IBAction func btnCardClicked(_ sender: UIButton) {
-        sender.isSelected = !sender.isSelected
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
  
     @IBAction func btnSubmitClicked(_ sender: UIButton) {
@@ -146,326 +83,176 @@ class CreateExpenseViewController: BaseViewController,UIImagePickerControllerDel
         {
             self.showAlertWith(title: "Alert!", message: "Please enter Description.")
         }
-        else if imageData.count <= 0
+        else if btnNoReceipt.isSelected == false && imageURL.count <= 0
         {
-            self.showAlertWith(title: "Alert!", message: "Please Upload Receipt Image!")
+            self.showAlertWith(title: "Alert!", message: "Please upload expense image.")
         }
         else
         {
-            app_delegate.showLoader(message: "Uploading...")
-            let layer = ServiceLayer()
-            
-            layer.uploadWith(imageData: self.imageData, successMessage: { (response) in
-                DispatchQueue.main.async
-                    {
-                        let alert = UIAlertController(title: "Success!", message: "Image uploaded successfully", preferredStyle: UIAlertControllerStyle.alert)
-                        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-                        self.present(alert, animated: true, completion: nil)
-
-                }
-            }, failureMessage: { (error) in
-                DispatchQueue.main.async
-                    {
-                        let alert = UIAlertController(title: "Success!", message: "Image uploading failed.", preferredStyle: UIAlertControllerStyle.alert)
-                        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-                        self.present(alert, animated: true, completion: nil)
-                }
-
-            })
-            return
-            let card = btnCard.isSelected == true ? "1" : "0"
-            let wallet = btnWalletAmt.isSelected == true ? "1" : "0"
-            if isFromEdit
+            if txtFldAmount.text != expenseBO.amount
             {
-                if isImageModified
+                isEdited = true
+            }
+            if txtVwDesc.text != expenseBO.Description
+            {
+                isEdited = true
+            }
+            if expenseBO.image == "pzrUPuD8zqdWKaxD7cAfLjptKhNjag5XUckkk3ho.png"
+            {
+                if imageURL != ""
                 {
-                    layer.uploadEditedDetailsWith(imageData: self.imageData, card: card, wallet: wallet, desc: txtVwDesc.text, mobileNo: lblMobileNo.text!, amount: txtFldAmount.text!, fileName: self.fileName, contentType: "image/jpg", expenseID: String(receiptBO.receiptId), successMessage: { (response) in
-                        layer.getWalletAmount(successMessage: { (bal) in
-                            DispatchQueue.main.async
-                                {
-                                    TaksyKraftUserDefaults.setWalletAmount(object: "₹ \(bal as! String)")
-                                    app_delegate.removeloder()
-                                    let alert = UIAlertController(title: "Success!", message: response as? String, preferredStyle: UIAlertControllerStyle.alert)
-                                    alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
-                                        DispatchQueue.main.async {
-                                            self.reloadWallet()
-                                            if TaksyKraftUserDefaults.getUserRole() == "0"
-                                            {
-                                                self.txtVwDesc.text = ""
-                                                self.txtFldAmount.text = ""
-                                                self.imageData = Data()
-                                                self.fileName = ""
-                                                self.lblImageName.text = ""
-                                                self.btnCard.isSelected = false
-                                                self.btnWalletAmt.isSelected = false
-                                                self.btnNoReceipt.isSelected = true
-                                                self.btnNoReceiptClicked(self.btnNoReceipt)
-                                            }
-                                            else
-                                            {
-                                                let _=self.navigationController?.popViewController(animated: true)
-                                            }
-                                        }
-                                    }))
-                                    self.present(alert, animated: true, completion: nil)
-                            }
-                        }) { (error) in
-                            DispatchQueue.main.async
-                                {
-                                    TaksyKraftUserDefaults.setWalletAmount(object: "₹ 0")
-                                    app_delegate.removeloder()
-                                    let alert = UIAlertController(title: "Success!", message: response as? String, preferredStyle: UIAlertControllerStyle.alert)
-                                    alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
-                                        DispatchQueue.main.async {
-                                            self.reloadWallet()
-                                            if TaksyKraftUserDefaults.getUserRole() == "0"
-                                            {
-                                                self.txtVwDesc.text = ""
-                                                self.txtFldAmount.text = ""
-                                                self.imageData = Data()
-                                                self.fileName = ""
-                                                self.lblImageName.text = ""
-                                                self.btnCard.isSelected = false
-                                                self.btnWalletAmt.isSelected = false
-                                                self.btnNoReceipt.isSelected = true
-                                                self.btnNoReceiptClicked(self.btnNoReceipt)
-                                            }
-                                            else
-                                            {
-                                                let _=self.navigationController?.popViewController(animated: true)
-                                            }
-                                        }
-                                    }))
-                                    self.present(alert, animated: true, completion: nil)
-                            }
-                        }
-                        
-                    }, failureMessage: { (failure) in
-                        app_delegate.removeloder()
-                        
-                    })
-                }
-                else
-                {
-                    layer.uploadEditedDetailsWith(imageData: Data(), card: card, wallet: wallet, desc: txtVwDesc.text, mobileNo: lblMobileNo.text!, amount: txtFldAmount.text!, fileName: self.fileName, contentType: "image/jpg", expenseID: String(receiptBO.receiptId), successMessage: { (response) in
-                        layer.getWalletAmount(successMessage: { (bal) in
-                            DispatchQueue.main.async
-                                {
-                                    TaksyKraftUserDefaults.setWalletAmount(object: "₹ \(bal as! String)")
-                                    app_delegate.removeloder()
-                                        let alert = UIAlertController(title: "Success!", message: response as? String, preferredStyle: UIAlertControllerStyle.alert)
-                                        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
-                                            DispatchQueue.main.async {
-                                                self.reloadWallet()
-                                                if TaksyKraftUserDefaults.getUserRole() == "0"
-                                                {
-                                                    self.txtVwDesc.text = ""
-                                                    self.txtFldAmount.text = ""
-                                                    self.imageData = Data()
-                                                    self.fileName = ""
-                                                    self.lblImageName.text = ""
-                                                    self.btnCard.isSelected = false
-                                                    self.btnWalletAmt.isSelected = false
-                                                    self.btnNoReceipt.isSelected = true
-                                                    self.btnNoReceiptClicked(self.btnNoReceipt)
-                                                }
-                                                else
-                                                {
-                                                    let _=self.navigationController?.popViewController(animated: true)
-                                                }
-                                            }
-                                        }))
-                                        self.present(alert, animated: true, completion: nil)
-                                    
-                            }
-                        }) { (error) in
-                            DispatchQueue.main.async
-                                {
-                                    TaksyKraftUserDefaults.setWalletAmount(object: "₹ 0")
-                                    app_delegate.removeloder()
-                                        let alert = UIAlertController(title: "Success!", message: response as? String, preferredStyle: UIAlertControllerStyle.alert)
-                                        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
-                                            DispatchQueue.main.async {
-                                                self.reloadWallet()
-                                                if TaksyKraftUserDefaults.getUserRole() == "0"
-                                                {
-                                                    self.txtVwDesc.text = ""
-                                                    self.txtFldAmount.text = ""
-                                                    self.imageData = Data()
-                                                    self.fileName = ""
-                                                    self.lblImageName.text = ""
-                                                    self.btnCard.isSelected = false
-                                                    self.btnWalletAmt.isSelected = false
-                                                    self.btnNoReceipt.isSelected = true
-                                                    self.btnNoReceiptClicked(self.btnNoReceipt)
-                                                }
-                                                else
-                                                {
-                                                    let _=self.navigationController?.popViewController(animated: true)
-                                                }
-                                            }
-                                        }))
-                                        self.present(alert, animated: true, completion: nil)
-                            }
-                        }
-                    }, failureMessage: { (failure) in
-                        app_delegate.removeloder()
-                        
-                    })
-
+                    isEdited = true
                 }
             }
             else
             {
-                layer.uploadWith(imageData: self.imageData, desc: txtVwDesc.text, mobileNo: lblMobileNo.text!, card: card, wallet: wallet, amount: txtFldAmount.text!, fileName: self.fileName, contentType: "image/jpg", successMessage: { (response) in
-                    layer.getWalletAmount(successMessage: { (bal) in
-                        DispatchQueue.main.async
-                            {
-                                TaksyKraftUserDefaults.setWalletAmount(object: "₹ \(bal as! String)")
-                                app_delegate.removeloder()
-                                let alert = UIAlertController(title: "Success!", message: response as? String, preferredStyle: UIAlertControllerStyle.alert)
-                                alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
-                                    DispatchQueue.main.async {
-                                        self.reloadWallet()
-                                        if TaksyKraftUserDefaults.getUserRole() == "0"
-                                        {
-                                            self.txtVwDesc.text = ""
-                                            self.txtFldAmount.text = ""
-                                            self.imageData = Data()
-                                            self.fileName = ""
-                                            self.lblImageName.text = ""
-                                            self.btnCard.isSelected = false
-                                            self.btnWalletAmt.isSelected = false
-                                            self.btnNoReceipt.isSelected = true
-                                            self.btnNoReceiptClicked(self.btnNoReceipt)
-                                        }
-                                        else
-                                        {
-                                            let _=self.navigationController?.popViewController(animated: true)
-                                        }
-                                    }
-                                }))
-                                self.present(alert, animated: true, completion: nil)
-                        }
-                    }) { (error) in
-                        DispatchQueue.main.async
-                            {
-                                TaksyKraftUserDefaults.setWalletAmount(object: "₹ 0")
-                                app_delegate.removeloder()
-                                let alert = UIAlertController(title: "Success!", message: response as? String, preferredStyle: UIAlertControllerStyle.alert)
-                                alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
-                                    DispatchQueue.main.async {
-                                        self.reloadWallet()
-                                        if TaksyKraftUserDefaults.getUserRole() == "0"
-                                        {
-                                            self.txtVwDesc.text = ""
-                                            self.txtFldAmount.text = ""
-                                            self.imageData = Data()
-                                            self.fileName = ""
-                                            self.lblImageName.text = ""
-                                            self.btnCard.isSelected = false
-                                            self.btnWalletAmt.isSelected = false
-                                            self.btnNoReceipt.isSelected = true
-                                            self.btnNoReceiptClicked(self.btnNoReceipt)
-                                            
-                                        }
-                                        else
-                                        {
-                                            let _=self.navigationController?.popViewController(animated: true)
-                                        }
-                                    }
-                                }))
-                                self.present(alert, animated: true, completion: nil)
-                        }
+                if expenseBO.image != imageURL
+                {
+                    isEdited = true
+                }
+            }
+            
+            if isEdited == true
+            {
+                app_delegate.showLoader(message: "Uploading...")
+                let layer = ServiceLayer()
+                layer.createOrUpdateExpenseWith(strID: expenseBO.expenseId, strAmt: txtFldAmount.text!, strDescription: txtVwDesc.text, strImage: self.imageURL, successMessage: { (response) in
+                    DispatchQueue.main.async
+                        {
+                            app_delegate.removeloder()
+                            let alert = UIAlertController(title: "Success!", message: "Expense Uploaded Successfully.", preferredStyle: UIAlertControllerStyle.alert)
+                            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
+                                DispatchQueue.main.async {
+                                    self.navigationController?.popViewController(animated: true)
+                                }
+                            }))
+                            self.present(alert, animated: true, completion: nil)
                     }
-
+                    
                 }, failureMessage: { (failure) in
-                    app_delegate.removeloder()
+                    DispatchQueue.main.async
+                        {
+                            app_delegate.removeloder()
+                            if EXP_TOKEN_ERR == failure as! String
+                            {
+                                self.logout()
+                            }
+                            else
+                            {
+                                let alert = UIAlertController(title: "Failure!", message: failure as? String, preferredStyle: UIAlertControllerStyle.alert)
+                                alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+                                self.present(alert, animated: true, completion: nil)
+                            }
+                    }
                     
                 })
             }
+            else
+            {
+                self.showAlertWith(title: "Alert!", message: "Please edit before updating")
+            }
         }
+        
     }
-    @IBAction func btnUploadImageClicked(_ sender: UIButton) {
-        let alert = UIAlertController(title: "Select an Image to Uplaod", message: "", preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: "Camera", style: .default) { action in
-            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera) {
-                
-                let imagePicker = UIImagePickerController()
-                imagePicker.delegate = self
-                imagePicker.sourceType = .camera
-                imagePicker.mediaTypes = UIImagePickerController.availableMediaTypes(for: .camera)!
-                imagePicker.allowsEditing = false
-                self.present(imagePicker, animated: true, completion: nil)
-            } else {
-                print("camera not available.")
+    @IBAction func btnAttachImageClicked(_ sender: UIButton) {
+        if self.imageURL != ""
+        {
+            if let img = self.btnExpenseImage.imageView?.image
+            {
+                let vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ImagePreviewViewController") as! ImagePreviewViewController
+                //        vc.arrUrl = [chqBO.cheque_image]
+                vc.isEdit = true
+                vc.callBack = self
+                vc.arrImages.removeAll()
+                vc.arrImages.append(img)
+                self.navigationController?.pushViewController(vc, animated: true)
             }
 
-        })
-        alert.addAction(UIAlertAction(title: "Gallery", style: .default) { action in
-            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.photoLibrary) {
+        }
+        else
+        {
+            let alert = UIAlertController(title: "Select an Image to Uplaod", message: "", preferredStyle: .actionSheet)
+            alert.addAction(UIAlertAction(title: "Camera", style: .default) { action in
+                if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera) {
+                    
+                    let imagePicker = UIImagePickerController()
+                    imagePicker.delegate = self
+                    imagePicker.sourceType = .camera
+                    imagePicker.mediaTypes = UIImagePickerController.availableMediaTypes(for: .camera)!
+                    imagePicker.allowsEditing = false
+                    self.present(imagePicker, animated: true, completion: nil)
+                } else {
+                    print("camera not available.")
+                }
                 
-                let imagePicker = UIImagePickerController()
-                imagePicker.delegate = self
-                imagePicker.sourceType = .photoLibrary
-                imagePicker.mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary)!
-                imagePicker.allowsEditing = false
-                self.present(imagePicker, animated: true, completion: nil)
-            } else {
-                print("photoLibrary not available.")
-            }
+            })
+            alert.addAction(UIAlertAction(title: "Gallery", style: .default) { action in
+                if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.photoLibrary) {
+                    
+                    let imagePicker = UIImagePickerController()
+                    imagePicker.delegate = self
+                    imagePicker.sourceType = .photoLibrary
+                    imagePicker.mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary)!
+                    imagePicker.allowsEditing = false
+                    self.present(imagePicker, animated: true, completion: nil)
+                } else {
+                    print("photoLibrary not available.")
+                }
+                
+            })
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel) { action in
+                // perhaps use action.title here
+            })
+            self.present(alert, animated: true, completion: nil)
 
-        })
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel) { action in
-            // perhaps use action.title here
-        })
-        self.present(alert, animated: true, completion: nil)
+        }
         
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        isImageModified = true
-        imageData = self.compressImageSize(image: info[UIImagePickerControllerOriginalImage] as! UIImage, compressionQuality: 1.0)
-            
-            
-        
+        let imageData = self.compressImageSize(image: info[UIImagePickerControllerOriginalImage] as! UIImage, compressionQuality: 1.0)
         let imageSize: Int = imageData.count
+        
         print("size of image in KB: %f ", Double(imageSize) / 1024.0)
-
-        if let url = info[UIImagePickerControllerReferenceURL] as? URL
-        {
-            if let assets = PHAsset.fetchAssets(withALAssetURLs: [url], options: nil) as? PHFetchResult
-            {
-                if assets.count > 0
-                {
-                    if let name = PHAssetResource.assetResources(for: assets.firstObject!).first!.originalFilename as? String
-                    {
-                        fileName = name
+        btnExpenseImage.layer.cornerRadius = btnExpenseImage.frame.size.width/2
+        btnExpenseImage.layer.masksToBounds = true
+        btnExpenseImage.setImage(UIImage(data: imageData), for: .normal)
+        constVwUploagImageBgHeight.constant = 75
+        constBtnExpenseImageHeight.constant = 75
+        constBtnAttachImageHeight.constant = 0
+        btnAttachImage.isHidden = true
+        isImageEditing = true
+        self.dismiss(animated: true) {
+            DispatchQueue.main.async {
+                app_delegate.showLoader(message: "Uploading Image...")
+                let layer = ServiceLayer()
+                layer.uploadWith(imageData: imageData, successMessage: { (response) in
+                    DispatchQueue.main.async
+                        {
+                            self.imageURL = response as! String
+                            app_delegate.removeloder()
+                            self.imgExpenseImageOverlay.image = #imageLiteral(resourceName: "ImageUploadSuccess")
+                            self.imgExpenseImageOverlay.isHidden = false
                     }
-                    else
-                    {
-                        fileName = String(Int(NSDate().timeIntervalSince1970) * 1000) + ".jpg"
+                    
+                }) { (failure) in
+                    DispatchQueue.main.async
+                        {
+                            if EXP_TOKEN_ERR == failure as! String
+                            {
+                                self.logout()
+                            }
+                            else
+                            {
+                                app_delegate.removeloder()
+                                self.showAlertWith(title: "Alert!", message: "Uploading failed.")
+                            }
                     }
+                    
                 }
-                else
-                {
-                    fileName = String(Int(NSDate().timeIntervalSince1970) * 1000) + ".jpg"
-                }
-                
             }
-            else
-            {
-                fileName = String(Int(NSDate().timeIntervalSince1970) * 1000) + ".jpg"
-            }
-            
+        }
 
-        }
-        else
-        {
-            fileName = String(Int(NSDate().timeIntervalSince1970) * 1000) + ".jpg"
-        }
-        lblImageName.text = fileName
-        self.dismiss(animated: true, completion: nil)
     }
     func compressImageSize(image: UIImage,compressionQuality : CGFloat) -> Data
     {
@@ -485,14 +272,24 @@ class CreateExpenseViewController: BaseViewController,UIImagePickerControllerDel
         {
             constVwUploagImageBgHeight.constant = 0
             vwUploadBg.isHidden = true
-            imageData = UIImageJPEGRepresentation(#imageLiteral(resourceName: "no_receipt"), 0.7)!
-            fileName = "no_receipt.jpg"
-            lblImageName.text = fileName
-
+            self.imageURL = ""
         }
         else
         {
-            constVwUploagImageBgHeight.constant = 40
+            if btnExpenseImage.imageView?.image == nil
+            {
+                constVwUploagImageBgHeight.constant = 40
+                constBtnExpenseImageHeight.constant = 40
+                constBtnAttachImageHeight.constant = 40
+                btnAttachImage.isHidden = false
+            }
+            else
+            {
+                constVwUploagImageBgHeight.constant = 100
+                constBtnExpenseImageHeight.constant = 75
+                constBtnAttachImageHeight.constant = 0
+                btnAttachImage.isHidden = true
+            }
             vwUploadBg.isHidden = false
         }
     }
@@ -500,27 +297,59 @@ class CreateExpenseViewController: BaseViewController,UIImagePickerControllerDel
         self.view.endEditing(true)
     }
 }
-extension CreateExpenseViewController : popoverGeneralDelegate {
-    func selectedText(selectedText: String, popoverselected: Int, tag: Int) {
-        imgBg.removeFromSuperview()
-        if selectedText == "Logout"
+extension CreateExpenseViewController : UITextViewDelegate
+{
+    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+        return true
+    }
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        
+        let strText = textView.text + text
+        
+        if (strText.count) <= TXTVW_MAX_COUNT
         {
-            TaksyKraftUserDefaults.setLoginStatus(object: false)
-            let vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ViewController") as! ViewController
-            app_delegate.navCtrl = UINavigationController(rootViewController: vc)
-            app_delegate.navCtrl.isNavigationBarHidden = true
-            app_delegate.window?.rootViewController = app_delegate.navCtrl
-            
-        }
-        else if selectedText == "My Expenses"
-        {
-            let vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyExpensesViewController") as! MyExpensesViewController
-            self.navigationController?.pushViewController(vc, animated: true)
-            
+            lblCharCount.text = "\(strText.count - range.length)/\(TXTVW_MAX_COUNT)"
+            return true
         }
         else
         {
-            print("N/A")
+            return false
+        }
+    }
+
+}
+extension CreateExpenseViewController : ImagePreviewViewControllerDelegate
+{
+    func reloadArrImagesWith(arrImages : [UIImage])
+    {
+        if arrImages.count > 0
+        {
+            self.btnExpenseImage.imageView?.image = arrImages[0]
         }
     }
 }
+extension  CreateExpenseViewController : UITextFieldDelegate
+{
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if textField.text?.count == 0 && string == "0" {
+            
+            return false
+        }
+        if ((textField.text!) + string).count > 7 {
+            
+            return false
+        }
+        if (textField.text?.contains("."))! && string == "." {
+            
+            return false
+        }
+        let allowedCharacterSet = CharacterSet.init(charactersIn: "0123456789.")
+        let textCharacterSet = CharacterSet.init(charactersIn: textField.text! + string)
+        if !allowedCharacterSet.isSuperset(of: textCharacterSet) {
+            return false
+        }
+        return true
+    }
+
+}
+
