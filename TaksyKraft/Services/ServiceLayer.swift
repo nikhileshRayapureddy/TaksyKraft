@@ -405,7 +405,15 @@ class ServiceLayer: NSObject {
                 {
                     if error == "true"
                     {
-                        failureMessage(self.SERVER_ERROR)
+                        if let message = obj.parsedDataDict["message"] as? String
+                        {
+                            failureMessage(message)
+                        }
+                        else
+                        {
+                            failureMessage(self.SERVER_ERROR)
+                        }
+
                     }
                     else
                     {

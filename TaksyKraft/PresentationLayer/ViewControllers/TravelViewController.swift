@@ -32,11 +32,6 @@ class TravelViewController: BaseViewController , UIPopoverPresentationController
     override func viewDidLoad() {
         super.viewDidLoad()
         tblTravels.register(UINib(nibName: "ExpensesTableViewCell", bundle: nil), forCellReuseIdentifier: "ExpensesTableViewCell")
-        
-    }
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.designNavBarWithTitleAndBack(title: "Travel", showBack: true, isRefresh: true)
         if TaksyKraftUserDefaults.getUser().role == "employee"
         {
             constBtnSwitchHeight.constant = 0
@@ -54,6 +49,11 @@ class TravelViewController: BaseViewController , UIPopoverPresentationController
         imageView.image = #imageLiteral(resourceName: "Search")
         imageView.contentMode = .scaleAspectFit
         txtFldSearch.leftView = imageView
+
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.designNavBarWithTitleAndBack(title: "Travel", showBack: true, isRefresh: true)
 
     }
     override func btnRefreshClicked( sender:UIButton)
@@ -450,14 +450,16 @@ extension TravelViewController : UITableViewDelegate,UITableViewDataSource
                 let attributedString = NSMutableAttributedString(string: str)
                 attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.black, range: NSRange(location: 0, length: 13))
                 cell.lblDescription.attributedText = attributedString
-                
-                let formatter = DateFormatter()
-                formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-                let date = formatter.date(from: travel.uploadedDate)
-                formatter.dateFormat = "dd MMM, yyyy"
-                let strDate = formatter.string(from: date!)
-                
-                cell.lblUploadedDate.text = strDate
+                if travel.uploadedDate != ""
+                {
+                    let formatter = DateFormatter()
+                    formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                    let date = formatter.date(from: travel.uploadedDate)
+                    formatter.dateFormat = "dd MMM, yyyy"
+                    let strDate = formatter.string(from: date!)
+                    
+                    cell.lblUploadedDate.text = strDate
+                }
                 cell.selectionStyle = UITableViewCellSelectionStyle.none
                 
                 cell.lblStatus.text = travel.status.capitalized
@@ -555,13 +557,16 @@ extension TravelViewController : UITableViewDelegate,UITableViewDataSource
                 cell.lblSrcAndDest.layer.borderColor = UIColor.lightGray.cgColor
                 cell.lblSrcAndDest.layer.borderWidth = 1.0
 
-                let formatter = DateFormatter()
-                formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-                let date = formatter.date(from: travel.uploadedDate)
-                formatter.dateFormat = "dd MMM, yyyy"
-                let strDate = formatter.string(from: date!)
-                
-                cell.lblUploadedDate.text = strDate
+                if travel.uploadedDate != ""
+                {
+                    let formatter = DateFormatter()
+                    formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                    let date = formatter.date(from: travel.uploadedDate)
+                    formatter.dateFormat = "dd MMM, yyyy"
+                    let strDate = formatter.string(from: date!)
+                    
+                    cell.lblUploadedDate.text = strDate
+                }
                 var descHeight = ("Description :\n" + travel.Description).height(withConstrainedWidth: ScreenWidth - 138, font: UIFont(name: "Roboto-Light", size: 15)!)
                 if travel.Description == ""
                 {
@@ -627,13 +632,16 @@ extension TravelViewController : UITableViewDelegate,UITableViewDataSource
                 cell.lblSrcAndDest.layer.borderColor = UIColor.lightGray.cgColor
                 cell.lblSrcAndDest.layer.borderWidth = 1.0
 
-                let formatter = DateFormatter()
-                formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-                let date = formatter.date(from: travel.uploadedDate)
-                formatter.dateFormat = "dd MMM, yyyy"
-                let strDate = formatter.string(from: date!)
-                
-                cell.lblUploadedDate.text = strDate
+                if travel.uploadedDate != ""
+                {
+                    let formatter = DateFormatter()
+                    formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                    let date = formatter.date(from: travel.uploadedDate)
+                    formatter.dateFormat = "dd MMM, yyyy"
+                    let strDate = formatter.string(from: date!)
+                    
+                    cell.lblUploadedDate.text = strDate
+                }
                 var descHeight = ("Description :\n" + travel.Description).height(withConstrainedWidth: ScreenWidth - 138, font: UIFont(name: "Roboto-Light", size: 15)!)
                 if travel.Description == ""
                 {

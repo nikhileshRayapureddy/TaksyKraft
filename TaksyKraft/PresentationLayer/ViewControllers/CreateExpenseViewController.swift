@@ -123,6 +123,7 @@ class CreateExpenseViewController: BaseViewController,UIImagePickerControllerDel
                             let alert = UIAlertController(title: "Success!", message: "Expense Uploaded Successfully.", preferredStyle: UIAlertControllerStyle.alert)
                             alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
                                 DispatchQueue.main.async {
+                                    NotificationCenter.default.post(name: Notification.Name("reloadExpense"), object: nil)
                                     self.navigationController?.popViewController(animated: true)
                                 }
                             }))

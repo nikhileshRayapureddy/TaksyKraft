@@ -17,16 +17,17 @@ class OnlineViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-    }
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.designNavBarWithTitleAndBack(title: "Online", showBack: true, isRefresh: true)
         self.getOnlineTransactions()
         txtFldSearch.leftViewMode = UITextFieldViewMode.always
         let imageView = UIImageView(frame: CGRect(x: txtFldSearch.frame.size.width/2 - 20, y: 0, width: 40, height: 20))
         imageView.image = #imageLiteral(resourceName: "Search")
         imageView.contentMode = .scaleAspectFit
         txtFldSearch.leftView = imageView
+
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.designNavBarWithTitleAndBack(title: "Online", showBack: true, isRefresh: true)
 
     }
     override func btnRefreshClicked( sender:UIButton)
@@ -124,11 +125,14 @@ extension OnlineViewController : UITableViewDelegate,UITableViewDataSource
         cell.trxBO = trxBo
         cell.callBack = self
         cell.lblAttachCount.text = "\(trxBo.invoice.count + 1) Attachments"
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        let date = dateFormatter.date(from: trxBo.transactionDate)
-        dateFormatter.dateFormat = "dd MMM, yyyy"
-        cell.lblDate.text = dateFormatter.string(from: date!)
+        if trxBo.transactionDate != ""
+        {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+            let date = dateFormatter.date(from: trxBo.transactionDate)
+            dateFormatter.dateFormat = "dd MMM, yyyy"
+            cell.lblDate.text = dateFormatter.string(from: date!)
+        }
         cell.imgVwOnline.layer.borderColor = UIColor.lightGray.withAlphaComponent(0.5).cgColor
         cell.imgVwOnline.layer.borderWidth = 1
         cell.imgVwOnline.kf.setImage(with: URL(string: IMAGE_BASE_URL + trxBo.transactionImage), placeholder: #imageLiteral(resourceName: "Loading"), options: [.transition(ImageTransition.fade(1))], progressBlock: { receivedSize, totalSize in

@@ -13,7 +13,7 @@ class RejectPopup: UIView {
     @IBOutlet weak var btnCancel: UIButton!
     @IBOutlet weak var txtVwResaon: UITextView!
     @IBOutlet weak var constLblReasonAlertHeight: NSLayoutConstraint!
-    
+    var cell : AllExpensesTableViewCell!
     @IBOutlet weak var lblCharCount: UILabel!
 }
 extension RejectPopup : UITextViewDelegate

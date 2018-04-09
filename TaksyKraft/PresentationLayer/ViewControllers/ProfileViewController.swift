@@ -10,7 +10,7 @@ import UIKit
 
 class ProfileViewController: BaseViewController {
     
-    @IBOutlet weak var btnProfile: UIButton!
+    @IBOutlet weak var imgProfile: UIImageView!
     @IBOutlet weak var lblEmpName: UILabel!
     @IBOutlet weak var lblEmpID: UILabel!
     @IBOutlet weak var lblMobileNo: UILabel!
@@ -22,23 +22,23 @@ class ProfileViewController: BaseViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         profileBO = TaksyKraftUserDefaults.getUser()
-        btnProfile.layer.cornerRadius = btnProfile.frame.size.width/2
-        btnProfile.kf.setImage(with: URL(string: IMAGE_BASE_URL +
-         profileBO.profile_image), for: .normal, placeholder: #imageLiteral(resourceName: "Profile_Default"), options: [.transition(ImageTransition.fade(1))], progressBlock: { receivedSize, totalSize in
-        }, completionHandler: { image, error, cacheType, imageURL in
+        self.imgProfile.kf.setImage(with: URL(string: IMAGE_BASE_URL +
+            profileBO.profile_image), placeholder: #imageLiteral(resourceName: "Profile_Default"), options: [.transition(ImageTransition.fade(1))], progressBlock: { receivedSize, totalSize in
+        }, completionHandler: { (image, error, cacheType, imageURL) in
+            DispatchQueue.main.async {
+            }
         })
+        self.imgProfile.layer.cornerRadius = self.imgProfile.frame.size.width/2
+        self.imgProfile.layer.masksToBounds = true
         lblEmpID.text = profileBO.empId
         lblEmpName.text = profileBO.name
         lblMobileNo.text = profileBO.mobile
         lblDesignation.text = profileBO.designation
         lblBloodGroup.text = profileBO.bloodGroup
         
-        btnProfile.layer.borderColor = UIColor.white.cgColor
-        btnProfile.layer.borderWidth = 2.0
+        self.imgProfile.layer.borderColor = UIColor.white.cgColor
+        self.imgProfile.layer.borderWidth = 2.0
         self.navigationController?.isNavigationBarHidden = true
-    }
-    @IBAction func btnProfileClicked(_ sender: UIButton) {
-        
     }
     @IBAction func btnLogoutClicked(_ sender: UIButton) {
         TaksyKraftUserDefaults.setLoginStatus(object: false)

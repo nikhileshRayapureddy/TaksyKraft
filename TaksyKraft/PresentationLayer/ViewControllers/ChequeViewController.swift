@@ -23,25 +23,16 @@ class ChequeViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    }
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.designNavBarWithTitleAndBack(title: "Cheques", showBack: true, isRefresh: true)
-//        if TaksyKraftUserDefaults.getUser().role == "hr"
-//        {
-//            self.callForMyChequesData()
-//
-//        }
-//        else
-//        {
-            self.callForAllChequesData()
-//        }
+        self.callForAllChequesData()
         txtFldSearch.leftViewMode = UITextFieldViewMode.always
         let imageView = UIImageView(frame: CGRect(x: txtFldSearch.frame.size.width/2 - 20, y: 0, width: 40, height: 20))
         imageView.image = #imageLiteral(resourceName: "Search")
         imageView.contentMode = .scaleAspectFit
         txtFldSearch.leftView = imageView
-
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.designNavBarWithTitleAndBack(title: "Cheques", showBack: true, isRefresh: true)
     }
     override func btnRefreshClicked( sender:UIButton)
     {
@@ -180,20 +171,24 @@ extension ChequeViewController : UITableViewDelegate,UITableViewDataSource
             cell.imgCheque.contentMode = .scaleAspectFill
         })
         let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        let date = formatter.date(from: chqBo.uploadedDate)
-        formatter.dateFormat = "dd MMM, yyyy"
-        let strDate = formatter.string(from: date!)
+        if chqBo.uploadedDate != ""
+        {
+            formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+            let date = formatter.date(from: chqBo.uploadedDate)
+            formatter.dateFormat = "dd MMM, yyyy"
+            let strDate = formatter.string(from: date!)
+            cell.lblUploadedDate.text = strDate
+        }
         cell.chqBO = chqBo
         cell.callBack = self
-        cell.lblUploadedDate.text = strDate
-        
-        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        let clrDate = formatter.date(from: chqBo.chequeClearanceDate)
-        formatter.dateFormat = "dd MMM, yyyy"
-        let strClrDate = formatter.string(from: clrDate!)
-        
-        cell.lblClearanceDate.text = strClrDate
+        if chqBo.chequeClearanceDate != ""
+        {
+            formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+            let clrDate = formatter.date(from: chqBo.chequeClearanceDate)
+            formatter.dateFormat = "dd MMM, yyyy"
+            let strClrDate = formatter.string(from: clrDate!)
+            cell.lblClearanceDate.text = strClrDate
+        }
         cell.lblEmpId.text = chqBo.empId
         cell.lblEmpName.text = chqBo.empName
         if TaksyKraftUserDefaults.getUser().role == "admin" && chqBo.status == "pending"

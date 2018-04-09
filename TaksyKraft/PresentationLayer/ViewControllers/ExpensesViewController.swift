@@ -8,6 +8,11 @@
 
 import UIKit
 let IMAGE_BASE_URL = "https://taksykraft.s3.ap-southeast-1.amazonaws.com/tk-exp-new/"
+protocol ExpensesViewControllerDelegate
+{
+    func uploadSuccess()
+}
+
 class ExpensesViewController: BaseViewController, UIPopoverPresentationControllerDelegate {
 
     let Tag_Reupload = 1000
@@ -17,6 +22,8 @@ class ExpensesViewController: BaseViewController, UIPopoverPresentationControlle
     let Tag_Reject = 5000
     let Tag_PayNow = 6000
     var isMyExpense = false
+    var callback : ExpensesViewControllerDelegate!
+
     @IBOutlet weak var tblExpenses: UITableView!
     @IBOutlet weak var constBtnSwitchHeight: NSLayoutConstraint!
     
@@ -36,11 +43,6 @@ class ExpensesViewController: BaseViewController, UIPopoverPresentationControlle
     override func viewDidLoad() {
         super.viewDidLoad()
         tblExpenses.register(UINib(nibName: "ExpensesTableViewCell", bundle: nil), forCellReuseIdentifier: "ExpensesTableViewCell")
-        
-    }
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.designNavBarWithTitleAndBack(title: "Expenses", showBack: true, isRefresh: true)
         if TaksyKraftUserDefaults.getUser().role == "hr" || TaksyKraftUserDefaults.getUser().role == "employee"
         {
             constBtnSwitchHeight.constant = 0
@@ -59,6 +61,13 @@ class ExpensesViewController: BaseViewController, UIPopoverPresentationControlle
         imageView.image = #imageLiteral(resourceName: "Search")
         imageView.contentMode = .scaleAspectFit
         txtFldSearch.leftView = imageView
+        NotificationCenter.default.addObserver(self, selector: #selector(self.uploadSuccess(not:)), name: Notification.Name("reloadExpense"), object: nil)
+
+        
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.designNavBarWithTitleAndBack(title: "Expenses", showBack: true, isRefresh: true)
 
 
     }
@@ -104,6 +113,34 @@ class ExpensesViewController: BaseViewController, UIPopoverPresentationControlle
         let vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CreateExpenseViewController") as! CreateExpenseViewController
         self.navigationController?.pushViewController(vc, animated: true)
 
+    }
+    func uploadSuccess(not : NSNotification)
+    {
+        self.callForData()
+        let serviceLayer = ServiceLayer()
+        if isMyExpense
+        {
+            serviceLayer.getAllExpenses(successMessage: { (response) in
+                self.arrAllList.removeAll()
+                self.arrAllList = response as! [ReceiptBO]
+
+            }, failureMessage: { (failure) in
+                
+            })
+        }
+        else
+        {
+            
+            serviceLayer.getMyExpenses(successMessage: { (response) in
+                self.arrMyList.removeAll()
+                self.arrMyList = response as! [ReceiptBO]
+
+            }) { (failure) in
+                
+            }
+        }
+        
+        
     }
     func callForData()
     {
@@ -248,13 +285,16 @@ extension ExpensesViewController : UITableViewDelegate,UITableViewDataSource
             cell.lblExpenseID.text = expense.expenseId
             cell.lblAmount.text = "₹" + expense.amount
             cell.lblDescription.text = expense.Description
-            let formatter = DateFormatter()
-            formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-            let date = formatter.date(from: expense.uploadedDate)
-            formatter.dateFormat = "dd MMM, yyyy"
-            let strDate = formatter.string(from: date!)
-            
-            cell.lblUploadedDate.text = strDate
+            if expense.uploadedDate != ""
+            {
+                let formatter = DateFormatter()
+                formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                let date = formatter.date(from: expense.uploadedDate)
+                formatter.dateFormat = "dd MMM, yyyy"
+                let strDate = formatter.string(from: date!)
+                
+                cell.lblUploadedDate.text = strDate
+            }
             cell.selectionStyle = UITableViewCellSelectionStyle.none
 
             cell.lblStatus.text = expense.status.capitalized
@@ -385,15 +425,15 @@ extension ExpensesViewController : UITableViewDelegate,UITableViewDataSource
             cell.lblAmount.text = "₹" + expense.amount
             cell.lblDescription.text = expense.Description
             cell.selectionStyle = UITableViewCellSelectionStyle.none
-
-            let formatter = DateFormatter()
-            formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-            let date = formatter.date(from: expense.uploadedDate)
-            formatter.dateFormat = "dd MMM, yyyy"
-            let strDate = formatter.string(from: date!)
-
-            cell.lblUploadedDate.text = strDate
-            
+            if expense.uploadedDate != ""
+            {
+                let formatter = DateFormatter()
+                formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                let date = formatter.date(from: expense.uploadedDate)
+                formatter.dateFormat = "dd MMM, yyyy"
+                let strDate = formatter.string(from: date!)
+                cell.lblUploadedDate.text = strDate
+            }
             cell.vwBase.layer.cornerRadius = 5
             cell.vwBase.layer.masksToBounds = true
             cell.btnVerify.layer.cornerRadius = 5
@@ -509,7 +549,7 @@ extension ExpensesViewController : UITableViewDelegate,UITableViewDataSource
         tableView.deselectRow(at: indexPath, animated: true)
         
     }
-    func updateStatusWith(strStatus : String,expenseID : String)
+    func updateStatusWith(strStatus : String,expenseID : String,cell:AllExpensesTableViewCell)
     {
         app_delegate.showLoader(message: "Updating...")
         var comment = ""
@@ -528,7 +568,10 @@ extension ExpensesViewController : UITableViewDelegate,UITableViewDataSource
                 let alert = UIAlertController(title: "Success!", message: "Expense Updated Successfully.", preferredStyle: UIAlertControllerStyle.alert)
                 alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
                     DispatchQueue.main.async {
-                        self.callForData()
+//                        self.callForData()
+                        self.arrAllList.remove(at: (self.tblExpenses.indexPath(for: cell)?.row)!)
+                        self.arrFilter.remove(at: (self.tblExpenses.indexPath(for: cell)?.row)!)
+                        self.tblExpenses.reloadData()
                     }
                 }))
                 self.present(alert, animated: true, completion: nil)
@@ -610,6 +653,7 @@ extension ExpensesViewController : AllExpensesTableViewCellDelegate
         {
             self.rejExpenseID = expenseId
             rejectPopup = popup
+            rejectPopup.cell = cell
             rejectPopup?.frame = CGRect(x:0,y: 0,width: ScreenWidth, height:ScreenHeight)
             rejectPopup.txtVwResaon.layer.borderWidth = 1
             rejectPopup.txtVwResaon.layer.borderColor = UIColor.lightGray.withAlphaComponent(0.5).cgColor
@@ -634,20 +678,20 @@ extension ExpensesViewController : AllExpensesTableViewCellDelegate
         else
         {
             rejectPopup.constLblReasonAlertHeight.constant = 0
-            self.updateStatusWith(strStatus: "rejected", expenseID: self.rejExpenseID)
+            self.updateStatusWith(strStatus: "rejected", expenseID: self.rejExpenseID, cell: rejectPopup.cell)
         }
     }
     func btnApproveClicked(expenseId : String,cell : AllExpensesTableViewCell)
     {
-        self.updateStatusWith(strStatus: "approved", expenseID: expenseId)
+        self.updateStatusWith(strStatus: "approved", expenseID: expenseId, cell: cell)
     }
     func btnVerifyClicked(expenseId : String,cell : AllExpensesTableViewCell)
     {
-        self.updateStatusWith(strStatus: "verified", expenseID: expenseId)
+        self.updateStatusWith(strStatus: "verified", expenseID: expenseId, cell: cell)
     }
     func btnPayNowClicked(expenseId : String,cell : AllExpensesTableViewCell)
     {
-        self.updateStatusWith(strStatus: "paid", expenseID: expenseId)
+        self.updateStatusWith(strStatus: "paid", expenseID: expenseId, cell: cell)
     }
 
 }
@@ -684,7 +728,18 @@ extension ExpensesViewController : MyExpensesTableViewCellDelegate
                         let alert = UIAlertController(title: "Success!", message: "Expense deleted Successfully.", preferredStyle: UIAlertControllerStyle.alert)
                         alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
                             DispatchQueue.main.async {
-                                self.callForData()
+//                                self.callForData()
+                                self.arrMyList.remove(at: (self.tblExpenses.indexPath(for: cell)?.row)!)
+                                self.arrFilter.remove(at: (self.tblExpenses.indexPath(for: cell)?.row)!)
+                                layer.getAllExpenses(successMessage: { (response1) in
+                                    
+                                    self.arrAllList.removeAll()
+                                    self.arrAllList = response1 as! [ReceiptBO]
+
+                                }, failureMessage: { (failures) in
+                                    
+                                })
+                                self.tblExpenses.reloadData()
                             }
                         }))
                         self.present(alert, animated: true, completion: nil)
@@ -692,7 +747,34 @@ extension ExpensesViewController : MyExpensesTableViewCellDelegate
                     }
                 }) { (error) in
                     app_delegate.removeloder()
-                    self.showAlertWith(title: "Alert!", message: error as! String)
+                    if error as! String == "This Expense Is Rejected, You Can\"t Delete It."
+                    {
+                        DispatchQueue.main.async {
+                            let alert = UIAlertController(title: "Alert!", message: error as? String, preferredStyle: UIAlertControllerStyle.alert)
+                            alert.addAction(UIAlertAction(title: "Refresh", style: .default, handler: { (action) in
+                                DispatchQueue.main.async {
+                                    self.callForData()
+                                    layer.getAllExpenses(successMessage: { (response1) in
+                                        
+                                        self.arrAllList.removeAll()
+                                        self.arrAllList = response1 as! [ReceiptBO]
+                                        
+                                    }, failureMessage: { (failures) in
+                                        
+                                    })
+
+                                }
+                            }))
+                            
+                            self.present(alert, animated: true, completion: nil)
+                        }
+                        
+
+                    }
+                    else
+                    {
+                        self.showAlertWith(title: "Alert!", message: error as! String)
+                    }
                 }
             }
         }))
