@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2DF5E8907883E90438978C03 /* Pods_TaksyKraft.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 068239C1E9FC771090BECA74 /* Pods_TaksyKraft.framework */; };
 		A72CD7B4205A80C90012864F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A72CD7B2205A80C90012864F /* Main.storyboard */; };
 		A72CD7B6205A80C90012864F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A72CD7B5205A80C90012864F /* Assets.xcassets */; };
-		A72CD7B9205A80C90012864F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A72CD7B7205A80C90012864F /* LaunchScreen.storyboard */; };
 		A72CD831205A81710012864F /* FloatLabelTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD7C1205A81700012864F /* FloatLabelTextView.swift */; };
 		A72CD832205A81710012864F /* FloatLabelTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD7C2205A81700012864F /* FloatLabelTextField.swift */; };
 		A72CD833205A81710012864F /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD7C3205A81700012864F /* Reachability.swift */; };
@@ -104,13 +104,20 @@
 		A72CD88C205A81710012864F /* RejectPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD82D205A81700012864F /* RejectPopup.swift */; };
 		A72CD88D205A81710012864F /* RejectPopup.xib in Resources */ = {isa = PBXBuildFile; fileRef = A72CD82E205A81700012864F /* RejectPopup.xib */; };
 		A72CD88E205A81710012864F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72CD830205A81700012864F /* AppDelegate.swift */; };
+		A74F3B9120C9488800254A10 /* MyExpensesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74F3B9020C9488800254A10 /* MyExpensesViewController.swift */; };
+		A755A04120CE51C300DC00F5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A755A04020CE51C300DC00F5 /* GoogleService-Info.plist */; };
+		A755A04420CFC8EE00DC00F5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A755A04220CFC8EE00DC00F5 /* LaunchScreen.storyboard */; };
+		A781985A20C7EA47001E09F9 /* ChartTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A781985920C7EA47001E09F9 /* ChartTableViewCell.swift */; };
+		A7F499B020FCCF7E005A5C17 /* NotificationBO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F499AF20FCCF7E005A5C17 /* NotificationBO.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		068239C1E9FC771090BECA74 /* Pods_TaksyKraft.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TaksyKraft.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9EB9807A9D10D0CD96CF5BDE /* Pods-TaksyKraft.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TaksyKraft.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TaksyKraft/Pods-TaksyKraft.debug.xcconfig"; sourceTree = "<group>"; };
+		A125686D141668D106ADE7D9 /* Pods-TaksyKraft.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TaksyKraft.release.xcconfig"; path = "Pods/Target Support Files/Pods-TaksyKraft/Pods-TaksyKraft.release.xcconfig"; sourceTree = "<group>"; };
 		A72CD7AB205A80C90012864F /* TaksyKraft.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TaksyKraft.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A72CD7B3205A80C90012864F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A72CD7B5205A80C90012864F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		A72CD7B8205A80C90012864F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A72CD7BA205A80C90012864F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A72CD7C1205A81700012864F /* FloatLabelTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatLabelTextView.swift; sourceTree = "<group>"; };
 		A72CD7C2205A81700012864F /* FloatLabelTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatLabelTextField.swift; sourceTree = "<group>"; };
@@ -208,6 +215,12 @@
 		A72CD82D205A81700012864F /* RejectPopup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RejectPopup.swift; sourceTree = "<group>"; };
 		A72CD82E205A81700012864F /* RejectPopup.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RejectPopup.xib; sourceTree = "<group>"; };
 		A72CD830205A81700012864F /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		A74F3B9020C9488800254A10 /* MyExpensesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyExpensesViewController.swift; sourceTree = "<group>"; };
+		A755A03F20CE506C00DC00F5 /* TaksyKraft.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TaksyKraft.entitlements; sourceTree = "<group>"; };
+		A755A04020CE51C300DC00F5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		A755A04320CFC8EE00DC00F5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		A781985920C7EA47001E09F9 /* ChartTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartTableViewCell.swift; sourceTree = "<group>"; };
+		A7F499AF20FCCF7E005A5C17 /* NotificationBO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationBO.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -215,17 +228,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2DF5E8907883E90438978C03 /* Pods_TaksyKraft.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1AB1265794E8BDC4AE01ACD4 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				9EB9807A9D10D0CD96CF5BDE /* Pods-TaksyKraft.debug.xcconfig */,
+				A125686D141668D106ADE7D9 /* Pods-TaksyKraft.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		9D0896EBC11E33D595DBF93C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				068239C1E9FC771090BECA74 /* Pods_TaksyKraft.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		A72CD7A2205A80C90012864F = {
 			isa = PBXGroup;
 			children = (
 				A72CD7AD205A80C90012864F /* TaksyKraft */,
 				A72CD7AC205A80C90012864F /* Products */,
+				1AB1265794E8BDC4AE01ACD4 /* Pods */,
+				9D0896EBC11E33D595DBF93C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -240,13 +273,15 @@
 		A72CD7AD205A80C90012864F /* TaksyKraft */ = {
 			isa = PBXGroup;
 			children = (
+				A755A04220CFC8EE00DC00F5 /* LaunchScreen.storyboard */,
+				A755A04020CE51C300DC00F5 /* GoogleService-Info.plist */,
+				A755A03F20CE506C00DC00F5 /* TaksyKraft.entitlements */,
 				A72CD82F205A81700012864F /* ApplicationLayer */,
 				A72CD80C205A81700012864F /* PresentationLayer */,
 				A72CD802205A81700012864F /* Services */,
 				A72CD7C0205A81700012864F /* Utilities */,
 				A72CD7B2205A80C90012864F /* Main.storyboard */,
 				A72CD7B5205A80C90012864F /* Assets.xcassets */,
-				A72CD7B7205A80C90012864F /* LaunchScreen.storyboard */,
 				A72CD7BA205A80C90012864F /* Info.plist */,
 			);
 			path = TaksyKraft;
@@ -406,6 +441,7 @@
 				A72CD809205A81700012864F /* UserBO.swift */,
 				A72CD80A205A81700012864F /* TravelBO.swift */,
 				A72CD80B205A81700012864F /* CityBO.swift */,
+				A7F499AF20FCCF7E005A5C17 /* NotificationBO.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -433,6 +469,7 @@
 				A72CD815205A81700012864F /* AllTravelTableViewCell.swift */,
 				A72CD816205A81700012864F /* MyChequesTableViewCell.swift */,
 				A72CD817205A81700012864F /* OnlineTableViewCell.swift */,
+				A781985920C7EA47001E09F9 /* ChartTableViewCell.swift */,
 			);
 			path = CustomCells;
 			sourceTree = "<group>";
@@ -448,6 +485,7 @@
 				A72CD81E205A81700012864F /* ImagePreviewViewController.swift */,
 				A72CD81F205A81700012864F /* ChequeViewController.swift */,
 				A72CD820205A81700012864F /* ExpensesViewController.swift */,
+				A74F3B9020C9488800254A10 /* MyExpensesViewController.swift */,
 				A72CD821205A81700012864F /* CreateChequeViewController.swift */,
 				A72CD822205A81700012864F /* TransactionViewController.swift */,
 				A72CD823205A81700012864F /* LoginViewController.swift */,
@@ -487,9 +525,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A72CD7BD205A80C90012864F /* Build configuration list for PBXNativeTarget "TaksyKraft" */;
 			buildPhases = (
+				10BA95AB114B0804AE1EF4DF /* [CP] Check Pods Manifest.lock */,
 				A72CD7A7205A80C90012864F /* Sources */,
 				A72CD7A8205A80C90012864F /* Frameworks */,
 				A72CD7A9205A80C90012864F /* Resources */,
+				35C343517084F50C93916E2C /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -507,12 +547,17 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0920;
-				LastUpgradeCheck = 0920;
+				LastUpgradeCheck = 0930;
 				ORGANIZATIONNAME = Nikhilesh;
 				TargetAttributes = {
 					A72CD7AA205A80C90012864F = {
 						CreatedOnToolsVersion = 9.2;
 						ProvisioningStyle = Manual;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -545,11 +590,12 @@
 				A72CD889205A81710012864F /* ImageDetailPopUp.xib in Resources */,
 				A72CD861205A81710012864F /* Roboto-LightItalic.ttf in Resources */,
 				A72CD88D205A81710012864F /* RejectPopup.xib in Resources */,
+				A755A04420CFC8EE00DC00F5 /* LaunchScreen.storyboard in Resources */,
 				A72CD85D205A81710012864F /* Roboto-Regular.ttf in Resources */,
-				A72CD7B9205A80C90012864F /* LaunchScreen.storyboard in Resources */,
 				A72CD85C205A81710012864F /* Roboto-Light.ttf in Resources */,
 				A72CD863205A81710012864F /* Roboto-BlackItalic.ttf in Resources */,
 				A72CD865205A81710012864F /* Roboto-Thin.ttf in Resources */,
+				A755A04120CE51C300DC00F5 /* GoogleService-Info.plist in Resources */,
 				A72CD85E205A81710012864F /* Roboto-MediumItalic.ttf in Resources */,
 				A72CD7B6205A80C90012864F /* Assets.xcassets in Resources */,
 				A72CD866205A81710012864F /* Roboto-Black.ttf in Resources */,
@@ -561,6 +607,51 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		10BA95AB114B0804AE1EF4DF /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TaksyKraft-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		35C343517084F50C93916E2C /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-TaksyKraft/Pods-TaksyKraft-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Charts/Charts.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Charts.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TaksyKraft/Pods-TaksyKraft-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		A72CD7A7205A80C90012864F /* Sources */ = {
@@ -580,6 +671,7 @@
 				A72CD844205A81710012864F /* ImageProcessor.swift in Sources */,
 				A72CD83E205A81710012864F /* Box.swift in Sources */,
 				A72CD858205A81710012864F /* IQUIView+Hierarchy.swift in Sources */,
+				A7F499B020FCCF7E005A5C17 /* NotificationBO.swift in Sources */,
 				A72CD83B205A81710012864F /* UIButton+Kingfisher.swift in Sources */,
 				A72CD874205A81710012864F /* AllChequesTableViewCell.swift in Sources */,
 				A72CD857205A81710012864F /* IQUITextFieldView+Additions.swift in Sources */,
@@ -591,6 +683,7 @@
 				A72CD877205A81710012864F /* MyChequesTableViewCell.swift in Sources */,
 				A72CD845205A81710012864F /* Filter.swift in Sources */,
 				A72CD84B205A81710012864F /* IQTitleBarButtonItem.swift in Sources */,
+				A781985A20C7EA47001E09F9 /* ChartTableViewCell.swift in Sources */,
 				A72CD83A205A81710012864F /* CacheSerializer.swift in Sources */,
 				A72CD869205A81710012864F /* ChequeBO.swift in Sources */,
 				A72CD841205A81710012864F /* AnimatedImageView.swift in Sources */,
@@ -610,6 +703,7 @@
 				A72CD886205A81710012864F /* TravelViewController.swift in Sources */,
 				A72CD871205A81710012864F /* ImageZoomCollectionViewCell.swift in Sources */,
 				A72CD86D205A81710012864F /* TravelBO.swift in Sources */,
+				A74F3B9120C9488800254A10 /* MyExpensesViewController.swift in Sources */,
 				A72CD836205A81710012864F /* Kingfisher.swift in Sources */,
 				A72CD84D205A81710012864F /* IQToolbar.swift in Sources */,
 				A72CD84E205A81710012864F /* IQUIView+IQKeyboardToolbar.swift in Sources */,
@@ -660,10 +754,10 @@
 			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
-		A72CD7B7205A80C90012864F /* LaunchScreen.storyboard */ = {
+		A755A04220CFC8EE00DC00F5 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				A72CD7B8205A80C90012864F /* Base */,
+				A755A04320CFC8EE00DC00F5 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -685,6 +779,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -692,6 +787,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -725,6 +821,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -742,6 +839,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -749,6 +847,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -774,15 +873,20 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
 		A72CD7BE205A80C90012864F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9EB9807A9D10D0CD96CF5BDE /* Pods-TaksyKraft.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = TaksyKraft/TaksyKraft.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 767WDHBUJ6;
@@ -791,7 +895,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.taksykraft.Expenses;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "dd263f5c-d9ae-4ea3-a0b2-cef5a657b214";
+				PROVISIONING_PROFILE = "01ede897-d466-4638-93a3-b9ef4bbe8af9";
 				PROVISIONING_PROFILE_SPECIFIER = Expenses_Dist;
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -800,9 +904,13 @@
 		};
 		A72CD7BF205A80C90012864F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A125686D141668D106ADE7D9 /* Pods-TaksyKraft.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = TaksyKraft/TaksyKraft.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 767WDHBUJ6;
@@ -811,7 +919,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.taksykraft.Expenses;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "dd263f5c-d9ae-4ea3-a0b2-cef5a657b214";
+				PROVISIONING_PROFILE = "01ede897-d466-4638-93a3-b9ef4bbe8af9";
 				PROVISIONING_PROFILE_SPECIFIER = Expenses_Dist;
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;

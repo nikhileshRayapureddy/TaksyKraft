@@ -86,6 +86,17 @@ class ServiceLayer: NSObject {
                             if let accessToken = data["accessToken"] as? String
                             {
                                 TaksyKraftUserDefaults.setAccessToken(object: "Bearer " + accessToken)
+                                self.updateFCMKey(token:TaksyKraftUserDefaults.getFCMToken() , successMessage: { (response) in
+                                    DispatchQueue.main.async {
+                                        print("Updated fcm key in server Successfully in service Layer")
+                                        
+                                    }
+                                }) { (error) in
+                                    DispatchQueue.main.async {
+                                        print("Failed to update fcm key in server in service Layer")
+                                    }
+                                    
+                                }
                                 successMessage("Success")
                             }
                             else
@@ -187,6 +198,45 @@ class ServiceLayer: NSObject {
             }
         }
     }
+    public func logout(successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
+    {
+        let obj : HttpRequest = HttpRequest()
+        obj.tag = ParsingConstant.Login.rawValue
+        obj.MethodNamee = "GET"
+        obj._serviceURL = "\(BASE_URL)logout"
+        obj.params = [:]
+        obj.doGetSOAPResponse {(success : Bool) -> Void in
+            if !success
+            {
+                failureMessage(self.SERVER_ERROR)
+            }
+            else
+            {
+                if let error = obj.parsedDataDict["error"] as? String
+                {
+                    if error == "true"
+                    {
+                        failureMessage(self.SERVER_ERROR)
+                    }
+                    else
+                    {
+                        successMessage("Success")
+
+                    }
+                }
+                else if let message = obj.parsedDataDict["message"] as? String
+                {
+                    failureMessage(message)
+                }
+                else
+                {
+                    failureMessage(self.SERVER_ERROR)
+                }
+                
+            }
+        }
+    }
+
     //MARK: - Expenses
     public func getMyExpenses(successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
     {
@@ -1478,7 +1528,52 @@ class ServiceLayer: NSObject {
             }
         }
     }
-
+    public func updateFCMKey(token:String,successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
+    {
+        var params = [String:AnyObject]()
+        params["fcm_key"] = token as AnyObject
+        let obj : HttpRequest = HttpRequest()
+        obj.tag = ParsingConstant.Login.rawValue
+        obj.MethodNamee = "POST"
+        obj._serviceURL = "\(BASE_URL)update-fcm-key"
+        obj.params = params
+        obj.doGetSOAPResponse {(success : Bool) -> Void in
+            if !success
+            {
+                failureMessage(self.SERVER_ERROR)
+            }
+            else
+            {
+                if let error = obj.parsedDataDict["error"] as? String,let message = obj.parsedDataDict["message"] as? String
+                {
+                    if error == "true"
+                    {
+                        if let message = obj.parsedDataDict["message"] as? String
+                        {
+                            failureMessage(message)
+                        }
+                        else
+                        {
+                            failureMessage(self.SERVER_ERROR)
+                        }
+                    }
+                    else
+                    {
+                        successMessage(message)
+                    }
+                }
+                else if let message = obj.parsedDataDict["message"] as? String
+                {
+                    failureMessage(message)
+                }
+                else
+                {
+                    failureMessage(self.SERVER_ERROR)
+                }
+                
+            }
+        }
+    }
     //MARK:- Image Uploading
     func uploadWith(imageData : Data,successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
     {

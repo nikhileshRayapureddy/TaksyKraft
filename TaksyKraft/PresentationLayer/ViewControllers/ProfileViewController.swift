@@ -41,12 +41,42 @@ class ProfileViewController: BaseViewController {
         self.navigationController?.isNavigationBarHidden = true
     }
     @IBAction func btnLogoutClicked(_ sender: UIButton) {
-        TaksyKraftUserDefaults.setLoginStatus(object: false)
-        let vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
-        app_delegate.navCtrl.isNavigationBarHidden = true
-        app_delegate.navCtrl = UINavigationController(rootViewController: vc)
-        app_delegate.window?.rootViewController = app_delegate.navCtrl
-        app_delegate.window?.backgroundColor = Color_NavBarTint
+        
+        let alert = UIAlertController(title: "Alert!", message: "Are you sure you want to logout?", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "No", style: .cancel, handler: { (action) in
+            
+        }))
+        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
+            DispatchQueue.main.async {
+                app_delegate.showLoader(message: "")
+                let layer = ServiceLayer()
+                layer.logout(successMessage: { (reponse) in
+                    DispatchQueue.main.async {
+                        app_delegate.removeloder()
+                        TaksyKraftUserDefaults.setLoginStatus(object: false)
+                        let vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
+                        app_delegate.navCtrl.isNavigationBarHidden = true
+                        app_delegate.navCtrl = UINavigationController(rootViewController: vc)
+                        app_delegate.window?.rootViewController = app_delegate.navCtrl
+                        app_delegate.window?.backgroundColor = Color_NavBarTint
+
+                    }
+                }, failureMessage: { (error) in
+                    DispatchQueue.main.async {
+                        app_delegate.removeloder()
+                        let alert = UIAlertController(title: "Alert!", message: "Failed to logout.", preferredStyle: UIAlertControllerStyle.alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { (action) in
+                            
+                        }))
+                        self.present(alert, animated: true, completion: nil)
+
+                    }
+                })
+
+            }
+        }))
+        
+        self.present(alert, animated: true, completion: nil)
     }
     
     @IBAction func btnBackClicked(_ sender: UIButton) {

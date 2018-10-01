@@ -24,7 +24,6 @@ class MyExpensesTableViewCell: UITableViewCell {
     @IBOutlet weak var imgVwExpense: UIImageView!
     @IBOutlet weak var btnReupload: UIButton!
     @IBOutlet weak var btnDelete: UIButton!
-    @IBOutlet weak var lblStatus: UILabel!
     @IBOutlet weak var vwBase: UIView!
     @IBOutlet weak var vwBtnBase: UIView!
     @IBOutlet weak var constVwBtnBaseHeight: NSLayoutConstraint!

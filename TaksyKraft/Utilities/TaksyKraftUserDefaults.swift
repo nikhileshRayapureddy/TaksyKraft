@@ -16,6 +16,7 @@ let isMyExpense = "isMyExpense"
 let isFromExpenses = "isFromExpenses"
 let Wallet = "Wallet"
 let accessToken = "accessToken"
+let FCMToken = "FCMToken"
 
 public class TaksyKraftUserDefaults: NSObject {
     
@@ -33,12 +34,24 @@ public class TaksyKraftUserDefaults: NSObject {
         
         return str
     }
+    public class func setFCMToken (object:String)
+    {
+        UserDefaults.standard.set(object, forKey:FCMToken)
+        
+        UserDefaults.standard.synchronize()
+
+    }
+    public class func getFCMToken() -> String{
+        let str = UserDefaults.standard.object(forKey: FCMToken) as? String ?? ""
+        
+        return str
+    }
     public class func setAccessToken (object:String)
     {
         UserDefaults.standard.set(object, forKey:accessToken)
         
         UserDefaults.standard.synchronize()
-
+        
     }
 
     public class func getIsMyExpense() -> Bool{

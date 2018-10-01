@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Charts
+
 let IMAGE_BASE_URL = "https://taksykraft.s3.ap-southeast-1.amazonaws.com/tk-exp-new/"
 protocol ExpensesViewControllerDelegate
 {
@@ -24,6 +26,10 @@ class ExpensesViewController: BaseViewController, UIPopoverPresentationControlle
     var isMyExpense = false
     var callback : ExpensesViewControllerDelegate!
 
+    @IBOutlet weak var vwChartBase: UIView!
+    @IBOutlet weak var chartView: PieChartView!
+    @IBOutlet weak var tblChart: UITableView!
+    
     @IBOutlet weak var tblExpenses: UITableView!
     @IBOutlet weak var constBtnSwitchHeight: NSLayoutConstraint!
     
@@ -36,6 +42,11 @@ class ExpensesViewController: BaseViewController, UIPopoverPresentationControlle
     var rejExpenseID = ""
     @IBOutlet weak var btnSwitch: UISegmentedControl!
     @IBOutlet weak var lblNoDataFound: UILabel!
+    let arrStatus = ["Pending","Paid","Verified","Approved","Rejected"]
+    var arrValues = [Double]()
+    let arrColors = [UIColor(red: 139.0/255.0, green: 87.0/255.0, blue: 42.00/255.0, alpha: 1.0),UIColor(red: 74.0/255.0, green: 144.0/255.0, blue: 226.0/255.0, alpha: 1.0),UIColor(red: 245.0/255.0, green: 166.0/255.0, blue: 35.0/255.0, alpha: 1.0),UIColor(red: 126.0/255.0, green: 211.0/255.0, blue: 33.0/255.0, alpha: 1.0),UIColor(red: 208.0/255.0, green: 2.0/255.0, blue: 27.0/255.0, alpha: 1.0)]
+    var isFromNotification = false
+    var json : AnyObject!
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -43,18 +54,33 @@ class ExpensesViewController: BaseViewController, UIPopoverPresentationControlle
     override func viewDidLoad() {
         super.viewDidLoad()
         tblExpenses.register(UINib(nibName: "ExpensesTableViewCell", bundle: nil), forCellReuseIdentifier: "ExpensesTableViewCell")
+        self.isMyExpense = true
+        self.btnSwitch.selectedSegmentIndex = 0
+
         if TaksyKraftUserDefaults.getUser().role == "hr" || TaksyKraftUserDefaults.getUser().role == "employee"
         {
             constBtnSwitchHeight.constant = 0
             btnSwitch.isHidden = true
+            if isFromNotification
+            {
+                self.isMyExpense = true
+                self.btnSwitch.selectedSegmentIndex = 0
+
+            }
+
         }
         else
         {
             constBtnSwitchHeight.constant = 30
             btnSwitch.isHidden = false
+            if isFromNotification
+            {
+                self.isMyExpense = false
+                self.btnSwitch.selectedSegmentIndex = 1
+
+            }
+
         }
-        self.isMyExpense = true
-        self.btnSwitch.selectedSegmentIndex = 0
         self.callForData()
         txtFldSearch.leftViewMode = UITextFieldViewMode.always
         let imageView = UIImageView(frame: CGRect(x: txtFldSearch.frame.size.width/2 - 20, y: 0, width: 40, height: 20))
@@ -85,12 +111,13 @@ class ExpensesViewController: BaseViewController, UIPopoverPresentationControlle
                 self.tblExpenses.isHidden = false
                 self.lblNoDataFound.isHidden = true
                 arrFilter.append(contentsOf: arrMyList)
-                tblExpenses.reloadData()
+                self.loadChartView()
             }
             else
             {
                 self.callForData()
             }
+            self.vwChartBase.isHidden = false
         }
         else
         {
@@ -106,7 +133,7 @@ class ExpensesViewController: BaseViewController, UIPopoverPresentationControlle
             {
                 self.callForData()
             }
-
+            self.vwChartBase.isHidden = true
         }
     }
     @IBAction func btnAddClicked(_ sender: UIButton) {
@@ -132,15 +159,150 @@ class ExpensesViewController: BaseViewController, UIPopoverPresentationControlle
         {
             
             serviceLayer.getMyExpenses(successMessage: { (response) in
+                app_delegate.removeloder()
                 self.arrMyList.removeAll()
                 self.arrMyList = response as! [ReceiptBO]
-
+                DispatchQueue.main.async {
+                    if self.arrMyList.count > 0
+                    {
+                        self.arrFilter.removeAll()
+                        if self.txtFldSearch.text != ""
+                        {
+                            if let str = self.txtFldSearch.text
+                            {
+                                self.arrFilter = self.arrMyList.filter({ (exp) -> Bool in
+                                    if exp.expenseId.lowercased().contains(str.lowercased())
+                                    {
+                                        return true
+                                    }
+                                    return false
+                                })
+                                
+                                
+                            }
+                        }
+                        else
+                        {
+                            self.arrFilter.append(contentsOf: self.arrMyList)
+                        }
+                        //Manipulate data to show chart
+                        let arrPending = self.arrMyList.filter({ (exp) -> Bool in
+                            if exp.status.lowercased() == "pending"
+                            {
+                                return true
+                            }
+                            return false
+                        })
+                        let arrPaid = self.arrMyList.filter({ (exp) -> Bool in
+                            if exp.status.lowercased() == "paid"
+                            {
+                                return true
+                            }
+                            return false
+                        })
+                        let arrVerified = self.arrMyList.filter({ (exp) -> Bool in
+                            if exp.status.lowercased() == "verified"
+                            {
+                                return true
+                            }
+                            return false
+                        })
+                        let arrApproved = self.arrMyList.filter({ (exp) -> Bool in
+                            if exp.status.lowercased() == "approved"
+                            {
+                                return true
+                            }
+                            return false
+                        })
+                        let arrRejected = self.arrMyList.filter({ (exp) -> Bool in
+                            if exp.status.lowercased() == "rejected"
+                            {
+                                return true
+                            }
+                            return false
+                        })
+                        
+                        var val = 0.0
+                        for exp in arrPending
+                        {
+                            val = val + Double(exp.amount)!
+                        }
+                        self.arrValues.append(val)
+                        val = 0.0
+                        
+                        for exp in arrPaid
+                        {
+                            val = val + Double(exp.amount)!
+                        }
+                        self.arrValues.append(val)
+                        val = 0.0
+                        
+                        for exp in arrVerified
+                        {
+                            val = val + Double(exp.amount)!
+                        }
+                        self.arrValues.append(val)
+                        val = 0.0
+                        
+                        for exp in arrApproved
+                        {
+                            val = val + Double(exp.amount)!
+                        }
+                        self.arrValues.append(val)
+                        val = 0.0
+                        
+                        for exp in arrRejected
+                        {
+                            val = val + Double(exp.amount)!
+                        }
+                        self.arrValues.append(val)
+                        self.loadChartView()
+                        self.lblNoDataFound.isHidden = true
+                    }
+                    else
+                    {
+                        //                    self.tblExpenses.isHidden = true
+                        self.lblNoDataFound.isHidden = false
+                    }
+                }
             }) { (failure) in
                 
             }
         }
         
         
+    }
+    func reloadVCForNotification()
+    {
+        self.isMyExpense = true
+        self.btnSwitch.selectedSegmentIndex = 0
+        
+        if TaksyKraftUserDefaults.getUser().role == "hr" || TaksyKraftUserDefaults.getUser().role == "employee"
+        {
+            constBtnSwitchHeight.constant = 0
+            btnSwitch.isHidden = true
+            if isFromNotification
+            {
+                self.isMyExpense = true
+                self.btnSwitch.selectedSegmentIndex = 0
+                
+            }
+            
+        }
+        else
+        {
+            constBtnSwitchHeight.constant = 30
+            btnSwitch.isHidden = false
+            if isFromNotification
+            {
+                self.isMyExpense = false
+                self.btnSwitch.selectedSegmentIndex = 1
+                
+            }
+            
+        }
+
+        self.callForData()
     }
     func callForData()
     {
@@ -169,13 +331,23 @@ class ExpensesViewController: BaseViewController, UIPopoverPresentationControlle
                     {
                         if let str = self.txtFldSearch.text
                         {
-                            self.arrFilter = self.arrAllList.filter({ (exp) -> Bool in
+                            let arrTemp = self.arrAllList.filter({ (exp) -> Bool in
                                 if exp.expenseId.lowercased().contains(str.lowercased())
                                 {
                                     return true
                                 }
                                 return false
                             })
+                            let arrTemp1 = self.arrAllList.filter({ (exp) -> Bool in
+                                if exp.empName.lowercased().contains(str.lowercased())
+                                {
+                                    return true
+                                }
+                                return false
+                            })
+                            self.arrFilter.append(contentsOf: arrTemp)
+                            self.arrFilter.append(contentsOf: arrTemp1)
+
                         }
                     }
                     else
@@ -183,9 +355,23 @@ class ExpensesViewController: BaseViewController, UIPopoverPresentationControlle
                         self.arrFilter.append(contentsOf: self.arrAllList)
                     }
 
+
                     self.tblExpenses.reloadData()
                     self.lblNoDataFound.isHidden = true
                     self.tblExpenses.isHidden = false
+                    if self.isFromNotification
+                    {
+                        let rec = self.arrFilter.filter({ (receipt) -> Bool in
+                            return receipt.expenseId == self.json["expensesId"] as! String
+                        })
+                        if rec.count > 0
+                        {
+                            let index = self.arrFilter.index(of: rec[0])
+                            self.tblExpenses.scrollToRow(at: IndexPath(row: index!, section: 0), at: .top, animated: false)
+                        }
+                        self.isFromNotification = false                                                
+                        self.btnSwitchClicked(self.btnSwitch)
+                    }
 
                 }
                 else
@@ -208,6 +394,7 @@ class ExpensesViewController: BaseViewController, UIPopoverPresentationControlle
             }
         }
     }
+
     func callForMyExpensesData()
     {
         app_delegate.showLoader(message: "Fetching data..")
@@ -237,14 +424,83 @@ class ExpensesViewController: BaseViewController, UIPopoverPresentationControlle
                     {
                         self.arrFilter.append(contentsOf: self.arrMyList)
                     }
+                    //Manipulate data to show chart
+                    let arrPending = self.arrMyList.filter({ (exp) -> Bool in
+                        if exp.status.lowercased() == "pending"
+                        {
+                            return true
+                        }
+                        return false
+                    })
+                    let arrPaid = self.arrMyList.filter({ (exp) -> Bool in
+                        if exp.status.lowercased() == "paid"
+                        {
+                            return true
+                        }
+                        return false
+                    })
+                    let arrVerified = self.arrMyList.filter({ (exp) -> Bool in
+                        if exp.status.lowercased() == "verified"
+                        {
+                            return true
+                        }
+                        return false
+                    })
+                    let arrApproved = self.arrMyList.filter({ (exp) -> Bool in
+                        if exp.status.lowercased() == "approved"
+                        {
+                            return true
+                        }
+                        return false
+                    })
+                    let arrRejected = self.arrMyList.filter({ (exp) -> Bool in
+                        if exp.status.lowercased() == "rejected"
+                        {
+                            return true
+                        }
+                        return false
+                    })
+                    self.arrValues.removeAll()
+                    var val = 0.0
+                    for exp in arrPending
+                    {
+                        val = val + Double(exp.amount)!
+                    }
+                    self.arrValues.append(val)
+                    val = 0.0
                     
-
-                    self.tblExpenses.reloadData()
+                    for exp in arrPaid
+                    {
+                        val = val + Double(exp.amount)!
+                    }
+                    self.arrValues.append(val)
+                    val = 0.0
+                    
+                    for exp in arrVerified
+                    {
+                        val = val + Double(exp.amount)!
+                    }
+                    self.arrValues.append(val)
+                    val = 0.0
+                    
+                    for exp in arrApproved
+                    {
+                        val = val + Double(exp.amount)!
+                    }
+                    self.arrValues.append(val)
+                    val = 0.0
+                    
+                    for exp in arrRejected
+                    {
+                        val = val + Double(exp.amount)!
+                    }
+                    self.arrValues.append(val)
+                    self.loadChartView()
                     self.lblNoDataFound.isHidden = true
                 }
                 else
                 {
-                    self.tblExpenses.isHidden = true
+//                    self.tblExpenses.isHidden = true
                     self.lblNoDataFound.isHidden = false
                 }
             }
@@ -264,7 +520,59 @@ class ExpensesViewController: BaseViewController, UIPopoverPresentationControlle
             }
         }
     }
-    
+    func loadChartView()
+    {
+        var dataEntries: [PieChartDataEntry] = []
+        
+        for i in 0..<arrStatus.count {
+            let dataEntry = PieChartDataEntry(value: Double(arrValues[i]), label: arrStatus[i])
+            dataEntries.append(dataEntry)
+        }
+        let pieChartDataSet = PieChartDataSet(values: dataEntries, label: "")
+        pieChartDataSet.drawValuesEnabled = false
+        let pieChartData = PieChartData(dataSet: pieChartDataSet)
+        chartView.data = pieChartData
+        chartView.drawEntryLabelsEnabled = false
+        chartView.delegate = self
+        
+        pieChartDataSet.colors = arrColors
+        pieChartDataSet.sliceSpace = 1.0
+        chartView.animate(xAxisDuration: 1, easingOption: .easeOutBack)
+        
+        chartView.drawSlicesUnderHoleEnabled = false;
+        chartView.holeRadiusPercent = 0.7;
+        chartView.transparentCircleRadiusPercent = 0
+        chartView.chartDescription?.enabled = false
+        chartView.setExtraOffsets(left: 5.0, top: 10.0, right: 5.0, bottom: 5.0)
+        chartView.drawCenterTextEnabled = true
+        chartView.legend.enabled = false
+        
+        
+        let paragraphStyle = NSParagraphStyle.default.mutableCopy() as! NSMutableParagraphStyle
+        paragraphStyle.lineBreakMode = .byTruncatingTail
+        paragraphStyle.alignment = .center
+        
+        var total = 0.0
+        
+        for val in arrValues
+        {
+            total = total + val
+        }
+        
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = NumberFormatter.Style.decimal
+        let formattedNumber = numberFormatter.string(from: NSNumber(value: total))
+
+        let centerText = NSMutableAttributedString(string: "Total\n₹ \(formattedNumber ?? "")")
+        centerText.setAttributes([NSFontAttributeName : UIFont(name: "Roboto-Light", size: 15)!,
+                                  NSParagraphStyleAttributeName : paragraphStyle], range: NSRange(location: 0, length: 5))
+        centerText.addAttributes([NSFontAttributeName : UIFont(name: "Roboto-Medium", size: 17)!,
+                                  NSForegroundColorAttributeName : UIColor.black], range: NSRange(location: 6, length: centerText.length - 6))
+        centerText.addAttribute(NSParagraphStyleAttributeName, value: paragraphStyle, range: NSRange(location: 0, length: centerText.length))
+        chartView.centerAttributedText = centerText;
+        tblChart.reloadData()
+        
+    }
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         self.navigationController?.isNavigationBarHidden = false
@@ -275,279 +583,188 @@ class ExpensesViewController: BaseViewController, UIPopoverPresentationControlle
 extension ExpensesViewController : UITableViewDelegate,UITableViewDataSource
 {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return arrFilter.count
+        if tableView == self.tblChart
+        {
+            return arrValues.count
+        }
+        else
+        {
+            return arrFilter.count
+        }
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if isMyExpense
-        {
-            let cell  = tableView.dequeueReusableCell(withIdentifier: "MyExpensesTableViewCell", for: indexPath)  as! MyExpensesTableViewCell
-            let expense = arrFilter[indexPath.row]
-            cell.lblExpenseID.text = expense.expenseId
-            cell.lblAmount.text = "₹" + expense.amount
-            cell.lblDescription.text = expense.Description
-            if expense.uploadedDate != ""
+            if isMyExpense
             {
-                let formatter = DateFormatter()
-                formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-                let date = formatter.date(from: expense.uploadedDate)
-                formatter.dateFormat = "dd MMM, yyyy"
-                let strDate = formatter.string(from: date!)
+                let cell  = tableView.dequeueReusableCell(withIdentifier: "ChartTableViewCell", for: indexPath)  as! ChartTableViewCell
+                cell.lblStatus.text = arrStatus[indexPath.row]
                 
-                cell.lblUploadedDate.text = strDate
-            }
-            cell.selectionStyle = UITableViewCellSelectionStyle.none
+                let numberFormatter = NumberFormatter()
+                numberFormatter.numberStyle = NumberFormatter.Style.decimal
+                let formattedNumber = numberFormatter.string(from: NSNumber(value: arrValues[indexPath.row]))
 
-            cell.lblStatus.text = expense.status.capitalized
-            cell.vwBase.layer.cornerRadius = 5
-            cell.vwBase.layer.masksToBounds = true
-            cell.btnReupload.layer.cornerRadius = 5
-            cell.btnReupload.layer.masksToBounds = true
-            cell.btnDelete.layer.cornerRadius = 5
-            cell.btnDelete.layer.masksToBounds = true
-            cell.imgVwExpense.layer.cornerRadius = cell.imgVwExpense.frame.size.width/2
-            cell.imgVwExpense.layer.masksToBounds = true
-            cell.callBack = self
-            cell.expense = expense
-            if expense.image == "pzrUPuD8zqdWKaxD7cAfLjptKhNjag5XUckkk3ho.png"
-            {
-               cell.imgVwExpense.image = #imageLiteral(resourceName: "NoReceipt")
-            }
-            else
-            {
-                let url = URL(string: IMAGE_BASE_URL + expense.image)
-//                cell.imgVwExpense.kf.indicatorType = .activity
-                cell.imgVwExpense.kf.setImage(with: url, placeholder: #imageLiteral(resourceName: "Loading"), options: [.transition(ImageTransition.fade(1))], progressBlock: { receivedSize, totalSize in
-                }, completionHandler: { image, error, cacheType, imageURL in
-                })
-            }
-            cell.btnDelete.layer.borderColor = UIColor(red: 60.0/255.0, green: 130.0/255.0, blue: 184.00/255.0, alpha: 1.0).cgColor
-            cell.btnDelete.layer.borderWidth = 1.0
-            cell.btnReupload.tag = Tag_Reupload + indexPath.row
-            cell.btnDelete.tag = Tag_Delete + indexPath.row
-            cell.constLblReasonHeight.constant = 0
-            cell.lblReason.text = ""
-            cell.lblReason.isHidden = true
-            let str = "Description :\n" + expense.Description
-            
-            let attributedString = NSMutableAttributedString(string: str)
-            attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.black, range: NSRange(location: 0, length: 13))
-            cell.lblDescription.attributedText = attributedString
-            
-            var descHeight = ("Description :\n" + expense.Description).height(withConstrainedWidth: ScreenWidth - 138, font: UIFont(name: "Roboto-Light", size: 15)!)
-            if expense.Description == ""
-            {
-                descHeight = 0
-            }
-            else
-            {
-                descHeight = descHeight + 10
-            }
-            
-            cell.constLblDescriptionHeight.constant = descHeight
-
-            if expense.status == "pending"
-            {
-                cell.btnReupload.isHidden = false
-                cell.btnDelete.isHidden = false
-                cell.vwBtnBase.isHidden = false
-                cell.constVwBtnBaseHeight.constant = 30
-                cell.lblStatus.textColor = UIColor(red: 139.0/255.0, green: 87.0/255.0, blue: 42.00/255.0, alpha: 1.0)
-            }
-            else if expense.status == "paid"
-            {
-                cell.btnReupload.isHidden = true
-                cell.btnDelete.isHidden = true
-                cell.vwBtnBase.isHidden = true
-                cell.constVwBtnBaseHeight.constant = 0
-                cell.lblStatus.textColor = UIColor(red: 74.0/255.0, green: 144.0/255.0, blue: 226.0/255.0, alpha: 1.0)
-            }
-            else if expense.status == "verified"
-            {
-                cell.btnReupload.isHidden = true
-                cell.btnDelete.isHidden = true
-                cell.vwBtnBase.isHidden = true
-                cell.constVwBtnBaseHeight.constant = 0
-                cell.lblStatus.textColor = UIColor(red: 245.0/255.0, green: 166.0/255.0, blue: 35.0/255.0, alpha: 1.0)
-            }
-            else if expense.status == "approved"
-            {
-                cell.btnReupload.isHidden = true
-                cell.btnDelete.isHidden = true
-                cell.vwBtnBase.isHidden = true
-                cell.constVwBtnBaseHeight.constant = 0
-                cell.lblStatus.textColor = UIColor(red: 126.0/255.0, green: 211.0/255.0, blue: 33.0/255.0, alpha: 1.0)
-            }
-            else if expense.status == "rejected"
-            {
-                cell.btnReupload.isHidden = false
-                cell.btnDelete.isHidden = true
-                cell.vwBtnBase.isHidden = false
-                cell.constVwBtnBaseHeight.constant = 30
-                var reasonHeight = ("Reason :\n" + expense.comment).height(withConstrainedWidth: ScreenWidth - 138, font: UIFont(name: "Roboto-Light", size: 15)!)
-                if expense.comment == ""
+                cell.lblValue.text = formattedNumber
+                
+                
+                if arrValues[indexPath.row] == Double(0.0)
                 {
-                    reasonHeight = 0
+                    cell.btnViewBills.layer.cornerRadius = 5.0
+                    cell.btnViewBills.layer.masksToBounds = true
+                    
+                    cell.btnViewBills.layer.borderColor = UIColor.lightGray.cgColor
+                    cell.btnViewBills.layer.borderWidth = 0.5
+                    
+                    cell.btnViewBills.setTitleColor(UIColor.lightGray, for: .normal)
                 }
                 else
                 {
-                    reasonHeight = reasonHeight + 10
+                    cell.btnViewBills.layer.cornerRadius = 5.0
+                    cell.btnViewBills.layer.masksToBounds = true
+                    
+                    cell.btnViewBills.layer.borderColor = UIColor(red: 60.0/255.0, green: 130.0/255.0, blue: 184.0/255.0, alpha: 1.0).cgColor
+                    cell.btnViewBills.layer.borderWidth = 0.5
+                    
+                    cell.btnViewBills.setTitleColor(UIColor(red: 60.0/255.0, green: 130.0/255.0, blue: 184.0/255.0, alpha: 1.0), for: .normal)
+                    cell.btnViewBills.tag = 5000 + indexPath.row
+                    cell.btnViewBills.addTarget(self, action: #selector(self.btnViewBillsClicked(_:)), for: .touchUpInside)
                 }
                 
-                cell.constLblReasonHeight.constant = reasonHeight
-                let str = "Reason :\n" + expense.comment
+                cell.imgStatusColor.backgroundColor = arrColors[indexPath.row]
                 
-                let attributedString = NSMutableAttributedString(string: str)
-                attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.black, range: NSRange(location: 0, length: 8))
-                cell.lblReason.attributedText = attributedString
+                if indexPath.row%2 == 0
+                {
+                    cell.backgroundColor = UIColor.white
+                }
+                else
+                {
+                    cell.backgroundColor = UIColor.clear
+                }
                 
-                cell.lblReason.text = "Reason :\n" + expense.comment
-
-                cell.lblReason.isHidden = false
-                cell.lblStatus.textColor = UIColor(red: 208.0/255.0, green: 2.0/255.0, blue: 27.0/255.0, alpha: 1.0)
+                return cell
             }
             else
             {
-                cell.btnReupload.isHidden = true
-                cell.btnDelete.isHidden = true
-                cell.lblStatus.isHidden = true
-                cell.vwBtnBase.isHidden = true
-                cell.constVwBtnBaseHeight.constant = 0
+                let cell  = tableView.dequeueReusableCell(withIdentifier: "AllExpensesTableViewCell", for: indexPath)  as! AllExpensesTableViewCell
+                let expense = arrFilter[indexPath.row]
+                cell.lblEmployeeName.text = expense.empName
+                cell.lblEmpID.text = expense.empId
+                cell.lblExpenseID.text = expense.expenseId
+                cell.lblAmount.text = "₹" + expense.amount
+                cell.lblDescription.text = expense.Description
+                cell.selectionStyle = UITableViewCellSelectionStyle.none
+                if expense.uploadedDate != ""
+                {
+                    let formatter = DateFormatter()
+                    formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                    let date = formatter.date(from: expense.uploadedDate)
+                    formatter.dateFormat = "dd MMM, yyyy"
+                    let strDate = formatter.string(from: date!)
+                    cell.lblUploadedDate.text = strDate
+                }
+                cell.vwBase.layer.cornerRadius = 5
+                cell.vwBase.layer.masksToBounds = true
+                cell.btnVerify.layer.cornerRadius = 5
+                cell.btnVerify.layer.masksToBounds = true
+                cell.btnApprove.layer.cornerRadius = 5
+                cell.btnApprove.layer.masksToBounds = true
+                cell.btnPayNow.layer.cornerRadius = 5
+                cell.btnPayNow.layer.masksToBounds = true
+                cell.btnReject.layer.cornerRadius = 5
+                cell.btnReject.layer.masksToBounds = true
+                cell.btnReject.layer.borderColor = UIColor(red: 60.0/255.0, green: 130.0/255.0, blue: 184.00/255.0, alpha: 1.0).cgColor
+                cell.btnReject.layer.borderWidth = 1.0
+                
+                
+                cell.btnReject.tag = Tag_Reject + indexPath.row
+                cell.btnPayNow.tag = Tag_PayNow + indexPath.row
+                cell.btnApprove.tag = Tag_Approve + indexPath.row
+                cell.btnVerify.tag = Tag_Verify + indexPath.row
+                cell.imgVwExpense.layer.cornerRadius = cell.imgVwExpense.frame.size.width/2
+                cell.imgVwExpense.layer.masksToBounds = true
+                
+                if expense.image == "pzrUPuD8zqdWKaxD7cAfLjptKhNjag5XUckkk3ho.png"
+                {
+                    cell.imgVwExpense.image = #imageLiteral(resourceName: "NoReceipt")
+                }
+                else
+                {
+                    let url = URL(string: IMAGE_BASE_URL + expense.image)
+                    //                cell.imgVwExpense.kf.indicatorType = .activity
+                    cell.imgVwExpense.kf.setImage(with: url, placeholder: #imageLiteral(resourceName: "Loading"), options: [.transition(ImageTransition.fade(1))], progressBlock: { receivedSize, totalSize in
+                    }, completionHandler: { image, error, cacheType, imageURL in
+                    })
+                }
+                cell.callback  = self
+                cell.expense = expense
+                if expense.status == "pending"
+                {
+                    cell.btnVerify.isHidden = false
+                    cell.btnApprove.isHidden = true
+                    cell.btnReject.isHidden = false
+                    cell.btnPayNow.isHidden = true
+                }
+                else if expense.status == "paid"
+                {
+                    cell.btnVerify.isHidden = true
+                    cell.btnApprove.isHidden = true
+                    cell.btnReject.isHidden = true
+                    cell.btnPayNow.isHidden = true
+                }
+                else if expense.status == "verified"
+                {
+                    cell.btnVerify.isHidden = true
+                    cell.btnApprove.isHidden = false
+                    cell.btnReject.isHidden = false
+                    cell.btnPayNow.isHidden = true
+                }
+                else if expense.status == "approved"
+                {
+                    cell.btnVerify.isHidden = true
+                    cell.btnApprove.isHidden = true
+                    cell.btnReject.isHidden = true
+                    cell.btnPayNow.isHidden = false
+                    
+                }
+                else if expense.status == "rejected"
+                {
+                    cell.btnVerify.isHidden = true
+                    cell.btnApprove.isHidden = true
+                    cell.btnReject.isHidden = true
+                    cell.btnPayNow.isHidden = true
+                }
+                else
+                {
+                    cell.btnVerify.isHidden = true
+                    cell.btnApprove.isHidden = true
+                    cell.btnReject.isHidden = true
+                    cell.btnPayNow.isHidden = true
+                }
+                
+                
+                return cell
             }
-            return cell
-        }
-        else
-        {
-            let cell  = tableView.dequeueReusableCell(withIdentifier: "AllExpensesTableViewCell", for: indexPath)  as! AllExpensesTableViewCell
-            let expense = arrFilter[indexPath.row]
-            cell.lblEmployeeName.text = expense.empName
-            cell.lblEmpID.text = expense.empId
-            cell.lblExpenseID.text = expense.expenseId
-            cell.lblAmount.text = "₹" + expense.amount
-            cell.lblDescription.text = expense.Description
-            cell.selectionStyle = UITableViewCellSelectionStyle.none
-            if expense.uploadedDate != ""
-            {
-                let formatter = DateFormatter()
-                formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-                let date = formatter.date(from: expense.uploadedDate)
-                formatter.dateFormat = "dd MMM, yyyy"
-                let strDate = formatter.string(from: date!)
-                cell.lblUploadedDate.text = strDate
-            }
-            cell.vwBase.layer.cornerRadius = 5
-            cell.vwBase.layer.masksToBounds = true
-            cell.btnVerify.layer.cornerRadius = 5
-            cell.btnVerify.layer.masksToBounds = true
-            cell.btnApprove.layer.cornerRadius = 5
-            cell.btnApprove.layer.masksToBounds = true
-            cell.btnPayNow.layer.cornerRadius = 5
-            cell.btnPayNow.layer.masksToBounds = true
-            cell.btnReject.layer.cornerRadius = 5
-            cell.btnReject.layer.masksToBounds = true
-            cell.btnReject.layer.borderColor = UIColor(red: 60.0/255.0, green: 130.0/255.0, blue: 184.00/255.0, alpha: 1.0).cgColor
-            cell.btnReject.layer.borderWidth = 1.0
-
-            
-            cell.btnReject.tag = Tag_Reject + indexPath.row
-            cell.btnPayNow.tag = Tag_PayNow + indexPath.row
-            cell.btnApprove.tag = Tag_Approve + indexPath.row
-            cell.btnVerify.tag = Tag_Verify + indexPath.row
-            cell.imgVwExpense.layer.cornerRadius = cell.imgVwExpense.frame.size.width/2
-            cell.imgVwExpense.layer.masksToBounds = true
-            
-            if expense.image == "pzrUPuD8zqdWKaxD7cAfLjptKhNjag5XUckkk3ho.png"
-            {
-                cell.imgVwExpense.image = #imageLiteral(resourceName: "NoReceipt")
-            }
-            else
-            {
-                let url = URL(string: IMAGE_BASE_URL + expense.image)
-//                cell.imgVwExpense.kf.indicatorType = .activity
-                cell.imgVwExpense.kf.setImage(with: url, placeholder: #imageLiteral(resourceName: "Loading"), options: [.transition(ImageTransition.fade(1))], progressBlock: { receivedSize, totalSize in
-                }, completionHandler: { image, error, cacheType, imageURL in
-                })
-            }
-            cell.callback  = self
-            cell.expense = expense
-            if expense.status == "pending"
-            {
-                cell.btnVerify.isHidden = false
-                cell.btnApprove.isHidden = true
-                cell.btnReject.isHidden = false
-                cell.btnPayNow.isHidden = true
-            }
-            else if expense.status == "paid"
-            {
-                cell.btnVerify.isHidden = true
-                cell.btnApprove.isHidden = true
-                cell.btnReject.isHidden = true
-                cell.btnPayNow.isHidden = true
-            }
-            else if expense.status == "verified"
-            {
-                cell.btnVerify.isHidden = true
-                cell.btnApprove.isHidden = false
-                cell.btnReject.isHidden = false
-                cell.btnPayNow.isHidden = true
-            }
-            else if expense.status == "approved"
-            {
-                cell.btnVerify.isHidden = true
-                cell.btnApprove.isHidden = true
-                cell.btnReject.isHidden = true
-                cell.btnPayNow.isHidden = false
-
-            }
-            else if expense.status == "rejected"
-            {
-                cell.btnVerify.isHidden = true
-                cell.btnApprove.isHidden = true
-                cell.btnReject.isHidden = true
-                cell.btnPayNow.isHidden = true
-            }
-            else
-            {
-                cell.btnVerify.isHidden = true
-                cell.btnApprove.isHidden = true
-                cell.btnReject.isHidden = true
-                cell.btnPayNow.isHidden = true
-            }
-
-            
-            return cell
-        }
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if isMyExpense
-        {
-            let bo = arrFilter[indexPath.row]
-            var descHeight = ("Description :\n" + bo.Description).height(withConstrainedWidth: ScreenWidth - 138, font: UIFont(name: "Roboto-Light", size: 15)!)
-            if bo.Description == ""
+            if isMyExpense
             {
-                descHeight = 0
-            }
-            if bo.status == "rejected"
-            {
-                var resonHeight = ("Reason :\n" + bo.comment).height(withConstrainedWidth: ScreenWidth - 138, font: UIFont(name: "Roboto-Light", size: 15)!)
-                if bo.comment == ""
-                {
-                    resonHeight = 0
-                }
-                return 140 + descHeight + resonHeight + 20
+                return 54
             }
             else
             {
-                return 140 + descHeight  + 10
+                return 180
             }
-        }
-        else
-        {
-            return 180
-        }
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
+    }
+    
+    @objc func btnViewBillsClicked(_ sender: UIButton)
+    {
+        let index = sender.tag - 5000
+        let vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyExpensesViewController") as! MyExpensesViewController
+        vc.strTitle = arrStatus[index]
+        self.navigationController?.pushViewController(vc, animated: true)
+
     }
     func updateStatusWith(strStatus : String,expenseID : String,cell:AllExpensesTableViewCell)
     {
@@ -592,12 +809,10 @@ extension ExpensesViewController : UITextFieldDelegate
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         print(textField.text! + string)
         
-        var strSearch = textField.text! + string
-        
+        let strSearch = textField.text! + string
+        arrFilter.removeAll()
         if range.location == 0 && range.length == 1
         {
-            strSearch = ""
-            arrFilter.removeAll()
             if isMyExpense
             {
                 arrFilter.append(contentsOf: self.arrMyList)
@@ -606,7 +821,6 @@ extension ExpensesViewController : UITextFieldDelegate
             {
                 arrFilter.append(contentsOf: self.arrAllList)
             }
-
         }
         else
         {
@@ -619,16 +833,26 @@ extension ExpensesViewController : UITextFieldDelegate
                     }
                     return false
                 })
+                tblChart.reloadData()
             }
             else
             {
-                arrFilter = arrAllList.filter({ (exp) -> Bool in
+                let arrTemp = arrAllList.filter({ (exp) -> Bool in
                     if exp.expenseId.lowercased().contains(strSearch.lowercased())
                     {
                         return true
                     }
                     return false
                 })
+                let arrTemp1 = arrAllList.filter({ (exp) -> Bool in
+                    if exp.empName.lowercased().contains(strSearch.lowercased())
+                    {
+                        return true
+                    }
+                    return false
+                })
+                arrFilter.append(contentsOf: arrTemp)
+                arrFilter.append(contentsOf: arrTemp1)
             }
         }
         tblExpenses.reloadData()
@@ -695,93 +919,26 @@ extension ExpensesViewController : AllExpensesTableViewCellDelegate
     }
 
 }
-extension ExpensesViewController : MyExpensesTableViewCellDelegate
+extension ExpensesViewController : ChartViewDelegate
 {
-    
-    func myExpImgVwClicked(expense : ReceiptBO,cell : MyExpensesTableViewCell) {
-        
-        if expense.image != "pzrUPuD8zqdWKaxD7cAfLjptKhNjag5XUckkk3ho.png"
-        {
-        let vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ImagePreviewViewController") as! ImagePreviewViewController
-        vc.arrUrl = [expense.image]
-        vc.isEdit = false
-        self.navigationController?.pushViewController(vc, animated: true)
-        }
-    }
-    func btnReuploadClicked(expense : ReceiptBO,cell : MyExpensesTableViewCell)
-    {
-        let vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CreateExpenseViewController") as! CreateExpenseViewController
-        vc.expenseBO = expense
-        self.navigationController?.pushViewController(vc, animated: true)
-
-    }
-    func btnDeleteClicked(expenseId : String,cell : MyExpensesTableViewCell)
-    {
-        let alert = UIAlertController(title: "Alert!", message: "Do you want to delete this expense?", preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
-            DispatchQueue.main.async {
-                app_delegate.showLoader(message: "Deleting Expense...")
-                let layer = ServiceLayer()
-                layer.deleteExpenseWith(strID: expenseId, successMessage: { (response) in
-                    DispatchQueue.main.async {
-                        app_delegate.removeloder()
-                        let alert = UIAlertController(title: "Success!", message: "Expense deleted Successfully.", preferredStyle: UIAlertControllerStyle.alert)
-                        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
-                            DispatchQueue.main.async {
-//                                self.callForData()
-                                self.arrMyList.remove(at: (self.tblExpenses.indexPath(for: cell)?.row)!)
-                                self.arrFilter.remove(at: (self.tblExpenses.indexPath(for: cell)?.row)!)
-                                layer.getAllExpenses(successMessage: { (response1) in
-                                    
-                                    self.arrAllList.removeAll()
-                                    self.arrAllList = response1 as! [ReceiptBO]
-
-                                }, failureMessage: { (failures) in
-                                    
-                                })
-                                self.tblExpenses.reloadData()
-                            }
-                        }))
-                        self.present(alert, animated: true, completion: nil)
-                        
-                    }
-                }) { (error) in
-                    app_delegate.removeloder()
-                    if error as! String == "This Expense Is Rejected, You Can\"t Delete It."
-                    {
-                        DispatchQueue.main.async {
-                            let alert = UIAlertController(title: "Alert!", message: error as? String, preferredStyle: UIAlertControllerStyle.alert)
-                            alert.addAction(UIAlertAction(title: "Refresh", style: .default, handler: { (action) in
-                                DispatchQueue.main.async {
-                                    self.callForData()
-                                    layer.getAllExpenses(successMessage: { (response1) in
-                                        
-                                        self.arrAllList.removeAll()
-                                        self.arrAllList = response1 as! [ReceiptBO]
-                                        
-                                    }, failureMessage: { (failures) in
-                                        
-                                    })
-
-                                }
-                            }))
-                            
-                            self.present(alert, animated: true, completion: nil)
-                        }
-                        
-
-                    }
-                    else
-                    {
-                        self.showAlertWith(title: "Alert!", message: error as! String)
-                    }
+    func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
+        if #available(iOS 10.0, *) {
+            Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false) { (timer) in
+                DispatchQueue.main.async {
+                    chartView.highlightValue(nil)
                 }
             }
-        }))
-        alert.addAction(UIAlertAction(title: "No", style: .cancel, handler: nil))
-        self.present(alert, animated: true, completion: nil)
+        } else {
+            // Fallback on earlier versions
+        }
+        let str =  (entry as! PieChartDataEntry).label ?? ""
+        let vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "MyExpensesViewController") as! MyExpensesViewController
+        vc.strTitle = str
+        self.navigationController?.pushViewController(vc, animated: true)
 
     }
-
+    func chartValueNothingSelected(_ chartView: ChartViewBase) {
+        
+    }
 }
 
