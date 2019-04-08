@@ -16,7 +16,8 @@ public enum ParsingConstant : Int
 }
 class ServiceLayer: NSObject {
     let SERVER_ERROR = "Server not responding.\nPlease try after some time."
-    let BASE_URL = "http://139.59.14.2/api/v3/"
+    //let BASE_URL = "http://139.59.14.2/api/v3/" //Taksykraft
+    let BASE_URL = "http://exp.locusalpha.com/api/v3/" //Locusalpha
     public func getOtpWith(mobileNo:String,successMessage: @escaping (Any) -> Void , failureMessage : @escaping(Any) ->Void)
     {
         var params = [String:AnyObject]()
