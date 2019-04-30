@@ -82,7 +82,7 @@ class ExpensesViewController: BaseViewController, UIPopoverPresentationControlle
 
         }
         self.callForData()
-        txtFldSearch.leftViewMode = UITextFieldViewMode.always
+        txtFldSearch.leftViewMode = UITextField.ViewMode.always
         let imageView = UIImageView(frame: CGRect(x: txtFldSearch.frame.size.width/2 - 20, y: 0, width: 40, height: 20))
         imageView.image = #imageLiteral(resourceName: "Search")
         imageView.contentMode = .scaleAspectFit
@@ -141,7 +141,7 @@ class ExpensesViewController: BaseViewController, UIPopoverPresentationControlle
         self.navigationController?.pushViewController(vc, animated: true)
 
     }
-    func uploadSuccess(not : NSNotification)
+    @objc func uploadSuccess(not : NSNotification)
     {
         self.callForData()
         let serviceLayer = ServiceLayer()
@@ -366,7 +366,7 @@ class ExpensesViewController: BaseViewController, UIPopoverPresentationControlle
                         })
                         if rec.count > 0
                         {
-                            let index = self.arrFilter.index(of: rec[0])
+                            let index = self.arrFilter.firstIndex(of: rec[0])
                             self.tblExpenses.scrollToRow(at: IndexPath(row: index!, section: 0), at: .top, animated: false)
                         }
                         self.isFromNotification = false                                                
@@ -528,7 +528,7 @@ class ExpensesViewController: BaseViewController, UIPopoverPresentationControlle
             let dataEntry = PieChartDataEntry(value: Double(arrValues[i]), label: arrStatus[i])
             dataEntries.append(dataEntry)
         }
-        let pieChartDataSet = PieChartDataSet(values: dataEntries, label: "")
+        let pieChartDataSet = PieChartDataSet(entries: dataEntries, label: "")
         pieChartDataSet.drawValuesEnabled = false
         let pieChartData = PieChartData(dataSet: pieChartDataSet)
         chartView.data = pieChartData
@@ -564,11 +564,11 @@ class ExpensesViewController: BaseViewController, UIPopoverPresentationControlle
         let formattedNumber = numberFormatter.string(from: NSNumber(value: total))
 
         let centerText = NSMutableAttributedString(string: "Total\n₹ \(formattedNumber ?? "")")
-        centerText.setAttributes([NSFontAttributeName : UIFont(name: "Roboto-Light", size: 15)!,
-                                  NSParagraphStyleAttributeName : paragraphStyle], range: NSRange(location: 0, length: 5))
-        centerText.addAttributes([NSFontAttributeName : UIFont(name: "Roboto-Medium", size: 17)!,
-                                  NSForegroundColorAttributeName : UIColor.black], range: NSRange(location: 6, length: centerText.length - 6))
-        centerText.addAttribute(NSParagraphStyleAttributeName, value: paragraphStyle, range: NSRange(location: 0, length: centerText.length))
+        centerText.setAttributes([NSAttributedString.Key.font : UIFont(name: "Roboto-Light", size: 15)!,
+                                  NSAttributedString.Key.paragraphStyle : paragraphStyle], range: NSRange(location: 0, length: 5))
+        centerText.addAttributes([NSAttributedString.Key.font : UIFont(name: "Roboto-Medium", size: 17)!,
+                                  NSAttributedString.Key.foregroundColor : UIColor.black], range: NSRange(location: 6, length: centerText.length - 6))
+        centerText.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: NSRange(location: 0, length: centerText.length))
         chartView.centerAttributedText = centerText;
         tblChart.reloadData()
         
@@ -650,7 +650,7 @@ extension ExpensesViewController : UITableViewDelegate,UITableViewDataSource
                 cell.lblExpenseID.text = expense.expenseId
                 cell.lblAmount.text = "₹" + expense.amount
                 cell.lblDescription.text = expense.Description
-                cell.selectionStyle = UITableViewCellSelectionStyle.none
+                cell.selectionStyle = UITableViewCell.SelectionStyle.none
                 if expense.uploadedDate != ""
                 {
                     let formatter = DateFormatter()
@@ -688,10 +688,21 @@ extension ExpensesViewController : UITableViewDelegate,UITableViewDataSource
                 else
                 {
                     let url = URL(string: IMAGE_BASE_URL + expense.image)
-                    //                cell.imgVwExpense.kf.indicatorType = .activity
-                    cell.imgVwExpense.kf.setImage(with: url, placeholder: #imageLiteral(resourceName: "Loading"), options: [.transition(ImageTransition.fade(1))], progressBlock: { receivedSize, totalSize in
-                    }, completionHandler: { image, error, cacheType, imageURL in
-                    })
+                    
+                    cell.imgVwExpense.kf.indicatorType = .activity
+                    cell.imgVwExpense.kf.setImage(
+                        with: url,
+                        placeholder: UIImage(named: "Loading"),
+                        options: [.transition(.fade(1))])
+                    {
+                        result in
+                        switch result {
+                        case .success(let value):
+                            print("Task done for: \(value.source.url?.absoluteString ?? "")")
+                        case .failure(let error):
+                            print("Job failed: \(error.localizedDescription)")
+                        }
+                    }
                 }
                 cell.callback  = self
                 cell.expense = expense
@@ -782,7 +793,7 @@ extension ExpensesViewController : UITableViewDelegate,UITableViewDataSource
                 {
                     self.rejectPopup.removeFromSuperview()
                 }
-                let alert = UIAlertController(title: "Success!", message: "Expense Updated Successfully.", preferredStyle: UIAlertControllerStyle.alert)
+                let alert = UIAlertController(title: "Success!", message: "Expense Updated Successfully.", preferredStyle: UIAlertController.Style.alert)
                 alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
                     DispatchQueue.main.async {
 //                        self.callForData()
@@ -888,12 +899,12 @@ extension ExpensesViewController : AllExpensesTableViewCellDelegate
             self.view.addSubview(rejectPopup)
         }
     }
-    func btnCancelClicked(sender : UIButton)
+    @objc func btnCancelClicked(sender : UIButton)
     {
         rejectPopup.removeFromSuperview()
     }
 
-    func btnRejectConfirmClicked(sender : UIButton)
+    @objc func btnRejectConfirmClicked(sender : UIButton)
     {
         if rejectPopup.txtVwResaon.text == ""
         {

@@ -7,6 +7,9 @@ target 'TaksyKraft' do
   pod 'Charts'
   pod 'Firebase/Core'
   pod 'Firebase/Messaging'
+  pod 'IQKeyboardManagerSwift'
+  pod 'Kingfisher', '~> 5.0'
+
   # Pods for TaksyKraft
 
 end

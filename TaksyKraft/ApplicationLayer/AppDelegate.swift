@@ -10,6 +10,7 @@ import UIKit
 import CoreData
 import Firebase
 import UserNotifications
+import IQKeyboardManagerSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -19,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var navCtrl = UINavigationController()
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    internal func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         var vc = UIViewController()
         if TaksyKraftUserDefaults.getLoginStatus()
@@ -35,8 +36,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         navCtrl = UINavigationController(rootViewController: vc)
         self.window?.rootViewController = navCtrl
         self.window?.backgroundColor = Color_NavBarTint
-        IQKeyboardManager.sharedManager().enable = true
-        
+        IQKeyboardManager.shared.enable = true
+
         
         self.setupReachability(hostName: "", useClosures: true)
         self.startNotifier()
@@ -194,7 +195,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
     }
     
-    func showLoaderr(message : String)
+    @objc func showLoaderr(message : String)
     {
         let vwBgg = self.window!.viewWithTag(123453)
         if vwBgg == nil
@@ -227,13 +228,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // lblText.textColor = Color_NavBarTint
             vwBg.addSubview(lblText)
             
-            let indicator = UIActivityIndicatorView(activityIndicatorStyle:.whiteLarge)
+            let indicator = UIActivityIndicatorView(style:.whiteLarge)
             indicator.center = vwBg.center
             vwBg.addSubview(indicator)
             indicator.startAnimating()
             
             vwBg.addSubview(indicator)
-            indicator.bringSubview(toFront: vwBg)
+            indicator.bringSubviewToFront(vwBg)
             UIApplication.shared.isNetworkActivityIndicatorVisible = true
             
         }
@@ -242,7 +243,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     {
         self.performSelector(onMainThread:#selector(removeloderr), with: nil, waitUntilDone: false)
     }
-    func removeloderr()
+    @objc func removeloderr()
     {
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
         
@@ -292,7 +293,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         NotificationCenter.default.removeObserver(self, name: ReachabilityChangedNotification, object: nil)
         reachability = nil
     }
-    func reachabilityChanged(_ note: Notification) {
+    @objc func reachabilityChanged(_ note: Notification) {
         let reachability = note.object as! Reachability
         
         if reachability.isReachable {
@@ -328,7 +329,7 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
             let json = self.convertStringToDictionary(data as! String)
             print("json: \(json)")
             DispatchQueue.main.async {
-                let alert = UIAlertController(title: "Notification", message: title, preferredStyle: UIAlertControllerStyle.alert)
+                let alert = UIAlertController(title: "Notification", message: title, preferredStyle: UIAlertController.Style.alert)
                 alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action) in
 
                 }))

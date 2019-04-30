@@ -24,7 +24,7 @@ class ChequeViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.callForAllChequesData()
-        txtFldSearch.leftViewMode = UITextFieldViewMode.always
+        txtFldSearch.leftViewMode = UITextField.ViewMode.always
         let imageView = UIImageView(frame: CGRect(x: txtFldSearch.frame.size.width/2 - 20, y: 0, width: 40, height: 20))
         imageView.image = #imageLiteral(resourceName: "Search")
         imageView.contentMode = .scaleAspectFit
@@ -166,10 +166,21 @@ extension ChequeViewController : UITableViewDelegate,UITableViewDataSource
         cell.lblChequeNo.text = chqBo.chequeNo
         cell.lblAttachsCount.text = "\(chqBo.invoice_image.count + 1) Attachments"
         let url = URL(string: IMAGE_BASE_URL + chqBo.cheque_image)
-        cell.imgCheque.kf.setImage(with: url, placeholder: #imageLiteral(resourceName: "Loading"), options: [.transition(ImageTransition.fade(1))], progressBlock: { receivedSize, totalSize in
-        }, completionHandler: { image, error, cacheType, imageURL in
-            cell.imgCheque.contentMode = .scaleAspectFill
-        })
+        
+        cell.imgCheque.kf.indicatorType = .activity
+        cell.imgCheque.kf.setImage(
+            with: url,
+            placeholder: UIImage(named: "Loading"),
+            options: [.transition(.fade(1))])
+        {
+            result in
+            switch result {
+            case .success(let value):
+                cell.imgCheque.contentMode = .scaleAspectFill
+            case .failure(let error):
+                print("Job failed: \(error.localizedDescription)")
+            }
+        }
         let formatter = DateFormatter()
         if chqBo.uploadedDate != ""
         {
@@ -205,7 +216,7 @@ extension ChequeViewController : UITableViewDelegate,UITableViewDataSource
         let str = "Description :\n" + chqBo.Description
         
         let attributedString = NSMutableAttributedString(string: str)
-        attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.black, range: NSRange(location: 0, length: 13))
+        attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.black, range: NSRange(location: 0, length: 13))
         cell.lblDesc.attributedText = attributedString
 
         var descHeight = ("Description :\n" + chqBo.Description).height(withConstrainedWidth: ScreenWidth - 138, font: UIFont(name: "Roboto-Light", size: 15)!)
@@ -253,7 +264,7 @@ extension ChequeViewController : UITableViewDelegate,UITableViewDataSource
             let str = "Reason :\n" + chqBo.comment
             
             let attributedString = NSMutableAttributedString(string: str)
-            attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.black, range: NSRange(location: 0, length: 8))
+            attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.black, range: NSRange(location: 0, length: 8))
             cell.lblReason.attributedText = attributedString
             
             cell.lblReason.text = "Reason :\n" + chqBo.comment
@@ -342,12 +353,12 @@ extension ChequeViewController : AllChequesTableViewCellDelegate
             self.view.addSubview(rejectPopup)
         }
     }
-    func btnCancelClicked(sender : UIButton)
+    @objc func btnCancelClicked(sender : UIButton)
     {
         rejectPopup.removeFromSuperview()
     }
     
-    func btnRejectConfirmClicked(sender : UIButton)
+    @objc func btnRejectConfirmClicked(sender : UIButton)
     {
         if rejectPopup.txtVwResaon.text == ""
         {
@@ -387,7 +398,7 @@ extension ChequeViewController : AllChequesTableViewCellDelegate
                 {
                     self.rejectPopup.removeFromSuperview()
                 }
-                let alert = UIAlertController(title: "Success!", message: "Cheque Updated Successfully.", preferredStyle: UIAlertControllerStyle.alert)
+                let alert = UIAlertController(title: "Success!", message: "Cheque Updated Successfully.", preferredStyle: UIAlertController.Style.alert)
                 alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
                     DispatchQueue.main.async {
                         if TaksyKraftUserDefaults.getUser().role == "hr"

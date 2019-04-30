@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Kingfisher
 protocol ImagePreviewViewControllerDelegate
 {
     func reloadArrImagesWith(arrImages : [UIImage])
@@ -107,13 +108,20 @@ extension ImagePreviewViewController:UICollectionViewDelegate,UICollectionViewDa
         cell.imgVw.contentMode = .scaleAspectFit
         if isEdit == false{
             let url = URL(string: IMAGE_BASE_URL + arrUrl[indexPath.row])
-            cell.imgVw.kf.setImage(with: url, placeholder: #imageLiteral(resourceName: "Loading"), options: [.transition(ImageTransition.fade(1))], progressBlock: { receivedSize, totalSize in
-            }, completionHandler: { image, error, cacheType, imageURL in
-                if image != nil
-                {
-                    self.arrImages.insert(image!, at: indexPath.row)
+            cell.imgVw.kf.indicatorType = .activity
+            cell.imgVw.kf.setImage(
+                with: url,
+                placeholder: UIImage(named: "Loading"),
+                options: [.transition(.fade(1))])
+            {
+                result in
+                switch result {
+                case .success(let value):
+                        self.arrImages.insert(value.image, at: indexPath.row)
+                case .failure(let error):
+                    print("Job failed: \(error.localizedDescription)")
                 }
-            })
+            }
         }
         else
         {

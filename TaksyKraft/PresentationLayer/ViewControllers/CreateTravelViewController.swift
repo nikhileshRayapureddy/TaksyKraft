@@ -119,7 +119,7 @@ class CreateTravelViewController: BaseViewController {
                 }
                 else
                 {
-                    let alert = UIAlertController(title: "Alert!", message: "Failed to get cities", preferredStyle: UIAlertControllerStyle.alert)
+                    let alert = UIAlertController(title: "Alert!", message: "Failed to get cities", preferredStyle: UIAlertController.Style.alert)
                     alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: { (action) in
                         DispatchQueue.main.async {
                             self.navigationController?.popViewController(animated: true)
@@ -275,7 +275,7 @@ class CreateTravelViewController: BaseViewController {
                     DispatchQueue.main.async
                         {
                             app_delegate.removeloder()
-                            let alert = UIAlertController(title: "Success!", message: "Travel Uploaded Successfully.", preferredStyle: UIAlertControllerStyle.alert)
+                            let alert = UIAlertController(title: "Success!", message: "Travel Uploaded Successfully.", preferredStyle: UIAlertController.Style.alert)
                             alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
                                 DispatchQueue.main.async {
                                     self.navigationController?.popViewController(animated: true)
@@ -294,7 +294,7 @@ class CreateTravelViewController: BaseViewController {
                             else
                             {
                                 app_delegate.removeloder()
-                                let alert = UIAlertController(title: "Failure!", message: "Travel uploading failed.", preferredStyle: UIAlertControllerStyle.alert)
+                                let alert = UIAlertController(title: "Failure!", message: "Travel uploading failed.", preferredStyle: UIAlertController.Style.alert)
                                 alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
                                 self.present(alert, animated: true, completion: nil)
                             }

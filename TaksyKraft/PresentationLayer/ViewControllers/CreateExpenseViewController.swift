@@ -49,9 +49,17 @@ class CreateExpenseViewController: BaseViewController,UIImagePickerControllerDel
             {
                 imageURL = expenseBO.image
                 let url = URL(string: IMAGE_BASE_URL + expenseBO.image)
-                btnExpenseImage.kf.setImage(with: url, for: .normal, placeholder: #imageLiteral(resourceName: "Bill_Default"), options: [.transition(ImageTransition.fade(1))], progressBlock: { receivedSize, totalSize in
-                }, completionHandler: { image, error, cacheType, imageURL in
-                })
+                
+        
+                btnExpenseImage.kf.setImage(with: url, for: .normal, placeholder: UIImage(named: "Loading"), options: [.transition(.fade(1))], progressBlock: nil)  { result in
+                    switch result {
+                    case .success(let value):
+                        print("Task done for: \(value.source.url?.absoluteString ?? "")")
+                    case .failure(let error):
+                        print("Job failed: \(error.localizedDescription)")
+                    }
+                    
+                }
                 btnExpenseImage.layer.cornerRadius = btnExpenseImage.frame.size.width/2
                 btnExpenseImage.layer.masksToBounds = true
                 
@@ -120,7 +128,7 @@ class CreateExpenseViewController: BaseViewController,UIImagePickerControllerDel
                     DispatchQueue.main.async
                         {
                             app_delegate.removeloder()
-                            let alert = UIAlertController(title: "Success!", message: "Expense Uploaded Successfully.", preferredStyle: UIAlertControllerStyle.alert)
+                            let alert = UIAlertController(title: "Success!", message: "Expense Uploaded Successfully.", preferredStyle: UIAlertController.Style.alert)
                             alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
                                 DispatchQueue.main.async {
                                     NotificationCenter.default.post(name: Notification.Name("reloadExpense"), object: nil)
@@ -140,7 +148,7 @@ class CreateExpenseViewController: BaseViewController,UIImagePickerControllerDel
                             }
                             else
                             {
-                                let alert = UIAlertController(title: "Failure!", message: failure as? String, preferredStyle: UIAlertControllerStyle.alert)
+                                let alert = UIAlertController(title: "Failure!", message: failure as? String, preferredStyle: UIAlertController.Style.alert)
                                 alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
                                 self.present(alert, animated: true, completion: nil)
                             }
@@ -174,7 +182,7 @@ class CreateExpenseViewController: BaseViewController,UIImagePickerControllerDel
         {
             let alert = UIAlertController(title: "Select an Image to Uplaod", message: "", preferredStyle: .actionSheet)
             alert.addAction(UIAlertAction(title: "Camera", style: .default) { action in
-                if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera) {
+                if UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.camera) {
                     
                     let imagePicker = UIImagePickerController()
                     imagePicker.delegate = self
@@ -188,7 +196,7 @@ class CreateExpenseViewController: BaseViewController,UIImagePickerControllerDel
                 
             })
             alert.addAction(UIAlertAction(title: "Gallery", style: .default) { action in
-                if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.photoLibrary) {
+                if UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.photoLibrary) {
                     
                     let imagePicker = UIImagePickerController()
                     imagePicker.delegate = self
@@ -209,9 +217,13 @@ class CreateExpenseViewController: BaseViewController,UIImagePickerControllerDel
         }
         
     }
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        let imageData = self.compressImageSize(image: info[UIImagePickerControllerOriginalImage] as! UIImage, compressionQuality: 1.0)
+    public func imagePickerController(_ picker: UIImagePickerController,
+                                      didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+        guard let image = info[.editedImage] as? UIImage else {
+            return print("error")
+        }
+        
+        let imageData = self.compressImageSize(image: image, compressionQuality: 1.0)
         let imageSize: Int = imageData.count
         
         print("size of image in KB: %f ", Double(imageSize) / 1024.0)
@@ -258,7 +270,7 @@ class CreateExpenseViewController: BaseViewController,UIImagePickerControllerDel
     func compressImageSize(image: UIImage,compressionQuality : CGFloat) -> Data
     {
         var imageData = Data()
-        imageData = UIImageJPEGRepresentation(image, CGFloat(compressionQuality))!
+        imageData = image.jpegData(compressionQuality: compressionQuality) ?? Data()
         print("compressImageSize in KB: %f ", Double(imageData.count) / 1024.0)
 
         if imageData.count > 2097152 {

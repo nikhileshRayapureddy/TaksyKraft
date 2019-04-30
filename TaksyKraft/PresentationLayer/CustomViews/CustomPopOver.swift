@@ -45,7 +45,7 @@ class CustomPopOver: UIViewController,UITableViewDataSource, UITableViewDelegate
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell: UITableViewCell = UITableViewCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: "MyTestCell")
+        let cell: UITableViewCell = UITableViewCell(style: UITableViewCell.CellStyle.subtitle, reuseIdentifier: "MyTestCell")
         cell.selectionStyle =  .gray
             cell.isSelected = false
             cell.backgroundColor = UIColor.clear

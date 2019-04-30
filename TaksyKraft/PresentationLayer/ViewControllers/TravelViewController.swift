@@ -44,7 +44,7 @@ class TravelViewController: BaseViewController , UIPopoverPresentationController
         }
         self.isMyTravel = true
         self.callForData()
-        txtFldSearch.leftViewMode = UITextFieldViewMode.always
+        txtFldSearch.leftViewMode = UITextField.ViewMode.always
         let imageView = UIImageView(frame: CGRect(x: txtFldSearch.frame.size.width/2 - 20, y: 0, width: 40, height: 20))
         imageView.image = #imageLiteral(resourceName: "Search")
         imageView.contentMode = .scaleAspectFit
@@ -252,7 +252,7 @@ extension TravelViewController : UITableViewDelegate,UITableViewDataSource
             let str = "Description :\n" + travel.Description
             
             let attributedString = NSMutableAttributedString(string: str)
-            attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.black, range: NSRange(location: 0, length: 13))
+            attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.black, range: NSRange(location: 0, length: 13))
             cell.lblDescription.attributedText = attributedString
 
             let formatter = DateFormatter()
@@ -262,7 +262,7 @@ extension TravelViewController : UITableViewDelegate,UITableViewDataSource
             let strDate = formatter.string(from: date!)
             
             cell.lblUploadedDate.text = strDate
-            cell.selectionStyle = UITableViewCellSelectionStyle.none
+            cell.selectionStyle = UITableViewCell.SelectionStyle.none
             
             cell.lblStatus.text = travel.status.capitalized
             cell.vwBase.layer.cornerRadius = 5
@@ -344,7 +344,7 @@ extension TravelViewController : UITableViewDelegate,UITableViewDataSource
                 let str = "Reason :\n" + travel.comment
                 
                 let attributedString = NSMutableAttributedString(string: str)
-                attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.black, range: NSRange(location: 0, length: 8))
+                attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.black, range: NSRange(location: 0, length: 8))
                 cell.lblReason.attributedText = attributedString
 
                 cell.lblReason.text = "Reason :\n" + travel.comment
@@ -374,10 +374,10 @@ extension TravelViewController : UITableViewDelegate,UITableViewDataSource
                 let str = "Description :\n" + travel.Description
                 
                 let attributedString = NSMutableAttributedString(string: str)
-                attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.black, range: NSRange(location: 0, length: 13))
+                attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.black, range: NSRange(location: 0, length: 13))
                 cell.lblDescription.attributedText = attributedString
                 
-                cell.selectionStyle = UITableViewCellSelectionStyle.none
+                cell.selectionStyle = UITableViewCell.SelectionStyle.none
                 cell.lblSrcAndDest.text = "\(travel.from.prefix(3).uppercased())\nto\n\(travel.to.prefix(3).uppercased())"
                 cell.lblSrcAndDest.layer.cornerRadius = cell.lblSrcAndDest.frame.size.width/2
                 cell.lblSrcAndDest.layer.masksToBounds = true
@@ -448,7 +448,7 @@ extension TravelViewController : UITableViewDelegate,UITableViewDataSource
                 let str = "Description :\n" + travel.Description
                 
                 let attributedString = NSMutableAttributedString(string: str)
-                attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.black, range: NSRange(location: 0, length: 13))
+                attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.black, range: NSRange(location: 0, length: 13))
                 cell.lblDescription.attributedText = attributedString
                 if travel.uploadedDate != ""
                 {
@@ -460,7 +460,7 @@ extension TravelViewController : UITableViewDelegate,UITableViewDataSource
                     
                     cell.lblUploadedDate.text = strDate
                 }
-                cell.selectionStyle = UITableViewCellSelectionStyle.none
+                cell.selectionStyle = UITableViewCell.SelectionStyle.none
                 
                 cell.lblStatus.text = travel.status.capitalized
                 cell.vwBase.layer.cornerRadius = 5
@@ -523,7 +523,7 @@ extension TravelViewController : UITableViewDelegate,UITableViewDataSource
                     let str = "Reason :\n" + travel.comment
                     
                     let attributedString = NSMutableAttributedString(string: str)
-                    attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.black, range: NSRange(location: 0, length: 8))
+                    attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.black, range: NSRange(location: 0, length: 8))
                     cell.lblReason.attributedText = attributedString
                     
                     cell.lblReason.text = "Reason :\n" + travel.comment
@@ -547,10 +547,10 @@ extension TravelViewController : UITableViewDelegate,UITableViewDataSource
                 let str = "Description :\n" + travel.Description
                 
                 let attributedString = NSMutableAttributedString(string: str)
-                attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.black, range: NSRange(location: 0, length: 13))
+                attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.black, range: NSRange(location: 0, length: 13))
                 cell.lblDescription.attributedText = attributedString
                 
-                cell.selectionStyle = UITableViewCellSelectionStyle.none
+                cell.selectionStyle = UITableViewCell.SelectionStyle.none
                 cell.lblSrcAndDest.text = "\(travel.from.prefix(3).uppercased())\nto\n\(travel.to.prefix(3).uppercased())"
                 cell.lblSrcAndDest.layer.cornerRadius = cell.lblSrcAndDest.frame.size.width/2
                 cell.lblSrcAndDest.layer.masksToBounds = true
@@ -622,10 +622,10 @@ extension TravelViewController : UITableViewDelegate,UITableViewDataSource
                 let str = "Description :\n" + travel.Description
                 
                 let attributedString = NSMutableAttributedString(string: str)
-                attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.black, range: NSRange(location: 0, length: 13))
+                attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.black, range: NSRange(location: 0, length: 13))
                 cell.lblDescription.attributedText = attributedString
                 
-                cell.selectionStyle = UITableViewCellSelectionStyle.none
+                cell.selectionStyle = UITableViewCell.SelectionStyle.none
                 cell.lblSrcAndDest.text = "\(travel.from.prefix(3).uppercased())\nto\n\(travel.to.prefix(3).uppercased())"
                 cell.lblSrcAndDest.layer.cornerRadius = cell.lblSrcAndDest.frame.size.width/2
                 cell.lblSrcAndDest.layer.masksToBounds = true
@@ -771,7 +771,7 @@ extension TravelViewController : UITableViewDelegate,UITableViewDataSource
                 {
                     self.rejectPopup.removeFromSuperview()
                 }
-                let alert = UIAlertController(title: "Success!", message: "Travel Updated Successfully.", preferredStyle: UIAlertControllerStyle.alert)
+                let alert = UIAlertController(title: "Success!", message: "Travel Updated Successfully.", preferredStyle: UIAlertController.Style.alert)
                 alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
                     DispatchQueue.main.async {
                         self.callForData()
@@ -872,12 +872,12 @@ extension TravelViewController : AllTravelTableViewCellDelegate
             self.view.addSubview(rejectPopup)
         }
     }
-    func btnCancelClicked(sender : UIButton)
+    @objc func btnCancelClicked(sender : UIButton)
     {
         rejectPopup.removeFromSuperview()
     }
     
-    func btnRejectConfirmClicked(sender : UIButton)
+    @objc func btnRejectConfirmClicked(sender : UIButton)
     {
         if rejectPopup.txtVwResaon.text == ""
         {
@@ -902,7 +902,7 @@ extension TravelViewController : MyTravelTableViewCellDelegate
     }
     func btnDeleteClicked(travelId : String,cell : MyTravelTableViewCell)
     {
-        let alert = UIAlertController(title: "Alert!", message: "Do you want to delete this travel?", preferredStyle: UIAlertControllerStyle.alert)
+        let alert = UIAlertController(title: "Alert!", message: "Do you want to delete this travel?", preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
             DispatchQueue.main.async {
                 app_delegate.showLoader(message: "Deleting Travel...")
@@ -910,7 +910,7 @@ extension TravelViewController : MyTravelTableViewCellDelegate
                 layer.deleteTravelWith(strID: travelId, successMessage: { (response) in
                     DispatchQueue.main.async {
                         app_delegate.removeloder()
-                        let alert = UIAlertController(title: "Success!", message: "Travel deleted Successfully.", preferredStyle: UIAlertControllerStyle.alert)
+                        let alert = UIAlertController(title: "Success!", message: "Travel deleted Successfully.", preferredStyle: UIAlertController.Style.alert)
                         alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
                             DispatchQueue.main.async {
                                 self.callForData()

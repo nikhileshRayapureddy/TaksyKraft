@@ -18,7 +18,7 @@ class OnlineViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.getOnlineTransactions()
-        txtFldSearch.leftViewMode = UITextFieldViewMode.always
+        txtFldSearch.leftViewMode = UITextField.ViewMode.always
         let imageView = UIImageView(frame: CGRect(x: txtFldSearch.frame.size.width/2 - 20, y: 0, width: 40, height: 20))
         imageView.image = #imageLiteral(resourceName: "Search")
         imageView.contentMode = .scaleAspectFit
@@ -107,7 +107,7 @@ extension OnlineViewController : UITableViewDelegate,UITableViewDataSource
         let str = "Description :\n" + trxBo.notes
         
         let attributedString = NSMutableAttributedString(string: str)
-        attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.black, range: NSRange(location: 0, length: 13))
+        attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.black, range: NSRange(location: 0, length: 13))
         cell.lblDesc.attributedText = attributedString
         
         var descHeight = ("Description :\n" + trxBo.notes).height(withConstrainedWidth: ScreenWidth - 138, font: UIFont(name: "Roboto-Light", size: 15)!)
@@ -121,7 +121,7 @@ extension OnlineViewController : UITableViewDelegate,UITableViewDataSource
         }
         
         cell.constLblDescriptionHeight.constant = descHeight
-
+        
         cell.trxBO = trxBo
         cell.callBack = self
         cell.lblAttachCount.text = "\(trxBo.invoice.count + 1) Attachments"
@@ -135,9 +135,23 @@ extension OnlineViewController : UITableViewDelegate,UITableViewDataSource
         }
         cell.imgVwOnline.layer.borderColor = UIColor.lightGray.withAlphaComponent(0.5).cgColor
         cell.imgVwOnline.layer.borderWidth = 1
-        cell.imgVwOnline.kf.setImage(with: URL(string: IMAGE_BASE_URL + trxBo.transactionImage), placeholder: #imageLiteral(resourceName: "Loading"), options: [.transition(ImageTransition.fade(1))], progressBlock: { receivedSize, totalSize in
-        }, completionHandler: { image, error, cacheType, imageURL in
-        })
+        
+        let url = URL(string: IMAGE_BASE_URL + trxBo.transactionImage)
+
+        cell.imgVwOnline.kf.indicatorType = .activity
+        cell.imgVwOnline.kf.setImage(
+            with: url,
+            placeholder: UIImage(named: "Loading"),
+            options: [.transition(.fade(1))])
+        {
+            result in
+            switch result {
+            case .success(let value):
+                print("Task done for: \(value.source.url?.absoluteString ?? "")")
+            case .failure(let error):
+                print("Job failed: \(error.localizedDescription)")
+            }
+        }
 
         return cell
     }

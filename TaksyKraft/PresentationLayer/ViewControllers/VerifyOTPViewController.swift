@@ -39,7 +39,7 @@ class VerifyOTPViewController: BaseViewController {
         let str = "OTP has been sent to \(mobileNo)\nPlease enter it below"
         
         let attributedString = NSMutableAttributedString(string: str)
-        attributedString.addAttribute(NSFontAttributeName, value: UIFont(name: "Roboto-Bold", size: 18) as Any, range: NSRange(location: 21, length: 10))
+        attributedString.addAttribute(NSAttributedString.Key.font, value: UIFont(name: "Roboto-Bold", size: 18) as Any, range: NSRange(location: 21, length: 10))
         lblOtpNum.attributedText = attributedString
         lblOtpNum.textAlignment = .center
         

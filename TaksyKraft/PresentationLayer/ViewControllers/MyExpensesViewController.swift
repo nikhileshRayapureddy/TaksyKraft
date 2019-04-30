@@ -25,7 +25,7 @@ class MyExpensesViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.callForData()
-        txtFldSearch.leftViewMode = UITextFieldViewMode.always
+        txtFldSearch.leftViewMode = UITextField.ViewMode.always
         let imageView = UIImageView(frame: CGRect(x: txtFldSearch.frame.size.width/2 - 20, y: 0, width: 40, height: 20))
         imageView.image = #imageLiteral(resourceName: "Search")
         imageView.contentMode = .scaleAspectFit
@@ -56,7 +56,7 @@ class MyExpensesViewController: BaseViewController {
         self.navigationController?.pushViewController(vc, animated: true)
         
     }
-    func uploadSuccess(not : NSNotification)
+    @objc func uploadSuccess(not : NSNotification)
     {
         self.callForData()
         let serviceLayer = ServiceLayer()
@@ -217,7 +217,7 @@ extension MyExpensesViewController : UITableViewDelegate,UITableViewDataSource
                     
                     cell.lblUploadedDate.text = strDate
                 }
-                cell.selectionStyle = UITableViewCellSelectionStyle.none
+        cell.selectionStyle = UITableViewCell.SelectionStyle.none
                 
                 cell.vwBase.layer.cornerRadius = 5
                 cell.vwBase.layer.masksToBounds = true
@@ -236,11 +236,21 @@ extension MyExpensesViewController : UITableViewDelegate,UITableViewDataSource
                 else
                 {
                     let url = URL(string: IMAGE_BASE_URL + expense.image)
-                                    cell.imgVwExpense.kf.indicatorType = .activity
 //                    let url = URL(string: "https://s3-ap-southeast-1.amazonaws.com/taksykraft/approved/content/RQTMnHuLYxvPczyCXao2PMHXLultSF7IehMfXh2dia4BI1kHeQ7NlycFxAX5.mp4")
-                    cell.imgVwExpense.kf.setImage(with: url, placeholder: #imageLiteral(resourceName: "Loading"), options: [.transition(ImageTransition.fade(1))], progressBlock: { receivedSize, totalSize in
-                    }, completionHandler: { image, error, cacheType, imageURL in
-                    })
+                    cell.imgVwExpense.kf.indicatorType = .activity
+                    cell.imgVwExpense.kf.setImage(
+                        with: url,
+                        placeholder: UIImage(named: "Loading"),
+                        options: [.transition(.fade(1))])
+                    {
+                        result in
+                        switch result {
+                        case .success(let value):
+                            print("Task done for: \(value.source.url?.absoluteString ?? "")")
+                        case .failure(let error):
+                            print("Job failed: \(error.localizedDescription)")
+                        }
+                    }
                 }
                 cell.btnDelete.layer.borderColor = UIColor(red: 60.0/255.0, green: 130.0/255.0, blue: 184.00/255.0, alpha: 1.0).cgColor
                 cell.btnDelete.layer.borderWidth = 1.0
@@ -252,7 +262,7 @@ extension MyExpensesViewController : UITableViewDelegate,UITableViewDataSource
                 let str = "Description :\n" + expense.Description
                 
                 let attributedString = NSMutableAttributedString(string: str)
-                attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.black, range: NSRange(location: 0, length: 13))
+        attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.black, range: NSRange(location: 0, length: 13))
                 cell.lblDescription.attributedText = attributedString
                 
                 var descHeight = ("Description :\n" + expense.Description).height(withConstrainedWidth: ScreenWidth - 138, font: UIFont(name: "Roboto-Light", size: 15)!)
@@ -315,7 +325,7 @@ extension MyExpensesViewController : UITableViewDelegate,UITableViewDataSource
                     let str = "Reason :\n" + expense.comment
                     
                     let attributedString = NSMutableAttributedString(string: str)
-                    attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.black, range: NSRange(location: 0, length: 8))
+                    attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.black, range: NSRange(location: 0, length: 8))
                     cell.lblReason.attributedText = attributedString
                     
                     cell.lblReason.text = "Reason :\n" + expense.comment
@@ -373,7 +383,7 @@ extension MyExpensesViewController : UITableViewDelegate,UITableViewDataSource
                 {
                     self.rejectPopup.removeFromSuperview()
                 }
-                let alert = UIAlertController(title: "Success!", message: "Expense Updated Successfully.", preferredStyle: UIAlertControllerStyle.alert)
+                let alert = UIAlertController(title: "Success!", message: "Expense Updated Successfully.", preferredStyle: UIAlertController.Style.alert)
                 alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
                     DispatchQueue.main.async {
                         //                        self.callForData()
@@ -444,7 +454,7 @@ extension MyExpensesViewController : MyExpensesTableViewCellDelegate
     }
     func btnDeleteClicked(expenseId : String,cell : MyExpensesTableViewCell)
     {
-        let alert = UIAlertController(title: "Alert!", message: "Do you want to delete this expense?", preferredStyle: UIAlertControllerStyle.alert)
+        let alert = UIAlertController(title: "Alert!", message: "Do you want to delete this expense?", preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
             DispatchQueue.main.async {
                 app_delegate.showLoader(message: "Deleting Expense...")
@@ -452,7 +462,7 @@ extension MyExpensesViewController : MyExpensesTableViewCellDelegate
                 layer.deleteExpenseWith(strID: expenseId, successMessage: { (response) in
                     DispatchQueue.main.async {
                         app_delegate.removeloder()
-                        let alert = UIAlertController(title: "Success!", message: "Expense deleted Successfully.", preferredStyle: UIAlertControllerStyle.alert)
+                        let alert = UIAlertController(title: "Success!", message: "Expense deleted Successfully.", preferredStyle: UIAlertController.Style.alert)
                         alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
                             DispatchQueue.main.async {
                                 //                                self.callForData()
@@ -477,7 +487,7 @@ extension MyExpensesViewController : MyExpensesTableViewCellDelegate
                     if error as! String == "This Expense Is Rejected, You Can\"t Delete It."
                     {
                         DispatchQueue.main.async {
-                            let alert = UIAlertController(title: "Alert!", message: error as? String, preferredStyle: UIAlertControllerStyle.alert)
+                            let alert = UIAlertController(title: "Alert!", message: error as? String, preferredStyle: UIAlertController.Style.alert)
                             alert.addAction(UIAlertAction(title: "Refresh", style: .default, handler: { (action) in
                                 DispatchQueue.main.async {
                                     self.callForData()

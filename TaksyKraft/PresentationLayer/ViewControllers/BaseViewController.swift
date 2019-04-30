@@ -31,14 +31,14 @@ class BaseViewController: UIViewController {
         
         let leftBarButtonItems = UIView()
         leftBarButtonItems.frame = CGRect(x:0,y: 0,width: 50,height: 44)
-        let backButton = UIButton(type: UIButtonType.custom)
+        let backButton = UIButton(type: UIButton.ButtonType.custom)
         let titleLbl = UILabel()
         if showBack
         {
             backButton.frame = CGRect(x: 0, y: 0  , width: 40 , height: 44)
-            backButton.imageEdgeInsets = UIEdgeInsetsMake(10, 2,2,10)
+            backButton.imageEdgeInsets = UIEdgeInsets(top: 10, left: 2,bottom: 2,right: 10)
             backButton.backgroundColor = .clear
-            backButton.setImage(#imageLiteral(resourceName: "Back_Blue"), for: UIControlState.normal)
+            backButton.setImage(#imageLiteral(resourceName: "Back_Blue"), for: UIControl.State.normal)
             backButton.addTarget(self, action: #selector(backClicked(sender:)), for: .touchUpInside)
             leftBarButtonItems.addSubview(backButton)
             let bItem = UIBarButtonItem(customView:leftBarButtonItems)
@@ -76,10 +76,10 @@ class BaseViewController: UIViewController {
         
         let rightBarButtonItems = UIView()
         rightBarButtonItems.frame = CGRect(x:0,y: 0,width: 50,height: 44)
-        let btnRefresh = UIButton(type: UIButtonType.custom)
+        let btnRefresh = UIButton(type: UIButton.ButtonType.custom)
         btnRefresh.frame = CGRect(x: 0, y: 0  , width: 50 , height: 44)
         btnRefresh.imageView?.contentMode = .scaleAspectFit
-        btnRefresh.setImage(#imageLiteral(resourceName: "Refresh"), for: UIControlState.normal)
+        btnRefresh.setImage(#imageLiteral(resourceName: "Refresh"), for: UIControl.State.normal)
 
         if isRefresh
         {
@@ -112,9 +112,9 @@ class BaseViewController: UIViewController {
         
         let leftBarButtonItems = UIView()
         leftBarButtonItems.frame = CGRect(x:0,y: 0,width: 50,height: 44)
-        let btnProfile = UIButton(type: UIButtonType.custom)
+        let btnProfile = UIButton(type: UIButton.ButtonType.custom)
         btnProfile.frame = CGRect(x: 0, y: 0  , width: 40 , height: 44)
-        btnProfile.setImage(#imageLiteral(resourceName: "Profile"), for: UIControlState.normal)
+        btnProfile.setImage(#imageLiteral(resourceName: "Profile"), for: UIControl.State.normal)
         btnProfile.addTarget(self, action: #selector(btnProfileClicked(sender:)), for: .touchUpInside)
         leftBarButtonItems.addSubview(btnProfile)
         
@@ -127,7 +127,7 @@ class BaseViewController: UIViewController {
         let imgVw = UIImageView()
         imgVw.frame = CGRect(x: 0, y: 12, width: 160, height: 24)
         imgVw.backgroundColor = .clear
-        imgVw.image = #imageLiteral(resourceName: "TaksyKraft_Logo")
+        imgVw.image = UIImage(named: "TaksyKraft_Logo")
         logoContainer.addSubview(imgVw)
         self.navigationItem.titleView = logoContainer
         
@@ -142,17 +142,17 @@ class BaseViewController: UIViewController {
         app_delegate.window?.backgroundColor = Color_NavBarTint
 
     }
-    func btnProfileClicked( sender:UIButton)
+    @objc func btnProfileClicked( sender:UIButton)
     {
         let vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ProfileViewController") as! ProfileViewController
         self.navigationController?.pushViewController(vc, animated: true)
 
     }
-    func btnRefreshClicked( sender:UIButton)
+    @objc func btnRefreshClicked( sender:UIButton)
     {
 
     }
-    func backClicked( sender:UIButton)
+    @objc func backClicked( sender:UIButton)
     {
         let _ =    self.navigationController?.popViewController(animated: true)
     }
@@ -160,7 +160,7 @@ class BaseViewController: UIViewController {
     func showAlertWith(title : String,message : String)
     {
         DispatchQueue.main.async {
-            let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+            let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertController.Style.alert)
             alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
             
             self.present(alert, animated: true, completion: nil)
@@ -177,14 +177,14 @@ class BaseViewController: UIViewController {
 extension String {
     func height(withConstrainedWidth width: CGFloat, font: UIFont) -> CGFloat {
         let constraintRect = CGSize(width: width, height: .greatestFiniteMagnitude)
-        let boundingBox = self.boundingRect(with: constraintRect, options: .usesLineFragmentOrigin, attributes: [NSFontAttributeName: font], context: nil)
+        let boundingBox = self.boundingRect(with: constraintRect, options: .usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: font], context: nil)
         
         return ceil(boundingBox.height)
     }
     
     func width(withConstraintedHeight height: CGFloat, font: UIFont) -> CGFloat {
         let constraintRect = CGSize(width: .greatestFiniteMagnitude, height: height)
-        let boundingBox = self.boundingRect(with: constraintRect, options: .usesLineFragmentOrigin, attributes: [NSFontAttributeName: font], context: nil)
+        let boundingBox = self.boundingRect(with: constraintRect, options: .usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: font], context: nil)
         
         return ceil(boundingBox.width)
     }

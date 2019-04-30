@@ -159,7 +159,7 @@ class CreateOnlineTransactionViewController: BaseViewController {
         isTrxImage = true
         let alert = UIAlertController(title: "Select an Image to Uplaod", message: "", preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "Camera", style: .default) { action in
-            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera) {
+            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.camera) {
                 
                 let imagePicker = UIImagePickerController()
                 imagePicker.delegate = self
@@ -173,7 +173,7 @@ class CreateOnlineTransactionViewController: BaseViewController {
             
         })
         alert.addAction(UIAlertAction(title: "Gallery", style: .default) { action in
-            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.photoLibrary) {
+            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.photoLibrary) {
                 
                 let imagePicker = UIImagePickerController()
                 imagePicker.delegate = self
@@ -196,7 +196,7 @@ class CreateOnlineTransactionViewController: BaseViewController {
         isTrxImage = false
         let alert = UIAlertController(title: "Select an Image to Uplaod", message: "", preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "Camera", style: .default) { action in
-            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera) {
+            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.camera) {
                 
                 let imagePicker = UIImagePickerController()
                 imagePicker.delegate = self
@@ -210,7 +210,7 @@ class CreateOnlineTransactionViewController: BaseViewController {
             
         })
         alert.addAction(UIAlertAction(title: "Gallery", style: .default) { action in
-            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.photoLibrary) {
+            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.photoLibrary) {
                 
                 let imagePicker = UIImagePickerController()
                 imagePicker.delegate = self
@@ -292,8 +292,13 @@ class CreateOnlineTransactionViewController: BaseViewController {
 }
 extension CreateOnlineTransactionViewController : UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIPopoverPresentationControllerDelegate
 {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        let imageData = self.compressImageSize(image: info[UIImagePickerControllerOriginalImage] as! UIImage, compressionQuality: 1.0)
+    public func imagePickerController(_ picker: UIImagePickerController,
+                                      didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+        guard let image = info[.editedImage] as? UIImage else {
+           return print("error found")
+        }
+
+        let imageData = self.compressImageSize(image: image, compressionQuality: 1.0)
         let imageSize: Int = imageData.count
         
         print("size of image in KB: %f ", Double(imageSize) / 1024.0)
@@ -352,7 +357,7 @@ extension CreateOnlineTransactionViewController : UIImagePickerControllerDelegat
     func compressImageSize(image: UIImage,compressionQuality : CGFloat) -> Data
     {
         var imageData = Data()
-        imageData = UIImageJPEGRepresentation(image, CGFloat(compressionQuality))!
+        imageData = image.jpegData(compressionQuality: compressionQuality) ?? Data()
         print("compressImageSize in KB: %f ", Double(imageData.count) / 1024.0)
         
         if imageData.count > 2097152 {
@@ -408,10 +413,20 @@ extension CreateOnlineTransactionViewController :UICollectionViewDelegate,UIColl
             }
             else
             {
-                cell.imgVwItem.kf.setImage(with: URL(string: IMAGE_BASE_URL + imgTrxUrl), placeholder: #imageLiteral(resourceName: "Loading"), options: [.transition(ImageTransition.fade(1))], progressBlock: { receivedSize, totalSize in
-                }, completionHandler: { image, error, cacheType, imageURL in
-                    self.imgTrx = cell.imgVwItem.image!
-                })
+                cell.imgVwItem.kf.indicatorType = .activity
+                cell.imgVwItem.kf.setImage(
+                    with: URL(string: IMAGE_BASE_URL + imgTrxUrl),
+                    placeholder: UIImage(named: "Loading"),
+                    options: [.transition(.fade(1))])
+                {
+                    result in
+                    switch result {
+                    case .success(let value):
+                        self.imgTrx = value.image
+                    case .failure(let error):
+                        print("Job failed: \(error.localizedDescription)")
+                    }
+                }
                 cell.imgOverlay.image = #imageLiteral(resourceName: "ImageUploadSuccess")
             }
 
@@ -446,10 +461,23 @@ extension CreateOnlineTransactionViewController :UICollectionViewDelegate,UIColl
                 }
                 else
                 {
-                    cell.imgVwItem.kf.setImage(with: URL(string: IMAGE_BASE_URL + arrInvoiceImagesUrl[indexPath.row]), placeholder: #imageLiteral(resourceName: "Loading"), options: [.transition(ImageTransition.fade(1))], progressBlock: { receivedSize, totalSize in
-                    }, completionHandler: { image, error, cacheType, imageURL in
-                        self.arrInvoiceImages[indexPath.row] = image!
-                    })
+                    
+                    let url = URL(string: IMAGE_BASE_URL + arrInvoiceImagesUrl[indexPath.row])
+                    
+                    cell.imgVwItem.kf.indicatorType = .activity
+                    cell.imgVwItem.kf.setImage(
+                        with: url,
+                        placeholder: UIImage(named: "Loading"),
+                        options: [.transition(.fade(1))])
+                    {
+                        result in
+                        switch result {
+                        case .success(let value):
+                            self.arrInvoiceImages[indexPath.row] = value.image
+                        case .failure(let error):
+                            print("Job failed: \(error.localizedDescription)")
+                        }
+                    }
                     cell.imgOverlay.image = #imageLiteral(resourceName: "ImageUploadSuccess")
                 }
                 return cell
@@ -483,7 +511,7 @@ extension CreateOnlineTransactionViewController :UICollectionViewDelegate,UIColl
         let leftInset = (collectionView.layer.frame.size.width - CGFloat(totalCellWidth + totalSpacingWidth)) / 2
         let rightInset = leftInset
         
-        return UIEdgeInsetsMake(0, leftInset, 0, rightInset)
+        return UIEdgeInsets(top: 0, left: leftInset, bottom: 0, right: rightInset)
         
     }
 

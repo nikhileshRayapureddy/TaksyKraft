@@ -32,7 +32,7 @@ class LoginViewController: BaseViewController {
             layer.getOtpWith(mobileNo: txtFldMobileNumber.text!, successMessage: { (response) in
                 DispatchQueue.main.async {
                     app_delegate.removeloder()
-                    let alert = UIAlertController(title: "Alert!", message: response as? String, preferredStyle: UIAlertControllerStyle.alert)
+                    let alert = UIAlertController(title: "Alert!", message: response as? String, preferredStyle: UIAlertController.Style.alert)
                     alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
                         DispatchQueue.main.async {
                             let vc =  UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "VerifyOTPViewController") as! VerifyOTPViewController

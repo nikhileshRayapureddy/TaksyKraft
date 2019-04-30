@@ -22,12 +22,25 @@ class ProfileViewController: BaseViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         profileBO = TaksyKraftUserDefaults.getUser()
-        self.imgProfile.kf.setImage(with: URL(string: IMAGE_BASE_URL +
-            profileBO.profile_image), placeholder: #imageLiteral(resourceName: "Profile_Default"), options: [.transition(ImageTransition.fade(1))], progressBlock: { receivedSize, totalSize in
-        }, completionHandler: { (image, error, cacheType, imageURL) in
-            DispatchQueue.main.async {
+        
+        let url = URL(string: IMAGE_BASE_URL +
+            profileBO.profile_image)
+        
+        self.imgProfile.kf.indicatorType = .activity
+        self.imgProfile.kf.setImage(
+            with: url,
+            placeholder: UIImage(named: "Loading"),
+            options: [.transition(.fade(1))])
+        {
+            result in
+            switch result {
+            case .success(let value):
+                print("Task done for: \(value.source.url?.absoluteString ?? "")")
+            case .failure(let error):
+                print("Job failed: \(error.localizedDescription)")
             }
-        })
+        }
+
         self.imgProfile.layer.cornerRadius = self.imgProfile.frame.size.width/2
         self.imgProfile.layer.masksToBounds = true
         lblEmpID.text = profileBO.empId
@@ -42,7 +55,7 @@ class ProfileViewController: BaseViewController {
     }
     @IBAction func btnLogoutClicked(_ sender: UIButton) {
         
-        let alert = UIAlertController(title: "Alert!", message: "Are you sure you want to logout?", preferredStyle: UIAlertControllerStyle.alert)
+        let alert = UIAlertController(title: "Alert!", message: "Are you sure you want to logout?", preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "No", style: .cancel, handler: { (action) in
             
         }))
@@ -64,7 +77,7 @@ class ProfileViewController: BaseViewController {
                 }, failureMessage: { (error) in
                     DispatchQueue.main.async {
                         app_delegate.removeloder()
-                        let alert = UIAlertController(title: "Alert!", message: "Failed to logout.", preferredStyle: UIAlertControllerStyle.alert)
+                        let alert = UIAlertController(title: "Alert!", message: "Failed to logout.", preferredStyle: UIAlertController.Style.alert)
                         alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: { (action) in
                             
                         }))
